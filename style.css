@@ -1,0 +1,132 @@
+body {
+    background-color: #0a0a1e; /* тёмно-синий фон */
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.header-buttons button {
+    background: linear-gradient(to right, #00b4d8, #0077b6);
+    border: none;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.page {
+    padding: 10px;
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+#search {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #1e1e3e;
+    color: #fff;
+}
+
+#categories {
+    display: flex;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+#categories button {
+    background: #0077b6;
+    border: none;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.gallery div {
+    position: relative;
+}
+
+.gallery div span {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    background: rgba(0,0,0,0.5);
+    padding: 2px 5px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.banner {
+    background: linear-gradient(to right, #00b4d8, #0077b6);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.create-button {
+    background: #0077b6;
+    border: none;
+    color: #fff;
+    padding: 15px;
+    border-radius: 30px;
+    width: 100%;
+    font-size: 18px;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #0a0a1e;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #0077b6;
+}
+
+.bottom-nav button {
+    background: none;
+    border: none;
+    color: #fff;
+}
+
+.bottom-nav img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Анимации */
+button:hover {
+    transform: scale(1.05);
+    transition: 0.2s;
+}
