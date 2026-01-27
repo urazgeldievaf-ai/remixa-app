@@ -2,107 +2,98 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Remixa</title>
-
-  <!-- Telegram -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <link rel="stylesheet" href="style.css">
+  <title>Remixa AI</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header class="header">
-  <div class="logo">Remixa</div>
-  <div class="balance">💎 50</div>
-</header>
+<div class="app">
 
-<!-- PAGES -->
-<main>
-
-  <!-- HOME -->
-  <section id="home" class="page active">
-    <div class="hero">
-      <h1>Создавай фото и видео с AI</h1>
-      <p>Профессиональные нейросети за секунды</p>
-      <button class="hero-btn" onclick="openCreate()">Создать</button>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <span class="diamond">💎</span>
+      <span class="logo-text">Remixa</span>
     </div>
 
-    <div class="gallery" id="homeGallery"></div>
-  </section>
-
-  <!-- IDEAS -->
-  <section id="ideas" class="page">
-    <h2>Идеи</h2>
-    <div class="gallery" id="ideasGallery"></div>
-  </section>
-
-  <!-- LIKES -->
-  <section id="likes" class="page">
-    <h2>Избранное</h2>
-    <div class="gallery" id="likesGallery"></div>
-  </section>
-
-  <!-- PARTNERS -->
-  <section id="partners" class="page">
-    <h2>Партнёрство</h2>
-    <p>Зарабатывай 15% с платежей приглашённых</p>
-    <input type="text" value="t.me/remixa_ai_bot?start=ref_12345" readonly>
-    <button class="secondary">Скопировать ссылку</button>
-  </section>
-
-</main>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button onclick="switchPage('home')"><i data-lucide="home"></i><span>Главная</span></button>
-  <button onclick="switchPage('ideas')"><i data-lucide="lightbulb"></i><span>Идеи</span></button>
-  <button class="center" onclick="openCreate()"><i data-lucide="sparkles"></i></button>
-  <button onclick="switchPage('likes')"><i data-lucide="heart"></i><span>Лайки</span></button>
-  <button onclick="switchPage('partners')"><i data-lucide="users"></i><span>Партнёрство</span></button>
-</nav>
-
-<!-- CREATE MODAL -->
-<div id="createModal" class="modal">
-  <div class="modal-box">
-    <span class="close" onclick="closeCreate()">×</span>
-    <h2>Создать</h2>
-
-    <label>Тип</label>
-    <div class="toggle">
-      <button class="active" onclick="setType('image')">Картинка</button>
-      <button onclick="setType('video')">Видео</button>
+    <div class="header-right">
+      <div class="balance">60 ₽</div>
+      <div class="profile-icon">👤</div>
     </div>
+  </header>
 
-    <label>Нейросеть</label>
-    <select id="modelSelect"></select>
+  <!-- MAIN -->
+  <main class="content">
 
-    <label>Описание *</label>
-    <textarea id="prompt" placeholder="Опиши, что хочешь получить..."></textarea>
+    <section class="create-section">
+      <h1>Создать</h1>
 
-    <div id="imageUpload">
-      <label>Фото (по желанию)</label>
-      <input type="file" accept="image/*">
-    </div>
+      <div class="create-buttons">
+        <button class="create-btn active">🖼 Картинка</button>
+        <button class="create-btn">🎬 Видео</button>
+      </div>
 
-    <div id="videoOptions" class="hidden">
-      <label>Длительность</label>
-      <select>
-        <option>5 секунд</option>
-        <option>10 секунд</option>
-      </select>
-    </div>
+      <div class="generator-card">
+        <label>Модель генерации</label>
+        <select>
+          <option>NanoBanana — 5 ₽</option>
+          <option>NanoBanana PRO — 15 ₽</option>
+          <option>GPT Image 1.5 — 15 ₽</option>
+        </select>
 
-    <button class="primary" onclick="generate()">Сгенерировать</button>
-  </div>
+        <label>Запрос</label>
+        <textarea placeholder="Опишите, что хотите создать..."></textarea>
+
+        <div class="options">
+          <div>
+            <label>Пропорции</label>
+            <select>
+              <option>1:1</option>
+              <option>4:5</option>
+              <option>16:9</option>
+              <option>9:16</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Изображение (необязательно)</label>
+            <input type="file">
+          </div>
+        </div>
+
+        <button class="generate-btn">✨ Сгенерировать</button>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery">
+      <h2>Галерея</h2>
+
+      <div class="grid">
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active">🏠<span>Главная</span></button>
+    <button class="nav-btn">✨<span>Создать</span></button>
+    <button class="nav-btn">💡<span>Коллекции</span></button>
+    <button class="nav-btn">🖼<span>Галерея</span></button>
+    <button class="nav-btn">👤<span>Профиль</span></button>
+  </nav>
+
 </div>
 
 <script src="app.js"></script>
 </body>
 </html>
+
