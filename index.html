@@ -2,82 +2,230 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Remixa</title>
-
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-
 <body>
+  <div class="app">
+    <!-- HEADER -->
+    <header class="topbar">
+      <div class="logo">
+        <img src="logo.png" alt="Remixa" />
+      </div>
+      <div class="top-right">
+        <button class="wallet-btn" onclick="openWallet()">Кошелёк</button>
+      </div>
+    </header>
 
-<header class="header">
-  <img src="logo.png" alt="Remixa" class="logo">
-  <div class="balance">320 ₽</div>
-</header>
+    <!-- PAGES -->
+    <main>
+      <!-- MAIN -->
+      <section id="page-main" class="page active">
+        <div class="hero">
+          <div class="hero-left">
+            <div class="hero-title">Создавай потрясающие фото с Remixa</div>
+            <div class="hero-subtitle">Идеи, генерации, вдохновение — всё в одном месте</div>
+            <button class="big-btn" onclick="openCreateModal('image')">
+              <span>Сгенерировать</span>
+              <span class="price">— от 5₽</span>
+            </button>
+          </div>
+          <div class="hero-right">
+            <img src="banner.png" alt="Remixa" />
+          </div>
+        </div>
 
-<main class="main">
+        <div class="section-title">
+          <div class="title">Галерея идей</div>
+          <div class="subtitle">Только проверенные и красивые генерации</div>
+        </div>
 
-  <!-- Тип генерации -->
-  <div class="type-switch">
-    <button class="type-btn active">Картинка</button>
-    <button class="type-btn">Видео</button>
-  </div>
+        <div class="grid" id="main-gallery"></div>
+      </section>
 
-  <!-- Генерация -->
-  <div class="card">
+      <!-- IDEAS -->
+      <section id="page-ideas" class="page">
+        <div class="page-header">
+          <div class="page-title">
+            <span class="spark"></span> Идеи
+          </div>
+          <div class="search">
+            <input type="text" id="ideas-search" placeholder="Поиск по идеям..." oninput="renderIdeas()" />
+          </div>
+        </div>
 
-    <label>Модель</label>
-    <select id="model">
-      <option value="5">NanoBanana</option>
-      <option value="15">NanoBanana Pro</option>
-      <option value="15">GPT Image</option>
-      <option value="65">Veo 3.1 Fast</option>
-      <option value="250">Veo 3.1 Pro</option>
-    </select>
+        <div class="grid" id="ideas-gallery"></div>
+      </section>
 
-    <label>Запрос</label>
-    <textarea placeholder="Опиши, что хочешь создать…"></textarea>
+      <!-- LIKES -->
+      <section id="page-likes" class="page">
+        <div class="page-header">
+          <div class="page-title">
+            <span class="spark"></span> Лайки
+          </div>
+        </div>
+        <div class="grid" id="likes-gallery"></div>
+      </section>
 
-    <div class="options">
-      <div class="option">1:1</div>
-      <div class="option">9:16</div>
-      <div class="option">16:9</div>
+      <!-- PROFILE -->
+      <section id="page-profile" class="page">
+        <div class="page-header">
+          <div class="page-title">
+            <span class="spark"></span> Профиль
+          </div>
+          <div class="profile-balance">
+            Баланс: <span id="balance">0</span>₽
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <button class="small-btn" onclick="topUp()">Пополнить</button>
+          <button class="small-btn" onclick="openCreateModal('image')">Создать</button>
+        </div>
+
+        <div class="profile-block">
+          <div class="block-title">Публикации</div>
+          <div class="grid" id="profile-published"></div>
+        </div>
+
+        <div class="profile-block">
+          <div class="block-title">История (все генерации)</div>
+          <div class="grid" id="profile-history"></div>
+        </div>
+      </section>
+
+      <!-- PARTNERSHIP -->
+      <section id="page-partnership" class="page">
+        <div class="page-header">
+          <div class="page-title">
+            <span class="spark"></span> Партнёрство
+          </div>
+        </div>
+
+        <div class="partnership-card">
+          <div class="partnership-title">Приглашай друзей и получай 15% от их платежей</div>
+          <div class="partnership-row">
+            <input type="text" id="ref-link" readonly value="t.me/remixa_bot?start=ref_000" />
+            <button class="small-btn" onclick="copyRef()">Копировать</button>
+          </div>
+          <div class="partnership-stats">
+            <div>Приглашено: <span id="invited">0</span></div>
+            <div>Заработано: <span id="earned">0</span>₽</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button data-page="main" class="nav-btn active" onclick="switchPage('main')">
+        <span class="icon home"></span>
+        <span>Главная</span>
+      </button>
+      <button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
+        <span class="icon ideas"></span>
+        <span>Идеи</span>
+      </button>
+      <button class="nav-btn create" onclick="openCreateModal('image')">
+        <span class="icon create"></span>
+        <span>Сгенерировать</span>
+      </button>
+      <button data-page="likes" class="nav-btn" onclick="switchPage('likes')">
+        <span class="icon like"></span>
+        <span>Лайки</span>
+      </button>
+      <button data-page="profile" class="nav-btn" onclick="switchPage('profile')">
+        <span class="icon profile"></span>
+        <span>Профиль</span>
+      </button>
+    </nav>
+
+    <!-- CREATE MODAL -->
+    <div class="modal" id="create-modal">
+      <div class="modal-inner">
+        <div class="modal-header">
+          <div class="modal-title">Создать</div>
+          <button class="close-btn" onclick="closeCreate()">×</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="field">
+            <label>Тип</label>
+            <select id="content-type" onchange="updateModelList()">
+              <option value="image">Картинка</option>
+              <option value="video">Видео</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Модель</label>
+            <select id="model" onchange="updateModelHints()"></select>
+            <div class="hint" id="model-hint"></div>
+          </div>
+
+          <div class="field">
+            <label>Промпт *</label>
+            <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
+          </div>
+
+          <div class="field">
+            <label>Фото (опционально)</label>
+            <input type="file" id="image-file" accept="image/*" />
+          </div>
+
+          <div class="field">
+            <label>Пропорции</label>
+            <select id="aspect">
+              <option value="1:1">1:1</option>
+              <option value="16:9">16:9</option>
+              <option value="9:16">9:16</option>
+              <option value="4:3">4:3</option>
+              <option value="3:4">3:4</option>
+              <option value="2:3">2:3</option>
+              <option value="3:2">3:2</option>
+            </select>
+          </div>
+
+          <div class="video-options" id="video-options">
+            <div class="field">
+              <label>Длительность</label>
+              <select id="duration">
+                <option value="5">5 сек</option>
+                <option value="10">10 сек</option>
+                <option value="15">15 сек</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Звук</label>
+              <select id="sound">
+                <option value="no">Без звука</option>
+                <option value="yes">Добавить звук</option>
+              </select>
+              <div class="hint">Если нужен звук — укажи в промпте: “с музыкой в стиле synthwave”</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <input type="checkbox" id="hide-prompt" /> Скрыть промпт (другие не увидят)
+            </label>
+          </div>
+
+          <button class="big-btn generate" onclick="generate()">
+            <span id="generate-text">Создать</span>
+            <span id="generate-price" class="price">— 5₽</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <button class="generate-btn" id="generateBtn">
-      Сгенерировать · 5 ₽
-    </button>
-
   </div>
 
-  <!-- Галерея -->
-  <section class="gallery">
-    <h2>Галерея</h2>
-    <div class="grid">
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-      <div class="item"></div>
-    </div>
-  </section>
-
-  <!-- Партнёрка -->
-  <section class="partner">
-    <div>Заработано с рефералов</div>
-    <div class="sum">1 240 ₽</div>
-  </section>
-
-</main>
-
-<nav class="nav">
-  <button class="active">Создать</button>
-  <button>Идеи</button>
-  <button>Профиль</button>
-</nav>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
+
 
 
