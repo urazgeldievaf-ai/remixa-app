@@ -36,11 +36,17 @@ function renderGallery(container, data) {
                 saved.push(item);
                 localStorage.setItem('saved', JSON.stringify(saved));
                 renderGallery('saved', saved);
-                tg.showAlert('Добавлено!');
+                tg.showAlert('Добавлено в коллекцию!');
             }
         };
         el.appendChild(div);
     });
+}
+
+function searchIdeas() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const filtered = galleryData.filter(item => item.prompt.toLowerCase().includes(query));
+    renderGallery('gallery', filtered);
 }
 
 function openCreate() {
@@ -73,6 +79,11 @@ function showModelTips() {
         'klingmotion': 'Motion Control — повтори движение из видео'
     };
     tip.textContent = tips[model] || '';
+}
+
+function toggleOptions() {
+    const type = document.getElementById('content-type').value;
+    document.getElementById('video-options').style.display = type === 'video' ? 'block' : 'none';
 }
 
 function init() {
