@@ -11,6 +11,7 @@ body {
 header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
@@ -41,6 +42,7 @@ header {
     text-align: center;
     margin: 15px;
     box-shadow: 0 0 30px rgba(0, 180, 216, 0.8);
+    animation: glow 3s infinite alternate;
 }
 
 .banner-logo {
@@ -131,10 +133,21 @@ header {
     filter: brightness(1.5) drop-shadow(0 0 8px #00d4ff);
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+.create-btn {
+    background: linear-gradient(90deg, #00d4ff, #0077ff);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -30px;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.9);
+}
+
+.create-btn img {
+    width: 32px;
+    height: 32px;
 }
 
 .modal {
@@ -184,4 +197,30 @@ select, textarea, input[type="file"], input[type="checkbox"] {
     color: #00d4ff;
     font-size: 12px;
     margin: 5px 0;
+}
+
+.tooltip-icon {
+    cursor: pointer;
+    background: #00d4ff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+.tooltip-text {
+    display: none;
+    position: absolute;
+    background: #1c1c3a;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    z-index: 10;
+}
+
+.tip:hover .tooltip-text {
+    display: block;
 }
