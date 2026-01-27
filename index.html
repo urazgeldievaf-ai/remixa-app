@@ -18,10 +18,8 @@
 
       <div class="top-right">
         <button class="diamond-btn" onclick="openWallet()">
-          <!-- БРИЛЛИАНТ (SVG) -->
-          <svg class="diamond" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M12 2l7 7-3 11H8L5 9l7-7zm0 2.5L7.5 9h9L12 4.5zM6.5 10l2.5 9h6l2.5-9H6.5z"/>
-          </svg>
+          <!-- БРИЛЛИАНТ -->
+          <span class="diamond-icon">💎</span>
           <span id="balanceTop">14,125</span>
         </button>
       </div>
@@ -31,19 +29,12 @@
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
-        <div class="top-banners">
-          <div class="banner thin"></div>
-          <div class="banner thin"></div>
-          <div class="banner thin"></div>
-        </div>
-
         <div class="hero">
           <div class="hero-text">
             <h1>Создай потрясающее фото с Remixa!</h1>
             <p>Быстро. Красиво. Вдохновляюще.</p>
             <button class="hero-btn" onclick="openCreateModal('image')">
               Создать
-              <span class="icon arrow"></span>
             </button>
           </div>
           <div class="hero-img">
@@ -69,16 +60,12 @@
         <div class="categories">
           <button class="cat active" data-cat="new" onclick="setCategory('new')">НОВЫЕ</button>
           <button class="cat" data-cat="trend" onclick="setCategory('trend')">ТРЕНДЫ</button>
-          <button class="cat" data-cat="female" onclick="setCategory('female')">Женское</button>
-          <button class="cat" data-cat="male" onclick="setCategory('male')">Мужское</button>
-          <button class="cat" data-cat="kids" onclick="setCategory('kids')">Дети</button>
-          <button class="cat" data-cat="family" onclick="setCategory('family')">Семейное</button>
-          <button class="cat" data-cat="14feb" onclick="setCategory('14feb')">14 февраля</button>
-          <button class="cat" data-cat="23feb" onclick="setCategory('23feb')">23 февраля</button>
-          <button class="cat" data-cat="8mar" onclick="setCategory('8mar')">8 марта</button>
-          <button class="cat" data-cat="history" onclick="setCategory('history')">Исторический</button>
-          <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">Фэнтези</button>
-          <button class="cat" data-cat="pair" onclick="setCategory('pair')">Пара</button>
+          <button class="cat" data-cat="female" onclick="setCategory('female')">ЖЕНСКОЕ</button>
+          <button class="cat" data-cat="male" onclick="setCategory('male')">МУЖСКОЕ</button>
+          <button class="cat" data-cat="kids" onclick="setCategory('kids')">ДЕТИ</button>
+          <button class="cat" data-cat="family" onclick="setCategory('family')">СЕМЕЙНОЕ</button>
+          <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">ФЭНТЕЗИ</button>
+          <button class="cat" data-cat="history" onclick="setCategory('history')">ИСТОРИЧЕСКОЕ</button>
         </div>
 
         <div class="grid" id="ideas-grid"></div>
@@ -93,8 +80,7 @@
         </div>
         <div id="likes-grid" class="grid"></div>
         <div id="likes-empty" class="empty-text">
-          Скоро здесь появятся твои избранные картинки и видео ✨<br>
-          Нравится — сохраняй в “Лайки”, чтобы быстро найти лучшие работы.
+          Скоро здесь появятся твои избранные картинки ✨
         </div>
       </section>
 
@@ -110,7 +96,7 @@
           <div class="profile-balance">
             <div class="bal-title">Баланс</div>
             <div class="bal-row">
-              <div class="bal-val" id="balanceTotal">14,125 ₽</div>
+              <div class="bal-val" id="balanceTotal">14,125 💎</div>
               <button class="small-btn" onclick="topUp()">Пополнить</button>
             </div>
           </div>
@@ -118,8 +104,8 @@
           <div class="profile-ref">
             <div class="ref-title">Доход от рефералов</div>
             <div class="ref-val">
-              <span id="refIncome">0 ₽</span>
-              <span class="hint">15% от платежей друзей • вывод от 3500 ₽</span>
+              <span id="refIncome">0 💎</span>
+              <span class="hint">15% от платежей друзей • вывод от 3500</span>
               <button class="small-btn" onclick="withdraw()">Вывести</button>
             </div>
           </div>
@@ -139,11 +125,6 @@
         <div class="profile-block">
           <div class="block-title">История генераций</div>
           <div id="profile-history" class="grid"></div>
-        </div>
-
-        <div class="profile-block">
-          <div class="block-title">История платежей</div>
-          <div id="profile-payments" class="payments"></div>
         </div>
       </section>
     </main>
@@ -198,12 +179,12 @@
         <div class="modal-body">
           <div class="tabs">
             <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
-            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
+            <button class="tab" data-type="video" onclick="setType('video')">Видео (скоро)</button>
           </div>
 
           <div class="field">
             <label>Нейросеть</label>
-            <select id="model"></select>
+            <select id="model" onchange="updateModelHint()"></select>
             <div class="hint" id="modelHint"></div>
           </div>
 
@@ -212,45 +193,9 @@
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
           </div>
 
-          <div class="field">
-            <label>Фото</label>
-            <input type="file" id="imageFile" accept="image/*" />
-          </div>
-
-          <div class="field">
-            <label>Пропорции</label>
-            <select id="aspect">
-              <option>1:1</option>
-              <option>16:9</option>
-              <option>9:16</option>
-              <option>4:3</option>
-              <option>3:4</option>
-            </select>
-          </div>
-
-          <div class="video-settings" id="videoSettings">
-            <div class="field">
-              <label>Длительность</label>
-              <select id="duration">
-                <option>5 сек</option>
-                <option>10 сек</option>
-                <option>15 сек</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>Звук</label>
-              <select id="sound">
-                <option value="no">Без звука</option>
-                <option value="yes">С музыкой</option>
-              </select>
-              <div class="hint">Звук доступен только в некоторых нейросетях</div>
-            </div>
-          </div>
-
           <button class="big-btn generate" onclick="generate()">
             <span id="genText">Создать</span>
-            <span id="genPrice" class="price">— 5₽</span>
+            <span id="genPrice" class="price">— 5💎</span>
           </button>
         </div>
       </div>
