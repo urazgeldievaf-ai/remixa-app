@@ -1,73 +1,85 @@
-const telegramApp = Telegram.WebApp;
-telegramApp.ready();
+const tg = Telegram.WebApp;
+tg.ready();
+
+const userId = tg.initDataUnsafe.user.id;
+const refLink = `https://t.me/remixa_bot?start=ref_${userId}`;
 
 let galleryData = [
-    { id: 1, src: 'image1.jpg', likes: 2600, category: 'fantasy', prompt: 'cyberpunk girl' },
-    { id: 2, src: 'image2.jpg', likes: 1300, category: 'animals', prompt: 'tiger portrait' },
-    { id: 3, src: 'image3.jpg', likes: 5100, category: 'vehicles', prompt: 'blue tesla in storm' },
-    { id: 4, src: 'image4.jpg', likes: 5100, category: 'fantasy', prompt: 'floating castle' },
-    { id: 5, src: 'image5.jpg', likes: 2600, category: 'portrait', prompt: 'anime girl in snow' },
-    { id: 6, src: 'image6.jpg', likes: 2800, category: 'fantasy', prompt: 'red dragon at sunset' },
-    { id: 7, src: 'image7.jpg', likes: 2600, category: 'abstract', prompt: 'cosmic eye' },
-    { id: 8, src: 'image8.jpg', likes: 4600, category: 'nature', prompt: 'mountain landscape' },
-    // Добавь больше данных (или подключи Firebase для динамики)
+    { id: 1, src: 'https://i.imgur.com/robot-girl.jpg', likes: 2600, category: 'fantasy', prompt: 'Cyberpunk girl' },
+    { id: 2, src: 'https://i.imgur.com/tiger.jpg', likes: 3100, category: 'animals', prompt: 'White tiger' },
+    { id: 3, src: 'https://i.imgur.com/blue-car.jpg', likes: 5100, category: 'vehicles', prompt: 'Tesla storm' },
+    { id: 4, src: 'https://i.imgur.com/castle.jpg', likes: 5100, category: 'fantasy', prompt: 'Floating castle' },
+    // Добавь свои изображения
 ];
 
-let saved = []; // Сохранённые идеи
+let saved = JSON.parse(localStorage.getItem('saved') || '[]');
 
-function switchPage(pageId) {
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-    document.getElementById(pageId + '-page').classList.add('active');
+function switchPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(page).classList.add('active');
+
+    document.querySelectorAll('.bottom-nav button').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.bottom-nav button[data-page="${page}"]`).classList.add('active');
 }
 
 function renderGallery(container, data) {
-    container.innerHTML = '';
+    const el = document.getElementById(container);
+    el.innerHTML = '';
     data.forEach(item => {
         const div = document.createElement('div');
         div.innerHTML = `
             <img src="${item.src}" alt="Idea">
-            <span>♥ ${item.likes / 1000}k</span>
+            <span>♥ ${item.likes}k</span>
         `;
-        div.onclick = () => showPrompt(item.prompt);
-        container.appendChild(div);
+        div.onclick = () => {
+            if (confirm('Сохранить в коллекцию?')) {
+                saved.push(item);
+                localStorage.setItem('saved', JSON.stringify(saved));
+                renderGallery('saved', saved);
+                tg.showAlert('Добавлено!');
+            }
+        };
+        el.appendChild(div);
     });
 }
 
-function filterCategory(category) {
-    const filtered = category === 'all' ? galleryData : galleryData.filter(item => item.category === category);
-    renderGallery(document.getElementById('gallery'), filtered);
+function openCreate() {
+    document.getElementById('create-modal').style.display = 'block';
 }
 
-function createIdea() {
-    telegramApp.sendData('create_idea');  // Отправляет в бот для генерации
-    telegramApp.showAlert('Промпт отправлен в бот для генерации!');
+function closeModal() {
+    document.getElementById('create-modal').style.display = 'none';
 }
 
-function showPrompt(prompt) {
-    telegramApp.showConfirm('Повторить генерацию?', (ok) => {
-        if (ok) telegramApp.sendData(`repeat_prompt:${prompt}`);
-    });
+function generate() {
+    const prompt = document.getElementById('prompt').value;
+    const hide = document.getElementById('hide-prompt').checked;
+    const model = document.getElementById('model').value;
+    tg.sendData(JSON.stringify({ type: 'generate', prompt, hide, model }));
+    closeModal();
+    tg.showAlert('Запрос отправлен в бот!');
 }
 
-function copyRefLink() {
-    const input = document.getElementById('ref-link');
-    input.select();
-    document.execCommand('copy');
-    telegramApp.showAlert('Ссылка скопирована!');
-}
-
-function showWallet() {
-    telegramApp.showAlert('Баланс: 0 RUB. Пополнить через /pay в боте.');
-}
-
-function pay() {
-    telegramApp.sendData('pay');  // Отправляет в бот для YooKassa
+function showModelTips() {
+    const model = document.getElementById('model').value;
+    const tip = document.getElementById('model-tip');
+    const tips = {
+        'veo_fast': 'Veo 3.1 Fast — быстро и дешевле, но качество чуть ниже',
+        'veo': 'Veo 3.1 — максимальное качество, но дольше и дороже',
+        'sora2': 'Sora 2 — отличное видео из текста или фото',
+        'sora2pro': 'Sora 2 Pro — топ-качество, длительность 10–15 сек, генерация может занять 2–3 часа',
+        'kling26': 'Kling 2.6 — хороший баланс цены и качества',
+        'klingv2pro': 'Kling v2 Pro — требует начальный и конечный кадры',
+        'klingmotion': 'Motion Control — повтори движение из видео'
+    };
+    tip.textContent = tips[model] || '';
 }
 
 function init() {
-    renderGallery(document.getElementById('gallery'), galleryData);
-    renderGallery(document.getElementById('ideas-gallery'), galleryData);
-    renderGallery(document.getElementById('collection-gallery'), saved);
+    renderGallery('gallery', galleryData);
+    renderGallery('saved', saved);
+    document.getElementById('ref-link').value = `t.me/remixa_bot?start=ref_${userId}`;
+    switchPage('main');
 }
 
 init();
