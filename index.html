@@ -8,70 +8,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <img src="logo.png" alt="Remixa Logo" class="logo">
-        <div class="header-buttons">
-            <button onclick="showWallet()">Кошелёк</button>
-        </div>
-    </header>
+    <div class="container">
+        <h1>Remixa</h1>
+        <div class="balance">Баланс: <span id="credits">50</span> кр</div>
+        <button onclick="topup()">Пополнить</button>
 
-    <div id="main-page" class="page active">
-        <input type="text" id="search" placeholder="Поиск по идеям...">
-        <div id="categories">
-            <button onclick="filterCategory('all')">Все</button>
-            <button onclick="filterCategory('fantasy')">Фантастика</button>
-            <button onclick="filterCategory('portrait')">Портреты</button>
-            <button onclick="filterCategory('nature')">Природа</button>
-            <!-- Добавь больше категорий -->
-        </div>
-        <h2>Сгенерировать +</h2>
-        <div id="gallery" class="gallery">
-            <!-- Галерея изображений будет здесь (динамически) -->
-        </div>
-        <div class="banner">
-            <img src="banner.png" alt="Banner">
-            <p>Создавай портретное фото с Remixa!</p>
-        </div>
-        <button class="create-button" onclick="createIdea()">Создать</button>
+        <h2>Реферальная ссылка</h2>
+        <input type="text" id="reflink" readonly value="">
+        <button onclick="copyRef()">Копировать</button>
+
+        <p>Приглашай друзей — 15% от их платежей тебе!</p>
+        <p>Вывод от 3500 кр</p>
+
+        <button class="big-btn" onclick="create()">Создать</button>
     </div>
-
-    <div id="profile-page" class="page">
-        <h2>Профиль</h2>
-        <div>Баланс: <span id="balance">0 RUB</span></div>
-        <button onclick="pay()">Пополнить</button>
-        <h3>Мои генерации</h3>
-        <div id="my-generations"></div>
-        <h3>Сохранённые (Коллекция)</h3>
-        <div id="saved"></div>
-    </div>
-
-    <div id="partnership-page" class="page">
-        <h2>Партнерство</h2>
-        <p>Приглашай друзей и получай 20% от их платежей!</p>
-        <input type="text" id="ref-link" value="t.me/remixa_bot?start=ref_123" readonly>
-        <button onclick="copyRefLink()">Копировать ссылку</button>
-        <h3>Статистика</h3>
-        <p>Приглашено: 0</p>
-        <p>Заработано: 0 RUB</p>
-    </div>
-
-    <div id="ideas-page" class="page">
-        <h2>Идеи</h2>
-        <div id="ideas-gallery"></div>
-    </div>
-
-    <div id="collection-page" class="page">
-        <h2>Коллекция</h2>
-        <div id="collection-gallery"></div>
-    </div>
-
-    <nav class="bottom-nav">
-        <button onclick="switchPage('main')"><img src="home-icon.png" alt="Главная"></button>
-        <button onclick="switchPage('profile')"><img src="profile-icon.png" alt="Профиль"></button>
-        <button onclick="switchPage('partnership')"><img src="partnership-icon.png" alt="Партнерство"></button>
-        <button onclick="switchPage('ideas')"><img src="ideas-icon.png" alt="Идеи"></button>
-        <button onclick="switchPage('collection')"><img src="collection-icon.png" alt="Коллекция"></button>
-    </nav>
 
     <script src="app.js"></script>
 </body>
