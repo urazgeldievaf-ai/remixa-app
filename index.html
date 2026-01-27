@@ -9,15 +9,15 @@
 </head>
 <body>
     <header>
-        <img src="logo.png" alt="Remixa" class="logo">
+        <img src="https://i.imgur.com/your-logo.png" alt="Remixa" class="logo"> <!-- Замени на свой логотип -->
         <button onclick="showWallet()">Кошелёк</button>
     </header>
 
     <div id="main" class="page active">
         <div class="banner">
-            <img src="logo.png" alt="Remixa" class="banner-logo">
-            <p>Создавай потрясающие фото и видео с Remixa!</p>
-            <button onclick="openCreate()">Сгенерировать +</button>
+            <img src="https://i.imgur.com/your-logo.png" alt="Remixa" class="banner-logo">
+            <p>Создавай потрясающие фото с Remixa!</p>
+            <button class="generate-btn" onclick="openCreate()">Сгенерировать</button>
         </div>
 
         <input type="text" id="search" placeholder="Поиск идей..." onkeyup="searchIdeas()">
@@ -52,6 +52,10 @@
         <h3>Статистика</h3>
         <p>Приглашено: <span id="invited">0</span></p>
         <p>Заработано: <span id="earned">0</span> кр</p>
+        <div class="tip">
+            <span class="tooltip-icon">?</span>
+            <div class="tooltip-text">15% от платежей приглашённых пользователей начисляются тебе кредитами. Вывод доступен от 3500 кр.</div>
+        </div>
     </div>
 
     <div id="ideas" class="page">
@@ -68,7 +72,7 @@
         <button data-page="main" onclick="switchPage('main')"><img src="https://img.icons8.com/material-rounded/24/ffffff/home.png">Главная</button>
         <button data-page="profile" onclick="switchPage('profile')"><img src="https://img.icons8.com/material-rounded/24/ffffff/user.png">Профиль</button>
         <button data-page="partnership" onclick="switchPage('partnership')"><img src="https://img.icons8.com/material-rounded/24/ffffff/handshake.png">Партнёрство</button>
-        <button data-page="ideas" onclick="switchPage('ideas')"><img src="https://img.icons8.com/material-rounded/24/ffffff/light-on.png">Галерея</button>
+        <button data-page="ideas" onclick="switchPage('ideas')"><img src="https://img.icons8.com/material-rounded/24/ffffff/light-on.png">Идеи</button>
         <button data-page="collection" onclick="switchPage('collection')"><img src="https://img.icons8.com/material-rounded/24/ffffff/heart.png">Коллекция</button>
     </nav>
 
@@ -134,7 +138,7 @@
                 <p class="tip">Звук можно указать в промпте: "с музыкой в стиле synthwave" или "без звука"</p>
             </div>
 
-            <button onclick="generate()">Создать шедевр</button>
+            <button onclick="generate()">Сгенерировать</button>
         </div>
     </div>
 
