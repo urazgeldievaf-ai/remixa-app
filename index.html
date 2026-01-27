@@ -10,9 +10,7 @@
 <body>
     <header>
         <img src="logo.png" alt="Remixa" class="logo">
-        <div class="header-right">
-            <button onclick="showWallet()">Кошелёк</button>
-        </div>
+        <button onclick="showWallet()">Кошелёк</button>
     </header>
 
     <div id="main" class="page active">
@@ -22,7 +20,7 @@
             <button onclick="openCreate()">Сгенерировать +</button>
         </div>
 
-        <input type="text" id="search" placeholder="Поиск идей...">
+        <input type="text" id="search" placeholder="Поиск идей..." onkeyup="searchIdeas()">
         <div class="categories" id="categories"></div>
 
         <div class="gallery" id="gallery"></div>
@@ -40,7 +38,7 @@
         <div class="gallery" id="saved"></div>
 
         <h3>Реферальная ссылка</h3>
-        <input type="text" id="ref-link" readonly>
+        <input type="text" id="ref-link" readonly value="">
         <button onclick="copyRef()">Копировать</button>
         <p>Приглашай друзей — 15% от их платежей тебе кредитами!</p>
         <p>Вывод от 3500 кр</p>
@@ -49,7 +47,7 @@
     <div id="partnership" class="page">
         <h2>Партнёрство</h2>
         <p>Приглашай друзей и получай 15% от их платежей!</p>
-        <input type="text" id="ref-link-part" readonly>
+        <input type="text" id="ref-link-part" readonly value="">
         <button onclick="copyRefPart()">Копировать</button>
         <h3>Статистика</h3>
         <p>Приглашено: <span id="invited">0</span></p>
@@ -67,21 +65,21 @@
     </div>
 
     <nav class="bottom-nav">
-        <button data-page="main" onclick="switchPage('main')"><img src="home.png">Главная</button>
-        <button data-page="profile" onclick="switchPage('profile')"><img src="profile.png">Профиль</button>
-        <button data-page="partnership" onclick="switchPage('partnership')"><img src="handshake.png">Партнёрство</button>
-        <button data-page="ideas" onclick="switchPage('ideas')"><img src="bulb.png">Галерея</button>
-        <button data-page="collection" onclick="switchPage('collection')"><img src="heart.png">Коллекция</button>
+        <button data-page="main" onclick="switchPage('main')"><img src="https://img.icons8.com/material-rounded/24/ffffff/home.png">Главная</button>
+        <button data-page="profile" onclick="switchPage('profile')"><img src="https://img.icons8.com/material-rounded/24/ffffff/user.png">Профиль</button>
+        <button data-page="partnership" onclick="switchPage('partnership')"><img src="https://img.icons8.com/material-rounded/24/ffffff/handshake.png">Партнёрство</button>
+        <button data-page="ideas" onclick="switchPage('ideas')"><img src="https://img.icons8.com/material-rounded/24/ffffff/light-on.png">Галерея</button>
+        <button data-page="collection" onclick="switchPage('collection')"><img src="https://img.icons8.com/material-rounded/24/ffffff/heart.png">Коллекция</button>
     </nav>
 
-    <!-- Модальное окно для генерации -->
+    <!-- Модальное окно -->
     <div id="create-modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Создать новый шедевр</h2>
+            <span class="close" onclick="closeModal()">×</span>
+            <h2>Создать шедевр</h2>
 
             <label>Тип контента</label>
-            <select id="content-type">
+            <select id="content-type" onchange="toggleOptions()">
                 <option value="image">Картинка</option>
                 <option value="video">Видео</option>
             </select>
@@ -108,7 +106,7 @@
                 <input type="checkbox" id="hide-prompt"> Скрыть промпт от других (только ты увидишь)
             </label>
 
-            <div id="image-upload" style="display:none;">
+            <div id="image-upload">
                 <label>Добавить изображение (опционально)</label>
                 <input type="file" id="image-file" accept="image/*">
             </div>
@@ -131,7 +129,7 @@
                 </select>
 
                 <label>
-                    <input type="checkbox" id="sound"> Добавить звук (AI подберёт или укажи в промпте)
+                    <input type="checkbox" id="sound"> Добавить звук
                 </label>
                 <p class="tip">Звук можно указать в промпте: "с музыкой в стиле synthwave" или "без звука"</p>
             </div>
