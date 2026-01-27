@@ -198,29 +198,3 @@ select, textarea, input[type="file"], input[type="checkbox"] {
     font-size: 12px;
     margin: 5px 0;
 }
-
-.tooltip-icon {
-    cursor: pointer;
-    background: #00d4ff;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    text-align: center;
-    line-height: 20px;
-    font-weight: bold;
-}
-
-.tooltip-text {
-    display: none;
-    position: absolute;
-    background: #1c1c3a;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-    z-index: 10;
-}
-
-.tip:hover .tooltip-text {
-    display: block;
-}
