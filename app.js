@@ -14,12 +14,25 @@ let galleryData = [
 
 let saved = JSON.parse(localStorage.getItem('saved') || '[]');
 
+const categories = ['НОВЫЕ', 'ТРЕНДЫ', 'Женское', 'Мужское', 'Дети', 'Семейное', '14 февраля', '23 февраля', '8 марта', 'Исторический', 'Фэнтези', 'Пара'];
+
 function switchPage(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(page).classList.add('active');
 
     document.querySelectorAll('.bottom-nav button').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`.bottom-nav button[data-page="${page}"]`).classList.add('active');
+    document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add('active');
+}
+
+function renderCategories() {
+    const container = document.getElementById('categories');
+    container.innerHTML = '';
+    categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.textContent = cat;
+        btn.onclick = () => filterCategory(cat);
+        container.appendChild(btn);
+    });
 }
 
 function renderGallery(container, data) {
@@ -31,14 +44,7 @@ function renderGallery(container, data) {
             <img src="${item.src}" alt="Idea">
             <span>♥ ${item.likes}k</span>
         `;
-        div.onclick = () => {
-            if (confirm('Сохранить в коллекцию?')) {
-                saved.push(item);
-                localStorage.setItem('saved', JSON.stringify(saved));
-                renderGallery('saved', saved);
-                tg.showAlert('Добавлено в коллекцию!');
-            }
-        };
+        div.onclick = () => openCreate(item.src, item.prompt);
         el.appendChild(div);
     });
 }
@@ -49,8 +55,12 @@ function searchIdeas() {
     renderGallery('gallery', filtered);
 }
 
-function openCreate() {
+function openCreate(src = '', prompt = '') {
     document.getElementById('create-modal').style.display = 'block';
+    if (src) {
+        // Здесь можно показать загруженное фото (добавь <img> в модалку)
+    }
+    document.getElementById('prompt').value = prompt;
 }
 
 function closeModal() {
@@ -87,6 +97,7 @@ function toggleOptions() {
 }
 
 function init() {
+    renderCategories();
     renderGallery('gallery', galleryData);
     renderGallery('saved', saved);
     document.getElementById('ref-link').value = `t.me/remixa_bot?start=ref_${userId}`;
