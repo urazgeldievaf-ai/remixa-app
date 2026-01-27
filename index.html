@@ -9,14 +9,14 @@
 </head>
 <body>
     <header>
-        <img src="https://i.imgur.com/your-logo.png" alt="Remixa" class="logo"> <!-- Замени на свой логотип -->
+        <img src="logo.png" alt="Remixa" class="logo"> <!-- Загрузи свой логотип -->
         <button onclick="showWallet()">Кошелёк</button>
     </header>
 
     <div id="main" class="page active">
         <div class="banner">
-            <img src="https://i.imgur.com/your-logo.png" alt="Remixa" class="banner-logo">
-            <p>Создавай потрясающие фото с Remixa!</p>
+            <img src="logo.png" alt="Remixa" class="banner-logo">
+            <p>Создавай потрясающие фото и видео с Remixa!</p>
             <button class="generate-btn" onclick="openCreate()">Сгенерировать</button>
         </div>
 
@@ -24,6 +24,13 @@
         <div class="categories" id="categories"></div>
 
         <div class="gallery" id="gallery"></div>
+    </div>
+
+    <div id="ideas" class="page">
+        <h2>Идеи</h2>
+        <input type="text" id="search-ideas" placeholder="Поиск..." onkeyup="searchIdeas()">
+        <div class="categories" id="categories-ideas"></div>
+        <div class="gallery" id="ideas-gallery"></div>
     </div>
 
     <div id="profile" class="page">
@@ -40,7 +47,7 @@
         <h3>Реферальная ссылка</h3>
         <input type="text" id="ref-link" readonly value="">
         <button onclick="copyRef()">Копировать</button>
-        <p>Приглашай друзей — 15% от их платежей тебе кредитами!</p>
+        <p>Приглашай друзей — 15% от платежей тебе!</p>
         <p>Вывод от 3500 кр</p>
     </div>
 
@@ -54,26 +61,21 @@
         <p>Заработано: <span id="earned">0</span> кр</p>
         <div class="tip">
             <span class="tooltip-icon">?</span>
-            <div class="tooltip-text">15% от платежей приглашённых пользователей начисляются тебе кредитами. Вывод доступен от 3500 кр.</div>
+            <div class="tooltip-text">15% от платежей приглашённых начисляются тебе кредитами. Вывод от 3500 кр.</div>
         </div>
     </div>
 
-    <div id="ideas" class="page">
-        <h2>Галерея идей</h2>
-        <div class="gallery" id="ideas-gallery"></div>
-    </div>
-
-    <div id="collection" class="page">
-        <h2>Коллекция</h2>
-        <div class="gallery" id="collection-gallery"></div>
+    <div id="likes" class="page">
+        <h2>Лайки</h2>
+        <div class="gallery" id="likes-gallery"></div>
     </div>
 
     <nav class="bottom-nav">
         <button data-page="main" onclick="switchPage('main')"><img src="https://img.icons8.com/material-rounded/24/ffffff/home.png">Главная</button>
-        <button data-page="profile" onclick="switchPage('profile')"><img src="https://img.icons8.com/material-rounded/24/ffffff/user.png">Профиль</button>
-        <button data-page="partnership" onclick="switchPage('partnership')"><img src="https://img.icons8.com/material-rounded/24/ffffff/handshake.png">Партнёрство</button>
         <button data-page="ideas" onclick="switchPage('ideas')"><img src="https://img.icons8.com/material-rounded/24/ffffff/light-on.png">Идеи</button>
-        <button data-page="collection" onclick="switchPage('collection')"><img src="https://img.icons8.com/material-rounded/24/ffffff/heart.png">Коллекция</button>
+        <button class="create-btn" onclick="openCreate()"><img src="https://img.icons8.com/material-rounded/24/ffffff/wand-magic-sparkles.png">Сгенерировать</button>
+        <button data-page="likes" onclick="switchPage('likes')"><img src="https://img.icons8.com/material-rounded/24/ffffff/heart.png">Лайки</button>
+        <button data-page="partnership" onclick="switchPage('partnership')"><img src="https://img.icons8.com/material-rounded/24/ffffff/handshake.png">Партнёрство</button>
     </nav>
 
     <!-- Модальное окно -->
@@ -103,15 +105,15 @@
             </select>
             <div id="model-tip" class="tip"></div>
 
-            <label>Промпт (обязательно)</label>
+            <label>Промпт *</label>
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
 
             <label>
-                <input type="checkbox" id="hide-prompt"> Скрыть промпт от других (только ты увидишь)
+                <input type="checkbox" id="hide-prompt"> Скрыть промпт от других
             </label>
 
             <div id="image-upload">
-                <label>Добавить изображение (опционально)</label>
+                <label>Добавить фото (опционально)</label>
                 <input type="file" id="image-file" accept="image/*">
             </div>
 
