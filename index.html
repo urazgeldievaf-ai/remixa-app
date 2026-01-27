@@ -8,19 +8,136 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Remixa</h1>
+    <header>
+        <img src="logo.png" alt="Remixa" class="logo">
+        <div class="header-right">
+            <button onclick="showWallet()">Кошелёк</button>
+        </div>
+    </header>
+
+    <div id="main" class="page active">
+        <div class="banner">
+            <img src="logo.png" alt="Remixa" class="banner-logo">
+            <p>Создавай потрясающие фото и видео с Remixa!</p>
+            <button onclick="openCreate()">Сгенерировать +</button>
+        </div>
+
+        <input type="text" id="search" placeholder="Поиск идей...">
+        <div class="categories" id="categories"></div>
+
+        <div class="gallery" id="gallery"></div>
+    </div>
+
+    <div id="profile" class="page">
+        <h2>Профиль</h2>
         <div class="balance">Баланс: <span id="credits">50</span> кр</div>
         <button onclick="topup()">Пополнить</button>
 
-        <h2>Реферальная ссылка</h2>
-        <input type="text" id="reflink" readonly value="">
+        <h3>Мои генерации</h3>
+        <div class="gallery" id="my-generations"></div>
+
+        <h3>Сохранённые</h3>
+        <div class="gallery" id="saved"></div>
+
+        <h3>Реферальная ссылка</h3>
+        <input type="text" id="ref-link" readonly>
         <button onclick="copyRef()">Копировать</button>
-
-        <p>Приглашай друзей — 15% от их платежей тебе!</p>
+        <p>Приглашай друзей — 15% от их платежей тебе кредитами!</p>
         <p>Вывод от 3500 кр</p>
+    </div>
 
-        <button class="big-btn" onclick="create()">Создать</button>
+    <div id="partnership" class="page">
+        <h2>Партнёрство</h2>
+        <p>Приглашай друзей и получай 15% от их платежей!</p>
+        <input type="text" id="ref-link-part" readonly>
+        <button onclick="copyRefPart()">Копировать</button>
+        <h3>Статистика</h3>
+        <p>Приглашено: <span id="invited">0</span></p>
+        <p>Заработано: <span id="earned">0</span> кр</p>
+    </div>
+
+    <div id="ideas" class="page">
+        <h2>Галерея идей</h2>
+        <div class="gallery" id="ideas-gallery"></div>
+    </div>
+
+    <div id="collection" class="page">
+        <h2>Коллекция</h2>
+        <div class="gallery" id="collection-gallery"></div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button data-page="main" onclick="switchPage('main')"><img src="home.png">Главная</button>
+        <button data-page="profile" onclick="switchPage('profile')"><img src="profile.png">Профиль</button>
+        <button data-page="partnership" onclick="switchPage('partnership')"><img src="handshake.png">Партнёрство</button>
+        <button data-page="ideas" onclick="switchPage('ideas')"><img src="bulb.png">Галерея</button>
+        <button data-page="collection" onclick="switchPage('collection')"><img src="heart.png">Коллекция</button>
+    </nav>
+
+    <!-- Модальное окно для генерации -->
+    <div id="create-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Создать новый шедевр</h2>
+
+            <label>Тип контента</label>
+            <select id="content-type">
+                <option value="image">Картинка</option>
+                <option value="video">Видео</option>
+            </select>
+
+            <label>Модель</label>
+            <select id="model" onchange="showModelTips()">
+                <option value="nano">Nano Banana (5 кр)</option>
+                <option value="nano_pro">Nano Banana Pro (15 кр)</option>
+                <option value="gpt15">GPT 1.5 (15 кр)</option>
+                <option value="veo_fast">Veo 3.1 Fast (65 кр)</option>
+                <option value="veo">Veo 3.1 (250 кр)</option>
+                <option value="sora2">Sora 2 (25 кр)</option>
+                <option value="sora2pro">Sora 2 Pro (135 кр)</option>
+                <option value="kling26">Kling 2.6 (50 кр)</option>
+                <option value="klingv2pro">Kling v2 Pro (150/300 кр)</option>
+                <option value="klingmotion">Kling 2.6 Motion (50/65 кр)</option>
+            </select>
+            <div id="model-tip" class="tip"></div>
+
+            <label>Промпт (обязательно)</label>
+            <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
+
+            <label>
+                <input type="checkbox" id="hide-prompt"> Скрыть промпт от других (только ты увидишь)
+            </label>
+
+            <div id="image-upload" style="display:none;">
+                <label>Добавить изображение (опционально)</label>
+                <input type="file" id="image-file" accept="image/*">
+            </div>
+
+            <label>Пропорции</label>
+            <select id="aspect-ratio">
+                <option value="1:1">Квадрат (1:1)</option>
+                <option value="16:9">Широкоэкранный (16:9)</option>
+                <option value="9:16">Вертикальный (9:16)</option>
+                <option value="4:3">4:3</option>
+                <option value="3:4">3:4</option>
+            </select>
+
+            <div id="video-options" style="display:none;">
+                <label>Длительность</label>
+                <select id="duration">
+                    <option value="5">5 секунд</option>
+                    <option value="10">10 секунд</option>
+                    <option value="15">15 секунд (Pro)</option>
+                </select>
+
+                <label>
+                    <input type="checkbox" id="sound"> Добавить звук (AI подберёт или укажи в промпте)
+                </label>
+                <p class="tip">Звук можно указать в промпте: "с музыкой в стиле synthwave" или "без звука"</p>
+            </div>
+
+            <button onclick="generate()">Создать шедевр</button>
+        </div>
     </div>
 
     <script src="app.js"></script>
