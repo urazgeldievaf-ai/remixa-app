@@ -12,15 +12,18 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="logo">
+        <!-- ЛОГОТИП -->
         <img src="logo.svg" alt="Remixa" />
       </div>
 
       <div class="top-right">
         <button class="diamond-btn" onclick="openWallet()">
-          <span class="icon diamond"></span>
+          <!-- БРИЛЛИАНТ (SVG) -->
+          <svg class="diamond" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M12 2l7 7-3 11H8L5 9l7-7zm0 2.5L7.5 9h9L12 4.5zM6.5 10l2.5 9h6l2.5-9H6.5z"/>
+          </svg>
           <span id="balanceTop">14,125</span>
         </button>
-        <button class="top-up" onclick="topUp()">Пополнить</button>
       </div>
     </header>
 
@@ -28,24 +31,24 @@
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
+        <div class="top-banners">
+          <div class="banner thin"></div>
+          <div class="banner thin"></div>
+          <div class="banner thin"></div>
+        </div>
+
         <div class="hero">
           <div class="hero-text">
             <h1>Создай потрясающее фото с Remixa!</h1>
             <p>Быстро. Красиво. Вдохновляюще.</p>
             <button class="hero-btn" onclick="openCreateModal('image')">
-              <span class="icon plus"></span>
               Создать
+              <span class="icon arrow"></span>
             </button>
           </div>
           <div class="hero-img">
             <img src="banner-img.jpg" alt="Remixa banner">
           </div>
-        </div>
-
-        <div class="banner-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
         </div>
 
         <div class="section-header">
@@ -106,7 +109,10 @@
         <div class="profile-top">
           <div class="profile-balance">
             <div class="bal-title">Баланс</div>
-            <div class="bal-val" id="balanceTotal">14,125 ₽</div>
+            <div class="bal-row">
+              <div class="bal-val" id="balanceTotal">14,125 ₽</div>
+              <button class="small-btn" onclick="topUp()">Пополнить</button>
+            </div>
           </div>
 
           <div class="profile-ref">
@@ -114,11 +120,9 @@
             <div class="ref-val">
               <span id="refIncome">0 ₽</span>
               <span class="hint">15% от платежей друзей • вывод от 3500 ₽</span>
+              <button class="small-btn" onclick="withdraw()">Вывести</button>
             </div>
-            <button class="small-btn" onclick="withdraw()">Вывести</button>
           </div>
-
-          <button class="small-btn" onclick="topUp()">Пополнить</button>
         </div>
 
         <div class="profile-block">
@@ -147,25 +151,38 @@
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
       <button data-page="main" class="nav-btn active" onclick="switchPage('main')">
-        <span class="icon home"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z"/>
+        </svg>
         <span>Главная</span>
       </button>
+
       <button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
-        <span class="icon ideas"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 3.5-2.2 5.8-4.3 7.4-.7.5-1.4 1-1.7 1.6V21h-2v-2.9c-.3-.6-1-1.1-1.7-1.6C7.2 14.8 5 12.5 5 9a7 7 0 0 1 7-7z"/>
+        </svg>
         <span>Идеи</span>
       </button>
 
+      <!-- КНОПКА СОЗДАТЬ -->
       <button class="nav-btn create" onclick="openCreateModal('image')">
-        <span class="icon create"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M12 2l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z"/>
+        </svg>
         <span>Создать</span>
       </button>
 
       <button data-page="likes" class="nav-btn" onclick="switchPage('likes')">
-        <span class="icon like"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M12 21s-7-4.4-9-8.2C1 10.4 2.4 7.5 5.2 6.2c1.9-.9 4-.2 6.8 2.1 2.8-2.3 4.9-3 6.8-2.1 2.8 1.3 4.2 4.2 2.2 6.6-2 3.8-9 8.2-9 8.2z"/>
+        </svg>
         <span>Лайки</span>
       </button>
+
       <button data-page="profile" class="nav-btn" onclick="switchPage('profile')">
-        <span class="icon profile"></span>
+        <svg class="nav-icon" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/>
+        </svg>
         <span>Профиль</span>
       </button>
     </nav>
@@ -181,7 +198,7 @@
         <div class="modal-body">
           <div class="tabs">
             <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
-            <button class="tab disabled" data-type="video">Видео (скоро)</button>
+            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
           </div>
 
           <div class="field">
@@ -211,6 +228,26 @@
             </select>
           </div>
 
+          <div class="video-settings" id="videoSettings">
+            <div class="field">
+              <label>Длительность</label>
+              <select id="duration">
+                <option>5 сек</option>
+                <option>10 сек</option>
+                <option>15 сек</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Звук</label>
+              <select id="sound">
+                <option value="no">Без звука</option>
+                <option value="yes">С музыкой</option>
+              </select>
+              <div class="hint">Звук доступен только в некоторых нейросетях</div>
+            </div>
+          </div>
+
           <button class="big-btn generate" onclick="generate()">
             <span id="genText">Создать</span>
             <span id="genPrice" class="price">— 5₽</span>
@@ -224,6 +261,7 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
