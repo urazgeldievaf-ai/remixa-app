@@ -1,149 +1,108 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remixa</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Remixa</title>
+
+  <!-- Telegram -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <img src="logo.png" alt="Remixa" class="logo"> <!-- Загрузи свой логотип -->
-        <button onclick="showWallet()">Кошелёк</button>
-    </header>
 
-    <div id="main" class="page active">
-        <div class="banner">
-            <img src="logo.png" alt="Remixa" class="banner-logo">
-            <p>Создавай потрясающие фото с Remixa!</p>
-            <button class="generate-btn" onclick="openCreate()">Сгенерировать</button>
-        </div>
+<header class="header">
+  <div class="logo">Remixa</div>
+  <div class="balance">💎 50</div>
+</header>
 
-        <input type="text" id="search" placeholder="Поиск идей..." onkeyup="searchIdeas()">
-        <div class="categories" id="categories"></div>
+<!-- PAGES -->
+<main>
 
-        <div class="gallery" id="gallery"></div>
+  <!-- HOME -->
+  <section id="home" class="page active">
+    <div class="hero">
+      <h1>Создавай фото и видео с AI</h1>
+      <p>Профессиональные нейросети за секунды</p>
+      <button class="hero-btn" onclick="openCreate()">Создать</button>
     </div>
 
-    <div id="ideas" class="page">
-        <h2>Идеи</h2>
-        <input type="text" id="search-ideas" placeholder="Поиск..." onkeyup="searchIdeas()">
-        <div class="categories" id="categories-ideas"></div>
-        <div class="gallery" id="ideas-gallery"></div>
+    <div class="gallery" id="homeGallery"></div>
+  </section>
+
+  <!-- IDEAS -->
+  <section id="ideas" class="page">
+    <h2>Идеи</h2>
+    <div class="gallery" id="ideasGallery"></div>
+  </section>
+
+  <!-- LIKES -->
+  <section id="likes" class="page">
+    <h2>Избранное</h2>
+    <div class="gallery" id="likesGallery"></div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section id="partners" class="page">
+    <h2>Партнёрство</h2>
+    <p>Зарабатывай 15% с платежей приглашённых</p>
+    <input type="text" value="t.me/remixa_ai_bot?start=ref_12345" readonly>
+    <button class="secondary">Скопировать ссылку</button>
+  </section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button onclick="switchPage('home')"><i data-lucide="home"></i><span>Главная</span></button>
+  <button onclick="switchPage('ideas')"><i data-lucide="lightbulb"></i><span>Идеи</span></button>
+  <button class="center" onclick="openCreate()"><i data-lucide="sparkles"></i></button>
+  <button onclick="switchPage('likes')"><i data-lucide="heart"></i><span>Лайки</span></button>
+  <button onclick="switchPage('partners')"><i data-lucide="users"></i><span>Партнёрство</span></button>
+</nav>
+
+<!-- CREATE MODAL -->
+<div id="createModal" class="modal">
+  <div class="modal-box">
+    <span class="close" onclick="closeCreate()">×</span>
+    <h2>Создать</h2>
+
+    <label>Тип</label>
+    <div class="toggle">
+      <button class="active" onclick="setType('image')">Картинка</button>
+      <button onclick="setType('video')">Видео</button>
     </div>
 
-    <div id="likes" class="page">
-        <h2>Лайки</h2>
-        <div class="gallery" id="likes-gallery"></div>
+    <label>Нейросеть</label>
+    <select id="modelSelect"></select>
+
+    <label>Описание *</label>
+    <textarea id="prompt" placeholder="Опиши, что хочешь получить..."></textarea>
+
+    <div id="imageUpload">
+      <label>Фото (по желанию)</label>
+      <input type="file" accept="image/*">
     </div>
 
-    <div id="profile" class="page">
-        <h2>Профиль</h2>
-        <div class="balance">Баланс: <span id="credits">50</span> кр</div>
-        <button onclick="topup()">Пополнить</button>
-
-        <h3>Мои генерации</h3>
-        <div class="gallery" id="my-generations"></div>
-
-        <h3>Сохранённые</h3>
-        <div class="gallery" id="saved"></div>
-
-        <h3>Реферальная ссылка</h3>
-        <input type="text" id="ref-link" readonly value="">
-        <button onclick="copyRef()">Копировать</button>
-        <p>Приглашай друзей — 15% от платежей тебе!</p>
-        <p>Вывод от 3500 кр</p>
+    <div id="videoOptions" class="hidden">
+      <label>Длительность</label>
+      <select>
+        <option>5 секунд</option>
+        <option>10 секунд</option>
+      </select>
     </div>
 
-    <div id="partnership" class="page">
-        <h2>Партнёрство</h2>
-        <p>Приглашай друзей и получай 15% от их платежей!</p>
-        <input type="text" id="ref-link-part" readonly value="">
-        <button onclick="copyRefPart()">Копировать</button>
-        <h3>Статистика</h3>
-        <p>Приглашено: <span id="invited">0</span></p>
-        <p>Заработано: <span id="earned">0</span> кр</p>
-        <div class="tip">
-            <span class="tooltip-icon">?</span>
-            <div class="tooltip-text">15% от платежей приглашённых начисляются тебе кредитами. Вывод от 3500 кр.</div>
-        </div>
-    </div>
+    <button class="primary" onclick="generate()">Сгенерировать</button>
+  </div>
+</div>
 
-    <nav class="bottom-nav">
-        <button data-page="main" onclick="switchPage('main')"><img src="https://img.icons8.com/material-rounded/24/ffffff/home.png">Главная</button>
-        <button data-page="ideas" onclick="switchPage('ideas')"><img src="https://img.icons8.com/material-rounded/24/ffffff/light-on.png">Идеи</button>
-        <button class="create-btn" onclick="openCreate()"><img src="https://img.icons8.com/material-rounded/24/ffffff/wand-magic-sparkles.png">Сгенерировать</button>
-        <button data-page="likes" onclick="switchPage('likes')"><img src="https://img.icons8.com/material-rounded/24/ffffff/heart.png">Лайки</button>
-        <button data-page="partnership" onclick="switchPage('partnership')"><img src="https://img.icons8.com/material-rounded/24/ffffff/handshake.png">Партнёрство</button>
-    </nav>
-
-    <!-- Модальное окно -->
-    <div id="create-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">×</span>
-            <h2>Создать шедевр</h2>
-
-            <label>Тип контента</label>
-            <select id="content-type" onchange="toggleOptions()">
-                <option value="image">Картинка</option>
-                <option value="video">Видео</option>
-            </select>
-
-            <label>Модель</label>
-            <select id="model" onchange="showModelTips()">
-                <option value="nano">Nano Banana (5 кр)</option>
-                <option value="nano_pro">Nano Banana Pro (15 кр)</option>
-                <option value="gpt15">GPT 1.5 (15 кр)</option>
-                <option value="veo_fast">Veo 3.1 Fast (65 кр)</option>
-                <option value="veo">Veo 3.1 (250 кр)</option>
-                <option value="sora2">Sora 2 (25 кр)</option>
-                <option value="sora2pro">Sora 2 Pro (135 кр)</option>
-                <option value="kling26">Kling 2.6 (50 кр)</option>
-                <option value="klingv2pro">Kling v2 Pro (150/300 кр)</option>
-                <option value="klingmotion">Kling 2.6 Motion (50/65 кр)</option>
-            </select>
-            <div id="model-tip" class="tip"></div>
-
-            <label>Промпт *</label>
-            <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
-
-            <label>
-                <input type="checkbox" id="hide-prompt"> Скрыть промпт от других
-            </label>
-
-            <div id="image-upload">
-                <label>Добавить фото (опционально)</label>
-                <input type="file" id="image-file" accept="image/*">
-            </div>
-
-            <label>Пропорции</label>
-            <select id="aspect-ratio">
-                <option value="1:1">Квадрат (1:1)</option>
-                <option value="16:9">Широкоэкранный (16:9)</option>
-                <option value="9:16">Вертикальный (9:16)</option>
-                <option value="4:3">4:3</option>
-                <option value="3:4">3:4</option>
-            </select>
-
-            <div id="video-options" style="display:none;">
-                <label>Длительность</label>
-                <select id="duration">
-                    <option value="5">5 секунд</option>
-                    <option value="10">10 секунд</option>
-                    <option value="15">15 секунд (Pro)</option>
-                </select>
-
-                <label>
-                    <input type="checkbox" id="sound"> Добавить звук
-                </label>
-                <p class="tip">Звук можно указать в промпте: "с музыкой в стиле synthwave" или "без звука"</p>
-            </div>
-
-            <button onclick="generate()">Сгенерировать</button>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
