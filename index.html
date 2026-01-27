@@ -20,6 +20,7 @@
           <span class="icon diamond"></span>
           <span id="balanceTop">14,125</span>
         </button>
+        <button class="top-up" onclick="topUp()">Пополнить</button>
       </div>
     </header>
 
@@ -27,24 +28,24 @@
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
-        <div class="top-banners">
-          <div class="banner thin"></div>
-          <div class="banner thin"></div>
-          <div class="banner thin"></div>
-        </div>
-
         <div class="hero">
           <div class="hero-text">
             <h1>Создай потрясающее фото с Remixa!</h1>
             <p>Быстро. Красиво. Вдохновляюще.</p>
             <button class="hero-btn" onclick="openCreateModal('image')">
+              <span class="icon plus"></span>
               Создать
-              <span class="icon arrow"></span>
             </button>
           </div>
           <div class="hero-img">
             <img src="banner-img.jpg" alt="Remixa banner">
           </div>
+        </div>
+
+        <div class="banner-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
         </div>
 
         <div class="section-header">
@@ -114,6 +115,7 @@
               <span id="refIncome">0 ₽</span>
               <span class="hint">15% от платежей друзей • вывод от 3500 ₽</span>
             </div>
+            <button class="small-btn" onclick="withdraw()">Вывести</button>
           </div>
 
           <button class="small-btn" onclick="topUp()">Пополнить</button>
@@ -179,7 +181,7 @@
         <div class="modal-body">
           <div class="tabs">
             <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
-            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
+            <button class="tab disabled" data-type="video">Видео (скоро)</button>
           </div>
 
           <div class="field">
@@ -209,26 +211,6 @@
             </select>
           </div>
 
-          <div class="video-settings" id="videoSettings">
-            <div class="field">
-              <label>Длительность</label>
-              <select id="duration">
-                <option>5 сек</option>
-                <option>10 сек</option>
-                <option>15 сек</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>Звук</label>
-              <select id="sound">
-                <option value="no">Без звука</option>
-                <option value="yes">С музыкой</option>
-              </select>
-              <div class="hint">Звук доступен только в некоторых нейросетях</div>
-            </div>
-          </div>
-
           <button class="big-btn generate" onclick="generate()">
             <span id="genText">Создать</span>
             <span id="genPrice" class="price">— 5₽</span>
@@ -242,6 +224,7 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
