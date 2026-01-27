@@ -17,7 +17,7 @@ header {
 }
 
 .logo {
-    width: 100px;
+    width: 120px;
 }
 
 .header-right button {
@@ -30,9 +30,8 @@ header {
     transition: all 0.3s;
 }
 
-.header-right button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(0, 212, 255, 1);
+.header-right button:active {
+    animation: pulse 0.5s;
 }
 
 .banner {
@@ -42,39 +41,28 @@ header {
     text-align: center;
     margin: 15px;
     box-shadow: 0 0 30px rgba(0, 180, 216, 0.8);
-    animation: glow 3s infinite alternate;
 }
 
 .banner-logo {
     width: 80px;
 }
 
-.create-button {
+.generate-btn {
     background: linear-gradient(90deg, #00d4ff, #0077ff);
     border: none;
     color: white;
-    padding: 15px 30px;
+    padding: 20px;
     border-radius: 50px;
-    font-size: 20px;
+    font-size: 24px;
     box-shadow: 0 0 20px rgba(0, 212, 255, 0.9);
-    animation: pulse 2s infinite;
+    width: 90%;
+    margin: 20px auto;
+    display: block;
     transition: all 0.3s;
 }
 
-.create-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 40px rgba(0, 212, 255, 1);
-}
-
-@keyframes glow {
-    from { box-shadow: 0 0 20px rgba(0, 180, 216, 0.6); }
-    to { box-shadow: 0 0 40px rgba(0, 180, 216, 1); }
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+.generate-btn:active {
+    animation: pulse 0.5s;
 }
 
 .gallery {
@@ -83,11 +71,11 @@ header {
     gap: 10px;
     padding: 10px;
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInGallery 1s forwards;
+    transform: translateY(30px);
+    animation: fadeInUp 1s forwards;
 }
 
-@keyframes fadeInGallery {
+@keyframes fadeInUp {
     to {
         opacity: 1;
         transform: translateY(0);
@@ -141,12 +129,11 @@ header {
 
 .bottom-nav button.active img {
     filter: brightness(1.5) drop-shadow(0 0 8px #00d4ff);
-    animation: pulseIcon 1.5s infinite;
 }
 
-@keyframes pulseIcon {
+@keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.1); }
     100% { transform: scale(1); }
 }
 
@@ -183,7 +170,7 @@ header {
     cursor: pointer;
 }
 
-select, textarea, input[type="file"] {
+select, textarea, input[type="file"], input[type="checkbox"] {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
