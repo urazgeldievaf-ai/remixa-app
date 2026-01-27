@@ -4,6 +4,12 @@ const models = {
     { id: "nano", name: "Nano Banana", price: 5, hint: "Быстрое и дешёвое. Отлично для простых картинок." },
     { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Лучше для сложных сцен и людей." },
     { id: "mid", name: "MidNight", price: 25, hint: "Максимальная детализация и стиль." }
+  ],
+  video: [
+    { id: "veo_fast", name: "Veo 3.1 Fast", price: 65, hint: "Видео без звука. Быстро и дешево.", sound: false },
+    { id: "veo", name: "Veo 3.1", price: 250, hint: "Видео с возможностью звука.", sound: true },
+    { id: "sora2", name: "Sora 2", price: 25, hint: "Видео из текста или фото. Звук не поддерживает.", sound: false },
+    { id: "kling26", name: "Kling 2.6", price: 50, hint: "Хороший баланс. Звук поддерживается.", sound: true }
   ]
 };
 
@@ -32,10 +38,6 @@ function openWallet() {
   alert("Кошелёк: пока заглушка (в будущем добавим оплату)");
 }
 
-function withdraw(){
-  alert("Вывод средств: пока заглушка (в будущем добавим реальную систему)");
-}
-
 function updateTopBalance(){
   document.getElementById("balanceTop").textContent = balance.toLocaleString();
   document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} ₽`;
@@ -50,6 +52,10 @@ function topUp(){
   alert("Баланс пополнен на 50₽");
 }
 
+function withdraw(){
+  alert("Вывод: пока заглушка (в будущем добавим вывод средств)");
+}
+
 function copyRef(){
   const input = document.getElementById("refLink");
   input.select();
@@ -58,8 +64,6 @@ function copyRef(){
 }
 
 function createCard(item){
-  const publishBtn = item.type === "history" ? `<button class="small-btn" onclick="publish('${item.id}')">Опубликовать</button>` : "";
-
   return `
     <div class="card" onclick="openCreateModal('${item.type}', '${item.id}')">
       <img src="${item.img}" alt="idea" />
@@ -72,7 +76,6 @@ function createCard(item){
             <span>${item.likes || 0}</span>
           </div>
         </div>
-        ${publishBtn}
       </div>
     </div>
   `;
@@ -163,6 +166,7 @@ function setType(type){
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.querySelector(`.tab[data-type="${type}"]`)?.classList.add("active");
 
+  document.getElementById("videoSettings").style.display = type === "video" ? "block" : "none";
   populateModels(type);
   updateGenButton(type);
 }
@@ -188,7 +192,7 @@ function updateGenButton(type){
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
 
-  document.getElementById("genText").textContent = "Создать";
+  document.getElementById("genText").textContent = type === "image" ? "Создать" : "Создать видео";
   document.getElementById("genPrice").textContent = model ? `— ${model.price}₽` : "";
 }
 
@@ -214,40 +218,21 @@ function generate(){
   const id = Date.now().toString();
   const newItem = {
     id,
-    type: "history",
+    type,
     modelId,
     model: model.name,
     title: prompt.slice(0, 28) + (prompt.length > 28 ? "..." : ""),
     prompt,
-    category: "trend",
+    category: currentCategory === "new" ? "trend" : currentCategory,
     likes: 0,
     img: `https://picsum.photos/400/300?random=${id}`
   };
 
   history.unshift(newItem);
   renderProfileHistory();
+
   closeCreate();
-  alert("Генерация создана и добавлена в Историю. Чтобы опубликовать — нажми «Опубликовать».");
-}
-
-// -------------------- PUBLISH (MODERATION ONLY ON PUBLISH) --------------------
-function publish(id){
-  const itemIndex = history.findIndex(h => h.id === id);
-  if(itemIndex === -1) return;
-
-  const item = history[itemIndex];
-  item.type = "published";
-
-  // Симуляция модерации
-  setTimeout(() => {
-    published.unshift(item);
-    renderMain();
-    renderIdeas();
-    alert("Генерация прошла модерацию и опубликована в Идеях!");
-  }, 1200);
-
-  history.splice(itemIndex, 1);
-  renderProfileHistory();
+  alert("Генерация создана. Она сразу попала в историю (профиль).");
 }
 
 // INITIALIZE
@@ -258,6 +243,7 @@ renderLikes();
 renderProfileHistory();
 renderPayments();
 populateModels("image");
+
 
 
 
