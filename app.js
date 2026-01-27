@@ -1,6 +1,8 @@
-document.querySelectorAll('.create-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.create-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  });
+const modelSelect = document.getElementById('model');
+const generateBtn = document.getElementById('generateBtn');
+
+modelSelect.addEventListener('change', () => {
+  const price = modelSelect.value;
+  generateBtn.textContent = `Сгенерировать · ${price} ₽`;
 });
+
