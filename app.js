@@ -1,31 +1,29 @@
-const tg = Telegram.WebApp;
-tg.ready();
-
 // -------------------- DATA --------------------
 const models = {
   image: [
     { id: "nano", name: "Nano Banana", price: 5, hint: "Быстрое и дешёвое. Отлично для простых картинок." },
-    { id: "nano_pro", name: "Nano Banana Pro", price: 15, hint: "Лучше детализация и свет." },
-    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Лучше для сложных сцен и людей." }
+    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Лучше для сложных сцен и людей." },
+    { id: "mid", name: "MidNight", price: 25, hint: "Максимальная детализация и стиль." }
   ],
   video: [
-    { id: "veo_fast", name: "Veo 3.1 Fast", price: 65, hint: "Быстрое видео. Низкая стоимость." },
-    { id: "veo", name: "Veo 3.1", price: 250, hint: "Максимальное качество. Дольше." },
-    { id: "sora2", name: "Sora 2", price: 25, hint: "Видео из текста или фото." },
-    { id: "sora2pro", name: "Sora 2 Pro", price: 135, hint: "Видео 10–15 сек. Может занять до 2–3 часов." },
-    { id: "kling26", name: "Kling 2.6", price: 50, hint: "Хороший баланс качества и цены." },
-    { id: "klingv2pro", name: "Kling v2 Pro", price: 150, hint: "Нужны начальный и конечный кадры." },
-    { id: "klingmotion", name: "Kling 2.6 Motion", price: 50, hint: "Нужны 2 изображения + промпт. Стандарт/Про." }
+    { id: "veo_fast", name: "Veo 3.1 Fast", price: 65, hint: "Видео без звука. Быстро и дешево.", sound: false },
+    { id: "veo", name: "Veo 3.1", price: 250, hint: "Видео с возможностью звука.", sound: true },
+    { id: "sora2", name: "Sora 2", price: 25, hint: "Видео из текста или фото. Звук не поддерживает.", sound: false },
+    { id: "kling26", name: "Kling 2.6", price: 50, hint: "Хороший баланс. Звук поддерживается.", sound: true }
   ]
 };
 
-let balance = 0;
-let invited = 0;
-let earned = 0;
-
+let balance = 14125;
+let refIncome = 0;
+let likes = [];
 let history = [];
 let published = [];
-let likes = [];
+let payments = [
+  { id: 1, date: "20.01.2026", amount: 500, status: "Пополнение" },
+  { id: 2, date: "22.01.2026", amount: 1000, status: "Пополнение" }
+];
+
+let currentCategory = "new";
 
 // -------------------- UI --------------------
 function switchPage(page) {
@@ -40,40 +38,28 @@ function openWallet() {
   alert("Кошелёк: пока заглушка (в будущем добавим оплату)");
 }
 
-function topUp() {
+function updateTopBalance(){
+  document.getElementById("balanceTop").textContent = balance.toLocaleString();
+  document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} ₽`;
+  document.getElementById("refIncome").textContent = `${refIncome.toLocaleString()} ₽`;
+}
+
+function topUp(){
   balance += 50;
-  updateProfile();
+  payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount: 50, status: "Пополнение" });
+  updateTopBalance();
+  renderPayments();
   alert("Баланс пополнен на 50₽");
 }
 
-function copyRef() {
-  const input = document.getElementById("ref-link");
+function copyRef(){
+  const input = document.getElementById("refLink");
   input.select();
   document.execCommand("copy");
   alert("Ссылка скопирована");
 }
 
-function updateProfile() {
-  document.getElementById("balance").textContent = balance;
-  document.getElementById("invited").textContent = invited;
-  document.getElementById("earned").textContent = earned;
-}
-
-function renderGallery() {
-  const main = document.getElementById("main-gallery");
-  main.innerHTML = "";
-
-  published.slice(0, 6).forEach(item => {
-    main.innerHTML += createCard(item);
-  });
-
-  renderLikes();
-  renderIdeas();
-  renderProfile();
-}
-
-function createCard(item) {
-  const liked = likes.includes(item.id);
+function createCard(item){
   return `
     <div class="card" onclick="openCreateModal('${item.type}', '${item.id}')">
       <img src="${item.img}" alt="idea" />
@@ -83,7 +69,7 @@ function createCard(item) {
           <div>${item.model}</div>
           <div class="like">
             <svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.8-9.3-9.4C1.2 8.4 2.7 5.5 5.5 4.2c1.9-.9 4-.2 5.5 1.3 1.5-1.5 3.6-2.2 5.5-1.3 2.8 1.3 4.3 4.2 2.8 7.4C19.2 16.2 12 21 12 21z"/></svg>
-            <span>${item.likes}</span>
+            <span>${item.likes || 0}</span>
           </div>
         </div>
       </div>
@@ -91,110 +77,139 @@ function createCard(item) {
   `;
 }
 
-function renderIdeas() {
-  const search = document.getElementById("ideas-search").value.toLowerCase();
-  const container = document.getElementById("ideas-gallery");
-  container.innerHTML = "";
-
-  published
-    .filter(i => i.title.toLowerCase().includes(search))
-    .forEach(item => container.innerHTML += createCard(item));
+function renderMain(){
+  const grid = document.getElementById("main-grid");
+  grid.innerHTML = "";
+  const items = published.slice(0, 6);
+  if(items.length === 0){
+    grid.innerHTML = `<div class="empty-text">Пока нет трендов — создай первую генерацию!</div>`;
+    return;
+  }
+  items.forEach(i => grid.innerHTML += createCard(i));
 }
 
-function renderLikes() {
-  const container = document.getElementById("likes-gallery");
-  container.innerHTML = "";
+function renderIdeas(){
+  const grid = document.getElementById("ideas-grid");
+  grid.innerHTML = "";
+  const items = published.filter(i => i.category === currentCategory || currentCategory === "new");
+  items.forEach(i => grid.innerHTML += createCard(i));
+}
+
+function renderLikes(){
+  const grid = document.getElementById("likes-grid");
+  const empty = document.getElementById("likes-empty");
+  grid.innerHTML = "";
+
+  if(likes.length === 0){
+    empty.style.display = "block";
+    return;
+  }
+  empty.style.display = "none";
 
   likes.forEach(id => {
     const item = published.find(p => p.id === id);
-    if (item) container.innerHTML += createCard(item);
+    if(item) grid.innerHTML += createCard(item);
   });
 }
 
-function renderProfile() {
-  const publishedContainer = document.getElementById("profile-published");
-  const historyContainer = document.getElementById("profile-history");
+function renderProfileHistory(){
+  const grid = document.getElementById("profile-history");
+  grid.innerHTML = "";
+  history.forEach(i => grid.innerHTML += createCard(i));
+}
 
-  publishedContainer.innerHTML = "";
-  historyContainer.innerHTML = "";
+function renderPayments(){
+  const container = document.getElementById("profile-payments");
+  container.innerHTML = "";
+  payments.forEach(p => {
+    container.innerHTML += `
+      <div class="payment">
+        <div class="left">${p.date} • ${p.status}</div>
+        <div class="right">+${p.amount} ₽</div>
+      </div>
+    `;
+  });
+}
 
-  published.forEach(i => publishedContainer.innerHTML += createCard(i));
-  history.forEach(i => historyContainer.innerHTML += createCard(i));
+// -------------------- CATEGORIES --------------------
+function setCategory(cat){
+  currentCategory = cat;
+  document.querySelectorAll(".cat").forEach(b => b.classList.remove("active"));
+  document.querySelector(`.cat[data-cat="${cat}"]`)?.classList.add("active");
+  renderIdeas();
 }
 
 // -------------------- CREATE MODAL --------------------
-function openCreateModal(type = "image", fromId = null) {
+function openCreateModal(type="image", fromId=null){
   document.getElementById("create-modal").style.display = "flex";
-  document.getElementById("content-type").value = type;
-  updateModelList();
+  setType(type);
 
-  if (fromId) {
+  if(fromId){
     const item = published.find(p => p.id === fromId) || history.find(p => p.id === fromId);
-    if (item) {
+    if(item){
       document.getElementById("prompt").value = item.prompt;
-      document.getElementById("hide-prompt").checked = item.hidePrompt;
       document.getElementById("model").value = item.modelId;
+      updateModelHint();
     }
   }
 }
 
-function closeCreate() {
+function closeCreate(){
   document.getElementById("create-modal").style.display = "none";
 }
 
-function updateModelList() {
-  const type = document.getElementById("content-type").value;
-  const select = document.getElementById("model");
+function setType(type){
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelector(`.tab[data-type="${type}"]`)?.classList.add("active");
 
+  document.getElementById("videoSettings").style.display = type === "video" ? "block" : "none";
+  populateModels(type);
+  updateGenButton(type);
+}
+
+function populateModels(type){
+  const select = document.getElementById("model");
   select.innerHTML = "";
   models[type].forEach(m => {
-    select.innerHTML += `<option value="${m.id}">${m.name} — ${m.price}₽</option>`;
+    select.innerHTML += `<option value="${m.id}">${m.name}</option>`;
   });
-
-  document.getElementById("video-options").style.display = type === "video" ? "block" : "none";
-  updateGenerateButton();
-  updateModelHints();
+  updateModelHint();
 }
 
-function updateModelHints() {
-  const type = document.getElementById("content-type").value;
+function updateModelHint(){
+  const type = document.querySelector(".tab.active").dataset.type;
+  const modelId = document.getElementById("model").value;
+  const model = models[type].find(m => m.id === modelId);
+  document.getElementById("modelHint").textContent = model ? model.hint : "";
+  updateGenButton(type);
+}
+
+function updateGenButton(type){
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
 
-  document.getElementById("model-hint").textContent = model ? model.hint : "";
-  updateGenerateButton();
+  document.getElementById("genText").textContent = type === "image" ? "Создать" : "Создать видео";
+  document.getElementById("genPrice").textContent = model ? `— ${model.price}₽` : "";
 }
 
-function updateGenerateButton() {
-  const type = document.getElementById("content-type").value;
+// -------------------- GENERATE --------------------
+function generate(){
+  const type = document.querySelector(".tab.active").dataset.type;
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
-
-  document.getElementById("generate-text").textContent = type === "image" ? "Сгенерировать" : "Создать видео";
-  document.getElementById("generate-price").textContent = model ? `— ${model.price}₽` : "";
-}
-
-function generate() {
-  const type = document.getElementById("content-type").value;
-  const modelId = document.getElementById("model").value;
   const prompt = document.getElementById("prompt").value.trim();
-  const hidePrompt = document.getElementById("hide-prompt").checked;
 
-  const model = models[type].find(m => m.id === modelId);
-
-  // validation
-  if (!prompt) {
+  if(!prompt){
     alert("Пожалуйста, заполните поле «Промпт»");
     return;
   }
-
-  // subtract balance
-  if (balance < model.price) {
+  if(balance < model.price){
     alert("Недостаточно средств. Пополните баланс.");
     return;
   }
+
   balance -= model.price;
-  updateProfile();
+  updateTopBalance();
 
   const id = Date.now().toString();
   const newItem = {
@@ -204,20 +219,32 @@ function generate() {
     model: model.name,
     title: prompt.slice(0, 28) + (prompt.length > 28 ? "..." : ""),
     prompt,
-    hidePrompt,
+    category: currentCategory === "new" ? "trend" : currentCategory,
     likes: 0,
-    img: type === "image" ? "https://picsum.photos/400/300?random=" + id : "https://picsum.photos/400/300?random=" + id,
+    img: `https://picsum.photos/400/300?random=${id}`
   };
 
   history.unshift(newItem);
 
-  // moderation: add to published after check (simulated)
+  // модерация (симуляция)
   setTimeout(() => {
     published.unshift(newItem);
-    renderGallery();
-  }, 2000);
+    renderMain();
+    renderIdeas();
+    renderProfileHistory();
+  }, 1200);
 
   closeCreate();
   alert("Генерация отправлена на модерацию. После проверки появится в Идеях.");
 }
+
+// INITIALIZE
+updateTopBalance();
+renderMain();
+renderIdeas();
+renderLikes();
+renderProfileHistory();
+renderPayments();
+populateModels("image");
+
 
