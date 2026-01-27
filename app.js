@@ -1,107 +1,70 @@
 const tg = Telegram.WebApp;
 tg.ready();
 
-const userId = tg.initDataUnsafe.user.id;
-const refLink = `https://t.me/remixa_bot?start=ref_${userId}`;
+lucide.createIcons();
 
-let galleryData = [
-    { id: 1, src: 'https://i.imgur.com/robot-girl.jpg', likes: 2600, category: 'fantasy', prompt: 'Cyberpunk girl' },
-    { id: 2, src: 'https://i.imgur.com/tiger.jpg', likes: 3100, category: 'animals', prompt: 'White tiger' },
-    { id: 3, src: 'https://i.imgur.com/blue-car.jpg', likes: 5100, category: 'vehicles', prompt: 'Tesla storm' },
-    { id: 4, src: 'https://i.imgur.com/castle.jpg', likes: 5100, category: 'fantasy', prompt: 'Floating castle' },
-    // Добавь свои изображения
+/* MODELS */
+const IMAGE_MODELS = [
+  { id: 'nano', name: 'Nano Banana · 5 кр' },
+  { id: 'nano_pro', name: 'Nano Banana Pro · 15 кр' },
+  { id: 'gpt15', name: 'GPT 1.5 · 15 кр' }
 ];
 
-let saved = JSON.parse(localStorage.getItem('saved') || '[]');
+const VIDEO_MODELS = [
+  { id: 'veo', name: 'Veo 3.1 · 250 кр' },
+  { id: 'sora', name: 'Sora 2 · 25 кр' },
+  { id: 'kling', name: 'Kling 2.6 · 50 кр' }
+];
 
-const categories = ['НОВЫЕ', 'ТРЕНДЫ', 'Женское', 'Мужское', 'Дети', 'Семейное', '14 февраля', '23 февраля', '8 марта', 'Исторический', 'Фэнтези', 'Пара'];
+let currentType = 'image';
 
-function switchPage(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(page).classList.add('active');
-
-    document.querySelectorAll('.bottom-nav button').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add('active');
+function switchPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-function renderCategories() {
-    const container = document.getElementById('categories');
-    container.innerHTML = '';
-    categories.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.textContent = cat;
-        btn.onclick = () => filterCategory(cat);
-        container.appendChild(btn);
-    });
+function openCreate() {
+  document.getElementById('createModal').style.display = 'block';
+  setType('image');
 }
 
-function renderGallery(container, data) {
-    const el = document.getElementById(container);
-    el.innerHTML = '';
-    data.forEach(item => {
-        const div = document.createElement('div');
-        div.innerHTML = `
-            <img src="${item.src}" alt="Idea">
-            <span>♥ ${item.likes}k</span>
-        `;
-        div.onclick = () => openCreate(item.src, item.prompt);
-        el.appendChild(div);
-    });
+function closeCreate() {
+  document.getElementById('createModal').style.display = 'none';
 }
 
-function searchIdeas() {
-    const query = document.getElementById('search').value.toLowerCase();
-    const filtered = galleryData.filter(item => item.prompt.toLowerCase().includes(query));
-    renderGallery('gallery', filtered);
+function setType(type) {
+  currentType = type;
+
+  document.querySelectorAll('.toggle button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  document.getElementById('videoOptions').classList.toggle('hidden', type !== 'video');
+  document.getElementById('imageUpload').classList.toggle('hidden', type !== 'image');
+
+  renderModels();
 }
 
-function openCreate(src = '', prompt = '') {
-    document.getElementById('create-modal').style.display = 'block';
-    if (src) {
-        // Здесь можно показать загруженное фото (добавь <img> в модалку)
-    }
-    document.getElementById('prompt').value = prompt;
-}
+function renderModels() {
+  const select = document.getElementById('modelSelect');
+  select.innerHTML = '';
 
-function closeModal() {
-    document.getElementById('create-modal').style.display = 'none';
+  const models = currentType === 'image' ? IMAGE_MODELS : VIDEO_MODELS;
+  models.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m.id;
+    o.textContent = m.name;
+    select.appendChild(o);
+  });
 }
 
 function generate() {
-    const prompt = document.getElementById('prompt').value;
-    const hide = document.getElementById('hide-prompt').checked;
-    const model = document.getElementById('model').value;
-    tg.sendData(JSON.stringify({ type: 'generate', prompt, hide, model }));
-    closeModal();
-    tg.showAlert('Запрос отправлен в бот!');
-}
+  const data = {
+    type: currentType,
+    model: document.getElementById('modelSelect').value,
+    prompt: document.getElementById('prompt').value
+  };
 
-function showModelTips() {
-    const model = document.getElementById('model').value;
-    const tip = document.getElementById('model-tip');
-    const tips = {
-        'veo_fast': 'Veo 3.1 Fast — быстро и дешевле, но качество чуть ниже',
-        'veo': 'Veo 3.1 — максимальное качество, но дольше и дороже',
-        'sora2': 'Sora 2 — отличное видео из текста или фото',
-        'sora2pro': 'Sora 2 Pro — топ-качество, длительность 10–15 сек, генерация может занять 2–3 часа',
-        'kling26': 'Kling 2.6 — хороший баланс цены и качества',
-        'klingv2pro': 'Kling v2 Pro — требует начальный и конечный кадры',
-        'klingmotion': 'Motion Control — повтори движение из видео'
-    };
-    tip.textContent = tips[model] || '';
+  tg.sendData(JSON.stringify(data));
+  closeCreate();
+  tg.showAlert('Запрос отправлен 🚀');
 }
-
-function toggleOptions() {
-    const type = document.getElementById('content-type').value;
-    document.getElementById('video-options').style.display = type === 'video' ? 'block' : 'none';
-}
-
-function init() {
-    renderCategories();
-    renderGallery('gallery', galleryData);
-    renderGallery('saved', saved);
-    document.getElementById('ref-link').value = `t.me/remixa_bot?start=ref_${userId}`;
-    switchPage('main');
-}
-
-init();
