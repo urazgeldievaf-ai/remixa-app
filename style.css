@@ -16,7 +16,7 @@ body {
 .app {
   max-width: 480px;
   margin: 0 auto;
-  padding-bottom: 80px; /* место для bottom-nav */
+  padding-bottom: 80px;
 }
 
 /* TOPBAR */
@@ -36,7 +36,7 @@ body {
 }
 
 .logo img {
-  width: 160px; /* увеличил лого */
+  width: 160px; /* Увеличил лого */
   height: auto;
 }
 
@@ -66,15 +66,16 @@ body {
   fill: #00d4ff;
 }
 
-/* HERO / БАННЕР на главной */
+/* HERO / БАННЕР */
 .hero {
-  margin: 70px 16px 24px; /* отступ от topbar */
+  margin: 70px 16px 24px;
   background: linear-gradient(135deg, #00b4d8, #0077b6);
   border-radius: 20px;
   overflow: hidden;
   position: relative;
   box-shadow: 0 10px 40px rgba(0, 180, 216, 0.4);
   animation: glow 4s infinite alternate;
+  cursor: pointer;
 }
 
 .hero::before {
@@ -83,6 +84,12 @@ body {
   inset: 0;
   background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15), transparent 60%);
   pointer-events: none;
+}
+
+.hero {
+  /* background-image: url('banner-bg.jpg'); */ /* Замени на свою картинку */
+  background-size: cover;
+  background-position: center;
 }
 
 .hero-text {
@@ -140,6 +147,20 @@ body {
   gap: 12px;
   padding: 0 16px;
   margin-bottom: 80px;
+  position: relative;
+}
+
+.grid::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 60px;
+  background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.25) 0%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
 }
 
 .grid-item {
@@ -332,6 +353,11 @@ body {
   font-size: 16px;
 }
 
+.field input[type="file"] {
+  padding: 8px;
+  background: #2a2a4a;
+}
+
 .hint {
   margin-top: 8px;
   font-size: 13px;
@@ -348,25 +374,6 @@ body {
   0% { transform: scale(1); }
   50% { transform: scale(1.08); }
   100% { transform: scale(1); }
-}
-
-/* Дополнительные стили для свечения под сеткой */
-.grid {
-  position: relative;
-  margin-bottom: 40px;
-}
-
-.grid::after {
-  content: "";
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 60px;
-  background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.25) 0%, transparent 70%);
-  filter: blur(20px);
-  pointer-events: none;
 }
 
 
