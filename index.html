@@ -8,207 +8,108 @@
 </head>
 <body>
   <div class="app">
+
     <!-- SVG ICONS -->
     <svg style="display:none;">
-      <symbol id="icon-home" viewBox="0 0 24 24">
-        <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z"/>
-      </symbol>
-      <symbol id="icon-ideas" viewBox="0 0 24 24">
-        <path d="M9 21h6v-1H9v1zm3-19a7 7 0 0 0-4 12.6V16h8v-1.4A7 7 0 0 0 12 2zm1 13h-2v-1h2v1z"/>
-      </symbol>
-      <symbol id="icon-create" viewBox="0 0 24 24">
-        <path d="M12 2l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z"/>
-      </symbol>
-      <symbol id="icon-like" viewBox="0 0 24 24">
-        <path d="M12 21s-7-4.4-9-8.2C1 10.4 2.4 7.5 5.2 6.2c1.9-.9 4-.2 6.8 2.1 2.8-2.3 4.9-3 6.8-2.1 2.8 1.3 4.2 4.2 2.2 6.6-2 3.8-9 8.2-9 8.2z"/>
-      </symbol>
-      <symbol id="icon-profile" viewBox="0 0 24 24">
-        <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/>
-      </symbol>
-      <symbol id="icon-diamond" viewBox="0 0 24 24">
-        <path d="M12 2l7 7-7 13-7-13 7-7z"/>
-      </symbol>
+      <symbol id="icon-home" viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
+      <symbol id="icon-ideas" viewBox="0 0 24 24"><path d="M9 21h6v-1H9zm3-19a7 7 0 0 0-4 12.6V16h8v-1.4A7 7 0 0 0 12 2z"/></symbol>
+      <symbol id="icon-create" viewBox="0 0 24 24"><path d="M12 2l3 6 6 3-6 3-3 6-3-6-6-3 6-3z"/></symbol>
+      <symbol id="icon-like" viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9-8.2C1 10.4 2.4 7.5 5.2 6.2c1.9-.9 4-.2 6.8 2.1 2.8-2.3 4.9-3 6.8-2.1 2.8 1.3 4.2 4.2 2.2 6.6z"/></symbol>
+      <symbol id="icon-profile" viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/></symbol>
+      <symbol id="icon-diamond" viewBox="0 0 24 24"><path d="M12 2l7 7-7 13-7-13z"/></symbol>
     </svg>
 
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="logo">
-        <img src="logo.png" alt="Remixa" />
+        <img src="logo.png" alt="Remixa">
       </div>
-      <div class="top-right">
-        <button class="diamond-btn" onclick="openWallet()">
-          <svg class="diamond-icon" viewBox="0 0 24 24">
-            <use href="#icon-diamond"></use>
-          </svg>
-          <span id="balanceTop">14,125 💎</span> <!-- Только цифры + 💎, слева ничего нет -->
-        </button>
-      </div>
+      <button class="diamond-btn" onclick="openWallet()">
+        <svg class="diamond-icon"><use href="#icon-diamond"></use></svg>
+        <span id="balanceTop">14,125 💎</span>
+      </button>
     </header>
 
-    <!-- MAIN PAGES -->
+    <!-- MAIN -->
     <main>
-      <!-- PAGE: MAIN -->
+
+      <!-- PAGE MAIN -->
       <section id="page-main" class="page active">
-        <div class="hero" onclick="window.open('https://your-ad-link.com', '_blank')">
+        <div class="hero">
           <div class="hero-text">
             <h1>Создай потрясающее фото с Remixa!</h1>
             <p>Быстро. Красиво. Вдохновляюще.</p>
-            <button class="hero-btn" onclick="openCreateModal('image')">
-              Сгенерировать
-            </button>
+            <button class="hero-btn" onclick="openCreateModal('image')">Сгенерировать</button>
           </div>
           <div class="hero-img">
-            <img src="banner.png" alt="Remixa banner"> <!-- Положи свою картинку banner.png -->
+            <img src="banner.png" alt="Remixa banner">
           </div>
         </div>
+
         <div class="section-header">
           <div class="section-title">Тренды</div>
         </div>
-        <div class="grid" id="main-grid"></div>
+        <div id="main-grid" class="grid"></div>
       </section>
 
-      <!-- PAGE: IDEAS -->
+      <!-- PAGE IDEAS -->
       <section id="page-ideas" class="page">
-        <div class="page-header">
-          <div class="page-title">
-            <span class="spark"></span> Идеи
-          </div>
-        </div>
+        <div class="page-header"><div class="page-title">Идеи</div></div>
         <div class="categories">
           <button class="cat active" data-cat="new" onclick="setCategory('new')">НОВЫЕ</button>
           <button class="cat" data-cat="trend" onclick="setCategory('trend')">ТРЕНДЫ</button>
           <button class="cat" data-cat="female" onclick="setCategory('female')">ЖЕНСКОЕ</button>
-          <button class="cat" data-cat="male" onclick="setCategory('male')">МУЖСКОЕ</button>
-          <button class="cat" data-cat="kids" onclick="setCategory('kids')">ДЕТИ</button>
-          <button class="cat" data-cat="family" onclick="setCategory('family')">СЕМЕЙНОЕ</button>
-          <button class="cat" data-cat="14feb" onclick="setCategory('14feb')">14 февраля</button>
-          <button class="cat" data-cat="23feb" onclick="setCategory('23feb')">23 февраля</button>
-          <button class="cat" data-cat="8mar" onclick="setCategory('8mar')">8 марта</button>
-          <button class="cat" data-cat="history" onclick="setCategory('history')">Исторический</button>
-          <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">Фэнтези</button>
-          <button class="cat" data-cat="pair" onclick="setCategory('pair')">Пара</button>
-          <button class="cat" data-cat="birthday" onclick="setCategory('birthday')">ДР</button>
-          <button class="cat" data-cat="auto" onclick="setCategory('auto')">Авто</button>
-          <button class="cat" data-cat="interior" onclick="setCategory('interior')">Интерьер</button>
         </div>
-        <div class="grid" id="ideas-grid"></div>
+        <div id="ideas-grid" class="grid"></div>
       </section>
 
-      <!-- PAGE: LIKES -->
+      <!-- PAGE LIKES -->
       <section id="page-likes" class="page">
-        <div class="page-header">
-          <div class="page-title">
-            <span class="spark"></span> Лайки
-          </div>
-        </div>
+        <div class="page-header"><div class="page-title">Лайки</div></div>
         <div id="likes-grid" class="grid"></div>
-        <div id="likes-empty" class="empty-text">
-          Скоро здесь появятся твои избранные картинки и видео ✨<br>
-          Нравится — сохраняй в “Лайки”, чтобы быстро найти лучшие работы.
+        <div id="likes-empty" class="empty-text">Пока пусто ✨</div>
+      </section>
+
+      <!-- PAGE PROFILE -->
+      <section id="page-profile" class="page">
+        <div class="page-header"><div class="page-title">Профиль</div></div>
+        <div class="profile-top">
+          <div class="bal-val" id="balanceTotal">14,125 💎</div>
         </div>
       </section>
 
-      <!-- PAGE: PROFILE -->
-      <section id="page-profile" class="page">
-        <div class="page-header">
-          <div class="page-title">
-            <span class="spark"></span> Профиль
-          </div>
-        </div>
-        <div class="profile-top">
-          <div class="profile-balance">
-            <div class="bal-title">Баланс</div>
-            <div class="bal-row">
-              <div class="bal-val" id="balanceTotal">14,125 💎</div>
-              <button class="small-btn" onclick="topUp()">Пополнить</button>
-            </div>
-          </div>
-          <div class="profile-ref">
-            <div class="ref-title">Доход от рефералов</div>
-            <div class="ref-val">
-              <span id="refIncome">0 💎</span>
-              <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
-              <button class="small-btn" onclick="withdraw()">Вывести</button>
-            </div>
-          </div>
-        </div>
-        <div class="profile-block">
-          <div class="block-title">Партнёрская программа</div>
-          <div class="partnership-card">
-            <div class="partnership-title">Приглашай друзей — получай 15% от их платежей</div>
-            <div class="partnership-row">
-              <input type="text" id="refLink" readonly value="t.me/remixa_bot?start=ref_000" />
-              <button class="small-btn" onclick="copyRef()">Копировать</button>
-            </div>
-          </div>
-        </div>
-        <div class="profile-block">
-          <div class="block-title">История генераций</div>
-          <div id="profile-history" class="grid"></div>
-        </div>
-        <div class="profile-block">
-          <div class="block-title">История платежей</div>
-          <div id="profile-payments" class="payments"></div>
-        </div>
-      </section>
     </main>
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-      <button data-page="main" class="nav-btn active" onclick="switchPage('main')">
-        <svg class="icon" width="22" height="22"><use href="#icon-home"></use></svg>
-        <span>Главная</span>
+      <button class="nav-btn active" data-page="main" onclick="switchPage('main')">
+        <svg class="icon"><use href="#icon-home"></use></svg><span>Главная</span>
       </button>
-      <button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
-        <svg class="icon" width="22" height="22"><use href="#icon-ideas"></use></svg>
-        <span>Идеи</span>
+      <button class="nav-btn" data-page="ideas" onclick="switchPage('ideas')">
+        <svg class="icon"><use href="#icon-ideas"></use></svg><span>Идеи</span>
       </button>
       <button class="nav-btn create" onclick="openCreateModal('image')">
-        <svg class="icon" width="26" height="26"><use href="#icon-create"></use></svg>
-        <span>Сгенерировать</span>
+        <svg class="icon"><use href="#icon-create"></use></svg><span>Создать</span>
       </button>
-      <button data-page="likes" class="nav-btn" onclick="switchPage('likes')">
-        <svg class="icon" width="22" height="22"><use href="#icon-like"></use></svg>
-        <span>Лайки</span>
+      <button class="nav-btn" data-page="likes" onclick="switchPage('likes')">
+        <svg class="icon"><use href="#icon-like"></use></svg><span>Лайки</span>
       </button>
-      <button data-page="profile" class="nav-btn" onclick="switchPage('profile')">
-        <svg class="icon" width="22" height="22"><use href="#icon-profile"></use></svg>
-        <span>Профиль</span>
+      <button class="nav-btn" data-page="profile" onclick="switchPage('profile')">
+        <svg class="icon"><use href="#icon-profile"></use></svg><span>Профиль</span>
       </button>
     </nav>
 
-    <!-- CREATE MODAL -->
+    <!-- MODAL -->
     <div class="modal" id="create-modal">
       <div class="modal-inner">
-        <div class="modal-header">
-          <div class="modal-title">Создать</div>
-          <button class="close-btn" onclick="closeCreate()">×</button>
-        </div>
-        <div class="modal-body">
-          <div class="tabs">
-            <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
-          </div>
-          <div class="field">
-            <label>Нейросеть</label>
-            <select id="model" onchange="updateModelHint()"></select>
-            <div class="hint" id="modelHint"></div>
-          </div>
-          <div class="field">
-            <label>Промпт *</label>
-            <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
-          </div>
-          <div class="field upload-field">
-            <label>Добавить фото</label>
-            <input type="file" id="image-upload" accept="image/*">
-          </div>
-          <button class="big-btn generate" onclick="generate()">
-            <span id="genText">Создать</span>
-            <span id="genPrice" class="price">— 5💎</span>
-          </button>
-        </div>
+        <button class="close-btn" onclick="closeCreate()">×</button>
+        <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
+        <button class="big-btn generate" onclick="generate()">Создать — 5💎</button>
       </div>
     </div>
+
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>
