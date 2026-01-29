@@ -1,376 +1,231 @@
-/* Общие стили */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+// -------------------- DATA --------------------
+const models = {
+  image: [
+    { id: "nano", name: "NanoBanana", price: 5, hint: "Быстро и доступно" },
+    { id: "nano_pro", name: "Nanobanana Pro", price: 15, hint: "Высокая детализация, чуть дольше" },
+    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Умный и креативный" }
+  ],
+  video: []
+};
+
+let balance = 14125;
+let refIncome = 0;
+let likes = [];
+let history = [];
+let published = [];
+let payments = [
+  { id: 1, date: "20.01.2026", amount: 500, status: "Пополнение" },
+  { id: 2, date: "22.01.2026", amount: 1000, status: "Пополнение" }
+];
+let currentCategory = "new";
+
+// -------------------- UI --------------------
+function switchPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(`page-${page}`).classList.add("active");
+  document.querySelectorAll(".bottom-nav .nav-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add("active");
 }
 
-body {
-  background: linear-gradient(to bottom, #0a0a1e, #000);
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
+function openWallet() {
+  alert("Кошелёк: пока заглушка (в будущем добавим оплату)");
 }
 
-.app {
-  max-width: 480px;
-  margin: 0 auto;
-  padding-bottom: 80px; /* место для bottom-nav */
+function updateTopBalance(){
+  document.getElementById("balanceTop").textContent = balance.toLocaleString() + " 💎";
+  document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} 💎`;
+  document.getElementById("refIncome").textContent = `${refIncome.toLocaleString()} 💎`;
 }
 
-/* TOPBAR */
-.topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: rgba(10, 10, 30, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+function topUp(){
+  balance += 50;
+  payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount: 50, status: "Пополнение" });
+  updateTopBalance();
+  renderPayments();
+  alert("Баланс пополнен на 50💎");
 }
 
-.logo img {
-  width: 160px; /* Увеличил лого (было меньше) */
-  height: auto;
+function withdraw(){
+  alert("Вывод пока заглушка (пока что просто UI)");
 }
 
-.top-right .diamond-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #00d4ff22, #0077ff22);
-  border: 1px solid #00d4ff44;
-  border-radius: 999px;
-  padding: 8px 14px;
-  color: #00d4ff;
-  font-weight: 600;
-  font-size: 15px;
-  box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
-  transition: all 0.2s;
+function copyRef(){
+  const input = document.getElementById("refLink");
+  input.select();
+  document.execCommand("copy");
+  alert("Ссылка скопирована");
 }
 
-.diamond-btn:active {
-  transform: scale(0.96);
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+function createCard(item){
+  return `
+    <div class="card" onclick="openCreateModal('${item.type}', '${item.id}')">
+      <img src="${item.img}" alt="idea" />
+      <div class="info">
+        <div class="title">${item.title}</div>
+        <div class="meta">
+          <div>${item.model}</div>
+          <div class="like">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.8-9.3-9.4C1.2 8.4 2.7 5.5 5.5 4.2c1.9-.9 4-.2 5.5 1.3 1.5-1.5 3.6-2.2 5.5-1.3 2.8 1.3 4.3 4.2 2.2 6.6-2 3.8-9 8.2-9 8.2z"/></svg>
+            <span>${item.likes || 0}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
-.diamond-icon {
-  width: 20px;
-  height: 20px;
-  fill: #00d4ff;
+function renderMain(){
+  const grid = document.getElementById("main-grid");
+  grid.innerHTML = "";
+  const items = published.slice(0, 6);
+  if(items.length === 0){
+    grid.innerHTML = `<div class="empty-text">Пока нет трендов — создай первую генерацию!</div>`;
+    return;
+  }
+  items.forEach(i => grid.innerHTML += createCard(i));
 }
 
-/* HERO / БАННЕР на главной */
-.hero {
-  margin: 70px 16px 24px; /* отступ от topbar */
-  background: linear-gradient(135deg, #00b4d8, #0077b6);
-  border-radius: 20px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 10px 40px rgba(0, 180, 216, 0.4);
-  animation: glow 4s infinite alternate;
-  cursor: pointer; /* можно кликать по баннеру */
+function renderIdeas(){
+  const grid = document.getElementById("ideas-grid");
+  grid.innerHTML = "";
+  const items = published.filter(i => i.category === currentCategory || currentCategory === "new");
+  items.forEach(i => grid.innerHTML += createCard(i));
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15), transparent 60%);
-  pointer-events: none;
+function renderLikes(){
+  const grid = document.getElementById("likes-grid");
+  const empty = document.getElementById("likes-empty");
+  grid.innerHTML = "";
+  if(likes.length === 0){
+    empty.style.display = "block";
+    return;
+  }
+  empty.style.display = "none";
+  likes.forEach(id => {
+    const item = published.find(p => p.id === id);
+    if(item) grid.innerHTML += createCard(item);
+  });
 }
 
-/* Если хочешь свою фоновую картинку — раскомментируй и замени URL */
-.hero {
-  /* background-image: url('banner-bg.jpg'); */
-  background-size: cover;
-  background-position: center;
+function renderProfileHistory(){
+  const grid = document.getElementById("profile-history");
+  grid.innerHTML = "";
+  history.forEach(i => grid.innerHTML += createCard(i));
 }
 
-.hero-text {
-  padding: 32px 24px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
+function renderPayments(){
+  const container = document.getElementById("profile-payments");
+  container.innerHTML = "";
+  payments.forEach(p => {
+    container.innerHTML += `
+      <div class="payment">
+        <div class="left">${p.date} • ${p.status}</div>
+        <div class="right">+${p.amount} 💎</div>
+      </div>
+    `;
+  });
 }
 
-.hero-text h1 {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 12px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+// -------------------- CATEGORIES --------------------
+function setCategory(cat){
+  currentCategory = cat;
+  document.querySelectorAll(".cat").forEach(b => b.classList.remove("active"));
+  document.querySelector(`.cat[data-cat="${cat}"]`)?.classList.add("active");
+  renderIdeas();
 }
 
-.hero-text p {
-  font-size: 16px;
-  opacity: 0.9;
-  margin-bottom: 24px;
+// -------------------- CREATE MODAL --------------------
+function openCreateModal(type="image", fromId=null){
+  document.getElementById("create-modal").style.display = "flex";
+  setType(type);
+  if(fromId){
+    const item = published.find(p => p.id === fromId) || history.find(p => p.id === fromId);
+    if(item){
+      document.getElementById("prompt").value = item.prompt;
+      document.getElementById("model").value = item.modelId;
+      updateModelHint();
+    }
+  }
 }
 
-.hero-btn {
-  background: white;
-  color: #0077b6;
-  border: none;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 16px 40px;
-  border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  transition: all 0.25s;
+function closeCreate(){
+  document.getElementById("create-modal").style.display = "none";
 }
 
-.hero-btn:active {
-  transform: scale(0.96);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+function setType(type){
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelector(`.tab[data-type="${type}"]`)?.classList.add("active");
+  populateModels(type);
+  updateGenButton(type);
 }
 
-/* СЕТКА (галерея) */
-.section-header {
-  padding: 0 16px;
-  margin: 24px 0 12px;
+function populateModels(type){
+  const select = document.getElementById("model");
+  select.innerHTML = "";
+  models[type].forEach(m => {
+    select.innerHTML += `<option value="${m.id}">${m.name}</option>`;
+  });
+  updateModelHint();
 }
 
-.section-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #e0e0ff;
+function updateModelHint(){
+  const type = document.querySelector(".tab.active").dataset.type;
+  const modelId = document.getElementById("model").value;
+  const model = models[type].find(m => m.id === modelId);
+  document.getElementById("modelHint").textContent = model ? model.hint : "";
+  updateGenButton(type);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  padding: 0 16px;
-  margin-bottom: 80px;
-  position: relative;
+function updateGenButton(type){
+  const modelId = document.getElementById("model").value;
+  const model = models[type].find(m => m.id === modelId);
+  document.getElementById("genText").textContent = type === "image" ? "Создать" : "Скоро";
+  document.getElementById("genPrice").textContent = model ? `— ${model.price}💎` : "";
 }
 
-.grid::after {
-  content: "";
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 60px;
-  background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.25) 0%, transparent 70%);
-  filter: blur(20px);
-  pointer-events: none;
+// -------------------- GENERATE --------------------
+function generate(){
+  const type = document.querySelector(".tab.active").dataset.type;
+  const modelId = document.getElementById("model").value;
+  const model = models[type].find(m => m.id === modelId);
+  const prompt = document.getElementById("prompt").value.trim();
+  if(!prompt){
+    alert("Пожалуйста, заполните поле «Промпт»");
+    return;
+  }
+  if(balance < model.price){
+    alert("Недостаточно средств. Пополните баланс.");
+    return;
+  }
+  balance -= model.price;
+  updateTopBalance();
+  const id = Date.now().toString();
+  const newItem = {
+    id,
+    type,
+    modelId,
+    model: model.name,
+    title: prompt.slice(0, 28) + (prompt.length > 28 ? "..." : ""),
+    prompt,
+    category: currentCategory === "new" ? "trend" : currentCategory,
+    likes: 0,
+    img: `https://picsum.photos/400/300?random=${id}`
+  };
+  history.unshift(newItem);
+  // сразу в историю (без модерации)
+  renderProfileHistory();
+  closeCreate();
+  alert("Генерация создана и добавлена в историю.");
 }
 
-.grid-item {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  transition: all 0.25s;
-  aspect-ratio: 1 / 1;
-}
-
-.grid-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.grid-item .like {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  background: rgba(0,0,0,0.6);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.grid-item .like svg {
-  width: 16px;
-  height: 16px;
-  fill: #ff4d4d;
-}
-
-/* BOTTOM NAV */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  background: rgba(10, 10, 30, 0.92);
-  backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(0, 212, 255, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 99;
-}
-
-.nav-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: #aaa;
-  font-size: 11px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.nav-btn.active {
-  color: #00d4ff;
-  text-shadow: 0 0 12px #00d4ff80;
-}
-
-.nav-btn svg {
-  width: 26px;
-  height: 26px;
-  fill: currentColor;
-  filter: brightness(0.8);
-  transition: all 0.2s;
-}
-
-.nav-btn.active svg {
-  filter: brightness(1.3) drop-shadow(0 0 8px #00d4ff);
-}
-
-.create-btn {
-  width: 64px;
-  height: 64px;
-  margin-top: -32px;
-  background: linear-gradient(135deg, #00d4ff, #0077ff);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 11px;
-  box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5);
-  transition: all 0.25s;
-}
-
-.create-btn:active {
-  transform: scale(0.92);
-  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.7);
-}
-
-/* MODAL */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.modal-inner {
-  background: #1a1a2e;
-  border-radius: 24px;
-  width: 100%;
-  max-width: 420px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid #ffffff0f;
-}
-
-.modal-title {
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  color: #aaa;
-  font-size: 32px;
-  cursor: pointer;
-}
-
-.modal-body {
-  padding: 24px;
-}
-
-.tabs {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.tab {
-  flex: 1;
-  padding: 12px;
-  background: #25253a;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.tab.active {
-  background: linear-gradient(135deg, #00d4ff, #0077ff);
-  color: white;
-}
-
-.field {
-  margin-bottom: 20px;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #ccc;
-}
-
-.field select,
-.field textarea,
-.field input[type="file"] {
-  width: 100%;
-  padding: 14px;
-  background: #25253a;
-  border: 1px solid #ffffff0f;
-  border-radius: 12px;
-  color: white;
-  font-size: 16px;
-}
-
-.hint {
-  margin-top: 8px;
-  font-size: 13px;
-  color: #00d4ff;
-}
-
-/* Анимации */
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 180, 216, 0.4); }
-  50% { box-shadow: 0 0 40px rgba(0, 180, 216, 0.7); }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
+// INITIALIZE
+updateTopBalance();
+renderMain();
+renderIdeas();
+renderLikes();
+renderProfileHistory();
+renderPayments();
+populateModels("image");
 
 
 
