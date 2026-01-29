@@ -8,29 +8,23 @@
 </head>
 <body>
   <div class="app">
-
     <!-- SVG ICONS -->
     <svg style="display:none;">
       <symbol id="icon-home" viewBox="0 0 24 24">
         <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z"/>
       </symbol>
-
       <symbol id="icon-ideas" viewBox="0 0 24 24">
         <path d="M9 21h6v-1H9v1zm3-19a7 7 0 0 0-4 12.6V16h8v-1.4A7 7 0 0 0 12 2zm1 13h-2v-1h2v1z"/>
       </symbol>
-
       <symbol id="icon-create" viewBox="0 0 24 24">
         <path d="M12 2l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z"/>
       </symbol>
-
       <symbol id="icon-like" viewBox="0 0 24 24">
         <path d="M12 21s-7-4.4-9-8.2C1 10.4 2.4 7.5 5.2 6.2c1.9-.9 4-.2 6.8 2.1 2.8-2.3 4.9-3 6.8-2.1 2.8 1.3 4.2 4.2 2.2 6.6-2 3.8-9 8.2-9 8.2z"/>
       </symbol>
-
       <symbol id="icon-profile" viewBox="0 0 24 24">
         <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/>
       </symbol>
-
       <symbol id="icon-diamond" viewBox="0 0 24 24">
         <path d="M12 2l7 7-7 13-7-13 7-7z"/>
       </symbol>
@@ -39,15 +33,14 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="logo">
-        <img src="logo.png" alt="Remixa" />
+        <img src="logo.png" alt="Remixa" /> <!-- Лого стало больше в CSS -->
       </div>
-
       <div class="top-right">
         <button class="diamond-btn" onclick="openWallet()">
           <svg class="diamond-icon" viewBox="0 0 24 24">
             <use href="#icon-diamond"></use>
           </svg>
-          <span id="balanceTop">14,125</span>
+          <span id="balanceTop">14,125 💎</span> <!-- Заменил символ на 💎 -->
         </button>
       </div>
     </header>
@@ -56,23 +49,21 @@
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
-        <div class="hero">
+        <div class="hero" onclick="window.open('https://your-ad-link.com', '_blank')"> <!-- Добавил кликабельность баннера -->
           <div class="hero-text">
             <h1>Создай потрясающее фото с Remixa!</h1>
             <p>Быстро. Красиво. Вдохновляюще.</p>
             <button class="hero-btn" onclick="openCreateModal('image')">
-              Создать
+              Сгенерировать
             </button>
           </div>
           <div class="hero-img">
-            <img src="banner-img.jpg" alt="Remixa banner">
+            <img src="banner-img.jpg" alt="Remixa banner"> <!-- Здесь твоя картинка -->
           </div>
         </div>
-
         <div class="section-header">
           <div class="section-title">Тренды</div>
         </div>
-
         <div class="grid" id="main-grid"></div>
       </section>
 
@@ -83,7 +74,6 @@
             <span class="spark"></span> Идеи
           </div>
         </div>
-
         <div class="categories">
           <button class="cat active" data-cat="new" onclick="setCategory('new')">НОВЫЕ</button>
           <button class="cat" data-cat="trend" onclick="setCategory('trend')">ТРЕНДЫ</button>
@@ -97,8 +87,10 @@
           <button class="cat" data-cat="history" onclick="setCategory('history')">Исторический</button>
           <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">Фэнтези</button>
           <button class="cat" data-cat="pair" onclick="setCategory('pair')">Пара</button>
+          <button class="cat" data-cat="birthday" onclick="setCategory('birthday')">ДР</button>
+          <button class="cat" data-cat="auto" onclick="setCategory('auto')">Авто</button>
+          <button class="cat" data-cat="interior" onclick="setCategory('interior')">Интерьер</button>
         </div>
-
         <div class="grid" id="ideas-grid"></div>
       </section>
 
@@ -123,7 +115,6 @@
             <span class="spark"></span> Профиль
           </div>
         </div>
-
         <div class="profile-top">
           <div class="profile-balance">
             <div class="bal-title">Баланс</div>
@@ -132,7 +123,6 @@
               <button class="small-btn" onclick="topUp()">Пополнить</button>
             </div>
           </div>
-
           <div class="profile-ref">
             <div class="ref-title">Доход от рефералов</div>
             <div class="ref-val">
@@ -142,7 +132,6 @@
             </div>
           </div>
         </div>
-
         <div class="profile-block">
           <div class="block-title">Партнёрская программа</div>
           <div class="partnership-card">
@@ -153,12 +142,10 @@
             </div>
           </div>
         </div>
-
         <div class="profile-block">
           <div class="block-title">История генераций</div>
           <div id="profile-history" class="grid"></div>
         </div>
-
         <div class="profile-block">
           <div class="block-title">История платежей</div>
           <div id="profile-payments" class="payments"></div>
@@ -176,12 +163,10 @@
         <svg class="icon" width="22" height="22"><use href="#icon-ideas"></use></svg>
         <span>Идеи</span>
       </button>
-
       <button class="nav-btn create" onclick="openCreateModal('image')">
         <svg class="icon" width="26" height="26"><use href="#icon-create"></use></svg>
-        <span>Создать</span>
+        <span>Сгенерировать</span>
       </button>
-
       <button data-page="likes" class="nav-btn" onclick="switchPage('likes')">
         <svg class="icon" width="22" height="22"><use href="#icon-like"></use></svg>
         <span>Лайки</span>
@@ -199,33 +184,32 @@
           <div class="modal-title">Создать</div>
           <button class="close-btn" onclick="closeCreate()">×</button>
         </div>
-
         <div class="modal-body">
           <div class="tabs">
             <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
+            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
           </div>
-
           <div class="field">
             <label>Нейросеть</label>
             <select id="model" onchange="updateModelHint()"></select>
             <div class="hint" id="modelHint"></div>
           </div>
-
           <div class="field">
             <label>Промпт *</label>
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
           </div>
-
+          <div class="field">
+            <label>Добавить фото (опционально)</label>
+            <input type="file" id="image-upload" accept="image/*">
+          </div>
           <button class="big-btn generate" onclick="generate()">
-            <span id="genText">Создать</span>
+            <span id="genText">Сгенерировать</span>
             <span id="genPrice" class="price">— 5💎</span>
           </button>
         </div>
       </div>
     </div>
-
   </div>
-
   <script src="app.js"></script>
 </body>
 </html>
