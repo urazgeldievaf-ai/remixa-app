@@ -33,14 +33,14 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="logo">
-        <img src="logo.png" alt="Remixa" /> <!-- Лого стало больше в CSS -->
+        <img src="logo.png" alt="Remixa" /> <!-- Лого увеличено в CSS -->
       </div>
       <div class="top-right">
         <button class="diamond-btn" onclick="openWallet()">
           <svg class="diamond-icon" viewBox="0 0 24 24">
             <use href="#icon-diamond"></use>
           </svg>
-          <span id="balanceTop">14,125 💎</span> <!-- Заменил символ на 💎 -->
+          <span id="balanceTop">14,125 💎</span> <!-- Заменён символ на 💎 -->
         </button>
       </div>
     </header>
@@ -49,7 +49,7 @@
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
-        <div class="hero" onclick="window.open('https://your-ad-link.com', '_blank')"> <!-- Добавил кликабельность баннера -->
+        <div class="hero" onclick="window.open('https://your-ad-link.com', '_blank')"> <!-- Добавлена кликабельность -->
           <div class="hero-text">
             <h1>Создай потрясающее фото с Remixa!</h1>
             <p>Быстро. Красиво. Вдохновляюще.</p>
@@ -58,7 +58,7 @@
             </button>
           </div>
           <div class="hero-img">
-            <img src="banner-img.jpg" alt="Remixa banner"> <!-- Здесь твоя картинка -->
+            <img src="banner-img.jpg" alt="Remixa banner"> <!-- Можно заменить на свою картинку -->
           </div>
         </div>
         <div class="section-header">
@@ -87,9 +87,9 @@
           <button class="cat" data-cat="history" onclick="setCategory('history')">Исторический</button>
           <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">Фэнтези</button>
           <button class="cat" data-cat="pair" onclick="setCategory('pair')">Пара</button>
-          <button class="cat" data-cat="birthday" onclick="setCategory('birthday')">ДР</button>
-          <button class="cat" data-cat="auto" onclick="setCategory('auto')">Авто</button>
-          <button class="cat" data-cat="interior" onclick="setCategory('interior')">Интерьер</button>
+          <button class="cat" data-cat="birthday" onclick="setCategory('birthday')">ДР</button> <!-- Добавлено -->
+          <button class="cat" data-cat="auto" onclick="setCategory('auto')">Авто</button> <!-- Добавлено -->
+          <button class="cat" data-cat="interior" onclick="setCategory('interior')">Интерьер</button> <!-- Добавлено -->
         </div>
         <div class="grid" id="ideas-grid"></div>
       </section>
@@ -119,7 +119,7 @@
           <div class="profile-balance">
             <div class="bal-title">Баланс</div>
             <div class="bal-row">
-              <div class="bal-val" id="balanceTotal">14,125 💎</div>
+              <div class="bal-val" id="balanceTotal">14,125 💎</div> <!-- 💎 -->
               <button class="small-btn" onclick="topUp()">Пополнить</button>
             </div>
           </div>
@@ -187,12 +187,11 @@
         <div class="modal-body">
           <div class="tabs">
             <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
-            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
           </div>
           <div class="field">
             <label>Нейросеть</label>
             <select id="model" onchange="updateModelHint()"></select>
-            <div class="hint" id="modelHint"></div>
+            <div class="hint" id="modelHint"></div> <!-- Здесь будут описания -->
           </div>
           <div class="field">
             <label>Промпт *</label>
@@ -203,7 +202,7 @@
             <input type="file" id="image-upload" accept="image/*">
           </div>
           <button class="big-btn generate" onclick="generate()">
-            <span id="genText">Сгенерировать</span>
+            <span id="genText">Создать</span>
             <span id="genPrice" class="price">— 5💎</span>
           </button>
         </div>
