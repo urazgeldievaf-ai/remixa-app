@@ -49,7 +49,7 @@
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
-        <div class="hero" onclick="window.open('https://your-ad-link.com', '_blank')"> <!-- Добавлена кликабельность -->
+        <div class="hero" onclick="window.open('https://your-ad-link.com', '_blank')"> <!-- Добавлена кликабельность + фоновая картинка в CSS -->
           <div class="hero-text">
             <h1>Создай потрясающее фото с Remixa!</h1>
             <p>Быстро. Красиво. Вдохновляюще.</p>
@@ -58,7 +58,7 @@
             </button>
           </div>
           <div class="hero-img">
-            <img src="banner-img.jpg" alt="Remixa banner"> <!-- Можно заменить на свою картинку -->
+            <img src="banner-img.jpg" alt="Remixa banner"> <!-- Замени на свою картинку -->
           </div>
         </div>
         <div class="section-header">
@@ -197,7 +197,7 @@
             <label>Промпт *</label>
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
           </div>
-          <div class="field">
+          <div class="field upload-field"> <!-- Сделал заметнее -->
             <label>Добавить фото (опционально)</label>
             <input type="file" id="image-upload" accept="image/*">
           </div>
