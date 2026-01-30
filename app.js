@@ -1,9 +1,9 @@
 // -------------------- DATA --------------------
 const models = {
   image: [
-    { id: "nano", name: "NanoBanana", price: 5, hint: "Быстро и доступно" },
-    { id: "nano_pro", name: "Nanobanana Pro", price: 15, hint: "Высокая детализация, чуть дольше" },
-    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Умный и креативный" }
+    { id: "nano", name: "NanoBanana", price: 5, hint: "Дешёвое" },
+    { id: "nano_pro", name: "Nanobanana Pro", price: 15, hint: "" },
+    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "" }
   ],
   video: []
 };
@@ -17,12 +17,14 @@ let payments = [
   { id: 1, date: "20.01.2026", amount: 500, status: "Пополнение" },
   { id: 2, date: "22.01.2026", amount: 1000, status: "Пополнение" }
 ];
+
 let currentCategory = "new";
 
 // -------------------- UI --------------------
 function switchPage(page) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(`page-${page}`).classList.add("active");
+
   document.querySelectorAll(".bottom-nav .nav-btn").forEach(btn => btn.classList.remove("active"));
   document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add("active");
 }
@@ -32,7 +34,7 @@ function openWallet() {
 }
 
 function updateTopBalance(){
-  document.getElementById("balanceTop").textContent = balance.toLocaleString() + " 💎";
+  document.getElementById("balanceTop").textContent = balance.toLocaleString();
   document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("refIncome").textContent = `${refIncome.toLocaleString()} 💎`;
 }
@@ -65,7 +67,7 @@ function createCard(item){
         <div class="meta">
           <div>${item.model}</div>
           <div class="like">
-            <svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.8-9.3-9.4C1.2 8.4 2.7 5.5 5.5 4.2c1.9-.9 4-.2 5.5 1.3 1.5-1.5 3.6-2.2 5.5-1.3 2.8 1.3 4.3 4.2 2.2 6.6-2 3.8-9 8.2-9 8.2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.8-9.3-9.4C1.2 8.4 2.7 5.5 5.5 4.2c1.9-.9 4-.2 5.5 1.3 1.5-1.5 3.6-2.2 5.5-1.3 2.8 1.3 4.3 4.2 2.8 7.4C19.2 16.2 12 21 12 21z"/></svg>
             <span>${item.likes || 0}</span>
           </div>
         </div>
@@ -96,11 +98,13 @@ function renderLikes(){
   const grid = document.getElementById("likes-grid");
   const empty = document.getElementById("likes-empty");
   grid.innerHTML = "";
+
   if(likes.length === 0){
     empty.style.display = "block";
     return;
   }
   empty.style.display = "none";
+
   likes.forEach(id => {
     const item = published.find(p => p.id === id);
     if(item) grid.innerHTML += createCard(item);
@@ -138,6 +142,7 @@ function setCategory(cat){
 function openCreateModal(type="image", fromId=null){
   document.getElementById("create-modal").style.display = "flex";
   setType(type);
+
   if(fromId){
     const item = published.find(p => p.id === fromId) || history.find(p => p.id === fromId);
     if(item){
@@ -155,6 +160,7 @@ function closeCreate(){
 function setType(type){
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.querySelector(`.tab[data-type="${type}"]`)?.classList.add("active");
+
   populateModels(type);
   updateGenButton(type);
 }
@@ -179,6 +185,7 @@ function updateModelHint(){
 function updateGenButton(type){
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
+
   document.getElementById("genText").textContent = type === "image" ? "Создать" : "Скоро";
   document.getElementById("genPrice").textContent = model ? `— ${model.price}💎` : "";
 }
@@ -189,6 +196,7 @@ function generate(){
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
   const prompt = document.getElementById("prompt").value.trim();
+
   if(!prompt){
     alert("Пожалуйста, заполните поле «Промпт»");
     return;
@@ -197,8 +205,10 @@ function generate(){
     alert("Недостаточно средств. Пополните баланс.");
     return;
   }
+
   balance -= model.price;
   updateTopBalance();
+
   const id = Date.now().toString();
   const newItem = {
     id,
@@ -211,9 +221,12 @@ function generate(){
     likes: 0,
     img: `https://picsum.photos/400/300?random=${id}`
   };
+
   history.unshift(newItem);
+
   // сразу в историю (без модерации)
   renderProfileHistory();
+
   closeCreate();
   alert("Генерация создана и добавлена в историю.");
 }
@@ -226,6 +239,12 @@ renderLikes();
 renderProfileHistory();
 renderPayments();
 populateModels("image");
+
+
+
+
+
+
 
 
 
