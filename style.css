@@ -31,54 +31,65 @@ body{
   border-bottom:1px solid rgba(44,240,255,0.18);
 }
 .logo img{
-  height:44px; /* увеличили */
+  height:44px;
 }
 .diamond-btn{
   display:flex; align-items:center; gap:10px;
   border:none; background:transparent; color:#fff;
   font-weight:600; cursor:pointer;
+  font-size:14px;
 }
-.diamond-icon{
-  width:22px; height:22px;
-  fill:linear-gradient(135deg,var(--neon),var(--neon2));
-  color: var(--neon);
-  filter: drop-shadow(0 0 14px rgba(44,240,255,0.55));
+.diamond-btn span{
+  font-weight:700;
+  color:var(--neon);
+  text-shadow:0 0 10px rgba(44,240,255,0.7);
 }
 
 /* MAIN PAGE */
 .page{display:none; padding:14px;}
 .page.active{display:block;}
 
+/* HERO / BANNERS */
 .hero{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:14px;
-  padding:14px;
+  position:relative;
   border-radius:18px;
-  background:linear-gradient(135deg, rgba(44,240,255,0.12), rgba(91,60,255,0.12));
-  border:1px solid rgba(44,240,255,0.25);
-  box-shadow:0 0 35px rgba(44,240,255,0.12);
+  overflow:hidden;
+  margin-bottom:16px;
 }
-.hero-text h1{
-  font-size:22px; font-weight:700; margin:0 0 8px 0;
+.hero-img{
+  width:100%;
+  position:relative;
 }
-.hero-text p{color:var(--muted); margin:0 0 16px 0;}
-.hero-btn{
-  width:180px;
-  padding:14px;
-  border:none;
-  border-radius:22px;
-  background:linear-gradient(90deg, rgba(44,240,255,0.95), rgba(91,60,255,0.95));
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-  display:flex; justify-content:center; align-items:center; gap:10px;
-  box-shadow:0 0 24px rgba(44,240,255,0.5);
+.hero-img .carousel-item{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 0.5s ease;
 }
+.hero-img .carousel-item.active{opacity:1;}
 .hero-img img{
   width:100%;
+  display:block;
   border-radius:16px;
-  box-shadow:0 0 20px rgba(44,240,255,0.25);
+  object-fit:cover;
+}
+
+/* Carousel indicators */
+.carousel-indicators{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  margin-top:8px;
+}
+.carousel-indicators .indicator{
+  width:24px;
+  height:3px;
+  border-radius:2px;
+  background:rgba(44,240,255,0.25);
+  transition:all 0.3s ease;
+}
+.carousel-indicators .indicator.active{
+  background:var(--neon);
 }
 
 /* SECTION */
@@ -136,6 +147,7 @@ body{
 }
 .cat.active{
   background:linear-gradient(90deg, rgba(44,240,255,0.45), rgba(91,60,255,0.45));
+  box-shadow:0 0 10px rgba(44,240,255,0.6);
 }
 
 /* EMPTY TEXT */
@@ -150,51 +162,76 @@ body{
 }
 
 /* PROFILE */
-.profile-top{
-  display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+.profile-tabs{
+  display:flex; gap:6px; margin-bottom:12px;
 }
-.profile-balance, .profile-ref{
-  padding:12px;
-  border-radius:16px;
-  background:rgba(10,10,30,0.55);
-  border:1px solid rgba(44,240,255,0.22);
-}
-.bal-title, .ref-title{font-weight:600; color:var(--muted);}
-.bal-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-top:8px;
-}
-.bal-val{font-weight:700; font-size:20px;}
-.ref-val{font-weight:700; font-size:18px; display:flex; flex-direction:column; gap:6px;}
-.ref-val .hint{font-weight:500; font-size:12px; color:var(--muted);}
-
-/* PARTNERSHIP */
-.partnership-card{margin-top:10px; padding:14px; border-radius:18px; background:rgba(10,10,30,0.55); border:1px solid rgba(44,240,255,0.22);}
-.partnership-row{display:flex; gap:10px; margin-top:10px;}
-.partnership-row input{
+.tab{
   flex:1;
   padding:12px;
   border-radius:16px;
   border:1px solid rgba(44,240,255,0.22);
   background:rgba(10,10,30,0.55);
-  color:#fff;
+  cursor:pointer;
+  font-weight:700;
+  text-align:center;
+}
+.tab.active{
+  background:linear-gradient(90deg, rgba(44,240,255,0.45), rgba(91,60,255,0.45));
+  box-shadow:0 0 10px rgba(44,240,255,0.6);
+}
+.profile-subpage{display:none;}
+.profile-subpage.active{display:block;}
+.profile-info{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.profile-photo{
+  width:90px; height:90px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--neon);
+}
+.profile-name{font-weight:700; font-size:16px;}
+.profile-link-row{
+  display:flex; gap:6px; width:100%;
 }
 
-/* PAYMENTS */
-.payments{
-  display:flex; flex-direction:column; gap:10px; margin-top:10px;
-}
-.payment{
+/* BALANCE */
+.profile-balance-block{
   padding:12px;
   border-radius:16px;
   background:rgba(10,10,30,0.55);
   border:1px solid rgba(44,240,255,0.22);
-  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:12px;
 }
-.payment .left{color:var(--muted); font-size:12px;}
-.payment .right{font-weight:700;}
+.bal-title{font-weight:600; color:var(--muted);}
+.bal-row{
+  display:flex; align-items:center; gap:10px; margin-top:8px;
+}
+.bal-val{font-weight:700; font-size:20px;}
+.balance-options{
+  display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;
+}
+.balance-options button{
+  padding:8px 12px;
+  border:none; border-radius:12px;
+  background:rgba(44,240,255,0.2);
+  color:#fff; font-weight:600;
+  cursor:pointer;
+}
+
+/* PARTNERSHIP */
+.partnership-card{margin-top:10px; padding:14px; border-radius:18px; background:rgba(10,10,30,0.55); border:1px solid rgba(44,240,255,0.22);}
+.partnership-row{display:flex; gap:10px; margin-top:10px;}
+.partnership-row input{
+  flex:1; padding:12px; border-radius:16px;
+  border:1px solid rgba(44,240,255,0.22);
+  background:rgba(10,10,30,0.55);
+  color:#fff;
+}
 
 /* BUTTONS */
 .small-btn{
@@ -218,22 +255,14 @@ body{
 }
 .nav-btn{
   width:20%;
-  border:none;
-  background:none;
+  border:none; background:none;
   color:rgba(255,255,255,0.65);
-  font-size:12px;
-  font-weight:600;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
+  font-size:12px; font-weight:600;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
   cursor:pointer;
 }
 .nav-btn.active{color:#fff;}
-.nav-btn .icon{
-  width:22px; height:22px;
-  fill:rgba(255,255,255,0.8);
-}
+.nav-btn .icon{width:22px; height:22px; fill:rgba(255,255,255,0.8);}
 .nav-btn.create{
   width:20%;
   padding:10px 0;
@@ -306,8 +335,6 @@ body{
   display:flex; justify-content:center; align-items:center; gap:12px;
   box-shadow:0 0 26px rgba(44,240,255,0.55);
 }
-
-
 
 
 
