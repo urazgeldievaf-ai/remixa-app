@@ -31,54 +31,63 @@ body{
   border-bottom:1px solid rgba(44,240,255,0.18);
 }
 .logo img{
-  height:46px; /* увеличили */
+  height:44px;
 }
 .diamond-btn{
   display:flex; align-items:center; gap:10px;
   border:none; background:transparent; color:#fff;
   font-weight:600; cursor:pointer;
 }
-.diamond-icon{
-  width:22px; height:22px;
-  fill:linear-gradient(135deg,var(--neon),var(--neon2));
-  color: var(--neon);
-  filter: drop-shadow(0 0 14px rgba(44,240,255,0.55));
-}
 
 /* MAIN PAGE */
 .page{display:none; padding:14px;}
 .page.active{display:block;}
 
+/* HERO / BANNER CAROUSEL */
 .hero{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:14px;
-  padding:14px;
+  position:relative;
   border-radius:18px;
-  background:linear-gradient(135deg, rgba(44,240,255,0.12), rgba(91,60,255,0.12));
-  border:1px solid rgba(44,240,255,0.25);
-  box-shadow:0 0 35px rgba(44,240,255,0.12);
+  overflow:hidden;
+  margin-bottom:20px;
 }
-.hero-text h1{
-  font-size:22px; font-weight:700; margin:0 0 8px 0;
+.hero-img{
+  position:relative;
+  width:100%;
+  display:flex;
+  overflow:hidden;
 }
-.hero-text p{color:var(--muted); margin:0 0 16px 0;}
-.hero-btn{
-  width:180px;
-  padding:14px;
-  border:none;
-  border-radius:22px;
-  background:linear-gradient(90deg, rgba(44,240,255,0.95), rgba(91,60,255,0.95));
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-  display:flex; justify-content:center; align-items:center; gap:10px;
-  box-shadow:0 0 24px rgba(44,240,255,0.5);
+.hero-img .carousel-item{
+  min-width:100%;
+  display:block;
 }
 .hero-img img{
   width:100%;
+  display:block;
   border-radius:16px;
   box-shadow:0 0 20px rgba(44,240,255,0.25);
+}
+.carousel-controls{
+  position:absolute;
+  top:50%;
+  width:100%;
+  display:flex; justify-content:space-between;
+  transform:translateY(-50%);
+  padding:0 10px;
+  pointer-events:none;
+}
+.carousel-btn{
+  background: rgba(31,60,255,0.7);
+  border:none;
+  color:#fff;
+  font-size:24px;
+  padding:6px 12px;
+  cursor:pointer;
+  border-radius:6px;
+  pointer-events:auto;
+  transition:background 0.2s;
+}
+.carousel-btn:hover{
+  background: rgba(31,60,255,1);
 }
 
 /* SECTION */
@@ -306,6 +315,7 @@ body{
   display:flex; justify-content:center; align-items:center; gap:12px;
   box-shadow:0 0 26px rgba(44,240,255,0.55);
 }
+
 
 
 
