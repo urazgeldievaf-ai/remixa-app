@@ -30,6 +30,7 @@ let currentCategory = "new";
 let currentProfileSub = "user";
 let carouselIndex = 0;
 let carouselInterval = null;
+
 // -------------------- UI --------------------
 function switchPage(page) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
@@ -98,6 +99,7 @@ function createCard(item, showStatus = false){
     </div>
   `;
 }
+
 // -------------------- RENDER --------------------
 function renderMain(){
   const grid = document.getElementById("main-grid");
@@ -155,6 +157,7 @@ function renderPayments(){
     `;
   });
 }
+
 // -------------------- CATEGORIES --------------------
 function setCategory(cat){
   currentCategory = cat;
@@ -162,6 +165,7 @@ function setCategory(cat){
   document.querySelector(`.cat[data-cat="${cat}"]`)?.classList.add("active");
   renderIdeas();
 }
+
 // -------------------- CREATE MODAL --------------------
 function openCreateModal(type="image", fromId=null){
   document.getElementById("create-modal").style.display = "flex";
@@ -199,12 +203,7 @@ function updateModelHint(){
   document.getElementById("modelHint").textContent = model ? model.hint : "";
   updateGenButton(type);
 }
-function updateGenButton(type){
-  const modelId = document.getElementById("model").value;
-  const model = models[type].find(m => m.id === modelId);
-  document.getElementById("genText").textContent = type === "image" ? "Сгенерировать" : "Сгенерировать";
-  document.getElementById("genPrice").textContent = model ? `${model.price}💎` : "";
-}
+
 // -------------------- FORM FIELDS DYNAMIC --------------------
 function updateFormFields() {
   const modelId = document.getElementById("model").value;
@@ -212,15 +211,12 @@ function updateFormFields() {
   const model = models[type].find(m => m.id === modelId);
   if (!model) return;
 
-  // Удаляем старые дополнительные поля
   const extraFields = document.querySelectorAll('.extra-field');
   extraFields.forEach(f => f.remove());
 
-  // Добавляем нужные поля после "Промпт"
   const promptField = document.querySelector('#prompt').parentElement;
   const container = promptField.parentElement;
 
-  // Всегда добавляем пропорции (только один раз)
   const aspectDiv = document.createElement('div');
   aspectDiv.className = 'field extra-field';
   aspectDiv.innerHTML = `
@@ -235,7 +231,6 @@ function updateFormFields() {
   `;
   container.insertBefore(aspectDiv, promptField.nextSibling);
 
-  // Добавляем остальные поля по модели
   model.fields.forEach(field => {
     let labelText = '';
     let inputHtml = '';
@@ -246,7 +241,7 @@ function updateFormFields() {
                   'Фото/видео (по желанию)';
       inputHtml = `<input type="file" id="${field}-upload" accept="image/*,video/*">`;
     } else if (field === 'prompt') {
-      return; // Промпт уже есть
+      return;
     } else if (field === 'duration') {
       labelText = 'Длительность';
       inputHtml = `<select id="duration">${model.durationOptions.map(d => `<option value="${d}">${d} секунд</option>`).join('')}</select>`;
@@ -269,6 +264,7 @@ function updateFormFields() {
     }
   });
 }
+
 // -------------------- GENERATE --------------------
 function generate(){
   const type = document.querySelector(".tab.active").dataset.type;
@@ -306,7 +302,7 @@ function generate(){
   };
   history.unshift(newItem);
   renderProfileHistory();
-  // Показываем кнопки после генерации
+
   const afterGenerate = document.createElement('div');
   afterGenerate.style.marginTop = "16px";
   afterGenerate.innerHTML = `
@@ -319,6 +315,7 @@ function generate(){
   document.querySelector('.modal-body').appendChild(afterGenerate);
   closeCreate();
 }
+
 // -------------------- PUBLISH & STATUS --------------------
 function publishToIdeas(id) {
   const item = history.find(i => i.id === id);
@@ -337,6 +334,7 @@ function saveToProfile(id) {
   renderProfileHistory();
   alert("Сохранено в профиль!");
 }
+
 // -------------------- CAROUSEL --------------------
 function startCarousel(){
   const slides = document.querySelectorAll(".carousel-item");
@@ -355,29 +353,15 @@ function startCarousel(){
       });
     });
   }
-  // Авто-листание каждые 4 секунды
-  if(carouselInterval) clearInterval(carouselInterval);
-  carouselInterval = setInterval(() => {
-    nextSlide();
-  }, 4000);
 }
 function showSlide(index){
   const slides = document.querySelectorAll(".carousel-item");
   const indicators = document.querySelectorAll(".carousel-indicators .indicator");
-  slides.forEach(s=>s.classList.remove("active"));
-  indicators.forEach(i=>i.classList.remove("active"));
-  if (slides[index]) slides[index].classList.add("active");
-  if (indicators[index]) indicators[index].classList.add("active");
-}
-function nextSlide(){
-  const slides = document.querySelectorAll(".carousel-item");
-  carouselIndex = (carouselIndex + 1) % slides.length;
-  showSlide(carouselIndex);
-}
-function goToSlide(index){
+  slides.forEach((s, i) => s.classList.toggle('active', i === index));
+  indicators.forEach((ind, i) => ind.classList.toggle('active', i === index));
   carouselIndex = index;
-  showSlide(carouselIndex);
 }
+
 // -------------------- INIT --------------------
 updateTopBalance();
 renderMain();
@@ -386,7 +370,7 @@ renderLikes();
 renderProfileHistory();
 renderPayments();
 populateModels("image");
-setProfileSub("user");
+
 
 
 
