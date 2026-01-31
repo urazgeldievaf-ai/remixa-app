@@ -55,24 +55,27 @@ body{
   overflow:hidden;
   margin-bottom:16px;
 }
-.hero-img{
-  width:100%;
-  position:relative;
-}
-.hero-img .carousel-item{
-  position:absolute;
-  inset:0;
-  opacity:0;
-  transition:opacity 0.5s ease;
-}
 .hero-img .carousel-item.active{opacity:1;}
 .carousel-item img {
   width: 100%;
-  height: auto; /* Чтобы не растягивало */
-  max-height: 250px; /* Ограничим высоту, чтобы не было огромных баннеров */
+  height: auto;
+  max-height: 220px; /* Уменьшил до 220px — можно изменить на 180px или 250px */
   display: block;
   border-radius: 16px;
-  object-fit: cover; /* Картинка заполняет блок без искажений */
+  object-fit: cover;
+}
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  gap: 0;
+}
+
+.carousel-item {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
 }
 
 /* Carousel indicators */
