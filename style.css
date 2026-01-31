@@ -39,10 +39,9 @@ body{
   font-weight:600; cursor:pointer;
   font-size:14px;
 }
-.diamond-btn span{
-  font-weight:700;
-  color:var(--neon);
-  text-shadow:0 0 10px rgba(44,240,255,0.7);
+.diamond-btn span {
+  font-weight: 700;
+  color: #fff; /* Белый цвет цифр */
 }
 
 /* MAIN PAGE */
@@ -67,11 +66,13 @@ body{
   transition:opacity 0.5s ease;
 }
 .hero-img .carousel-item.active{opacity:1;}
-.hero-img img{
-  width:100%;
-  display:block;
-  border-radius:16px;
-  object-fit:cover;
+.carousel-item img {
+  width: 100%;
+  height: auto; /* Чтобы не растягивало */
+  max-height: 250px; /* Ограничим высоту, чтобы не было огромных баннеров */
+  display: block;
+  border-radius: 16px;
+  object-fit: cover; /* Картинка заполняет блок без искажений */
 }
 
 /* Carousel indicators */
@@ -261,8 +262,15 @@ body{
   display:flex; flex-direction:column; align-items:center; gap:6px;
   cursor:pointer;
 }
-.nav-btn.active{color:#fff;}
-.nav-btn .icon{width:22px; height:22px; fill:rgba(255,255,255,0.8);}
+.nav-btn.active {
+  color: var(--neon);
+  text-shadow: 0 0 12px var(--neon);
+}
+
+.nav-btn.active .icon {
+  fill: var(--neon);
+  filter: drop-shadow(0 0 12px var(--neon));
+}
 .nav-btn.create{
   width:20%;
   padding:10px 0;
@@ -320,7 +328,11 @@ body{
   cursor:pointer;
   font-weight:700;
 }
-.tab.active{background:linear-gradient(90deg, rgba(44,240,255,0.45), rgba(91,60,255,0.45));}
+.tab.active {
+  background: linear-gradient(90deg, rgba(44,240,255,0.45), rgba(91,60,255,0.45));
+  color: #fff !important; /* Белый текст на активной вкладке */
+  text-shadow: 0 0 8px rgba(44,240,255,0.7); /* Неоновое свечение текста */
+}
 
 .big-btn.generate{
   width:100%;
