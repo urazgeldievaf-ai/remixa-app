@@ -137,8 +137,8 @@ body{
   font-weight:600;
 }
 .cat.active{
-  background:linear-gradient(90deg, var(--neon), var(--neon2));
-  box-shadow:0 0 16px rgba(44,240,255,0.7);
+  background: linear-gradient(90deg, var(--neon), var(--neon2));
+  box-shadow: 0 0 6px var(--neon); /* меньше размытия */
   color:#fff;
 }
 
@@ -217,7 +217,10 @@ body{
   display:flex; justify-content:space-between;
   padding:10px 10px;
   background:rgba(0,0,0,0.45);
-  backdrop-filter:blur(12px);
+  /* backdrop-filter:blur(12px); */  /* закомментировать */
+  background: rgba(0,0,0,0.45); /* можно оставить прозрачность */
+}
+
   border-top:1px solid rgba(44,240,255,0.18);
 }
 .nav-btn{
@@ -234,8 +237,8 @@ body{
   cursor:pointer;
 }
 .nav-btn.active{
-  color:var(--neon);
-  text-shadow:0 0 10px rgba(44,240,255,0.8);
+  color: var(--neon);
+  text-shadow: 0 0 4px rgba(31,60,255,1);  /* меньше размытия, ярче */
 }
 
 .nav-btn.active .icon{
