@@ -11,7 +11,7 @@ const models = {
 let balance = 14125;
 let refIncome = 0;
 let likes = [];
-let history = [];
+let history = [];яяфф
 let published = [];
 let payments = [
   { id: 1, date: "20.01.2026", amount: 500, status: "Пополнение" },
