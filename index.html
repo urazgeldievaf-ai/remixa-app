@@ -151,7 +151,10 @@
               <button onclick="topUpAmount(5000)">5000 💎</button>
             </div>
           </div>
-          <div class="profile-payments" id="profile-payments"></div>
+          <div class="profile-balance-block">
+            <div class="bal-title">История пополнений</div>
+            <div id="profile-payments"></div>
+          </div>
         </div>
         <div class="profile-subpage" id="profile-partner" style="display:none;">
           <div class="partnership-card">
@@ -161,10 +164,15 @@
               <button class="small-btn" onclick="copyRef()">Копировать</button>
             </div>
           </div>
-          <div class="referrals-list" id="referralsList"></div>
-          <div class="ref-income">
-            <span id="refIncome">0 💎</span>
-            <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
+          <div class="partnership-card">
+            <div class="partnership-title">Доход от друзей</div>
+            <div class="ref-income">
+              <span id="refIncome">0 💎</span>
+            </div>
+          </div>
+          <div class="partnership-card">
+            <div class="partnership-title">Список рефералов</div>
+            <div id="referralsList"></div>
           </div>
         </div>
       </section>
@@ -224,13 +232,13 @@
             </select>
           </div>
           <div class="field">
-            <label>Фото</label>
+            <label>Добавить фото</label>
             <input type="file" accept="image/*">
             <div class="hint">Добавить фото</div>
           </div>
           <button class="big-btn generate" onclick="generate()">
-            <span id="genText">Создать</span>
-            <span id="genPrice" class="price">— 5💎</span>
+            <span id="genText">Сгенерировать</span>
+            <span id="genPrice" class="price">5💎</span>
           </button>
         </div>
       </div>
@@ -239,25 +247,6 @@
   <script src="app.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
