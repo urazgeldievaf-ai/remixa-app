@@ -55,18 +55,23 @@
 
         <!-- HERO / BANNERS -->
         <div class="hero">
-          <div class="hero-img carousel">
-            <a href="#" target="_blank" class="carousel-item active">
-              <img src="banner.jpg" alt="Баннер 1">
-            </a>
-            <a href="#" target="_blank" class="carousel-item">
-              <img src="banner2.jpg" alt="Баннер 2">
-            </a>
-          </div>
-          <div class="carousel-indicators" id="carousel-indicators">
-            <!-- полоски для баннеров -->
-          </div>
-        </div>
+  <div class="carousel">
+    <a href="https://t.me/WowPhotoPromt" target="_blank" class="carousel-item active">
+      <img src="banner.jpg" alt="Баннер 1">
+    </a>
+    <a href="https://example.com/2" target="_blank" class="carousel-item">
+      <img src="banner2.jpg" alt="Баннер 2">
+    </a>
+    <a href="https://example.com/3" target="_blank" class="carousel-item">
+      <img src="banner3.jpg" alt="Баннер 3">
+    </a>
+  </div>
+  <div class="carousel-indicators">
+    <span class="indicator active"></span>
+    <span class="indicator"></span>
+    <span class="indicator"></span>
+  </div>
+</div>
 
         <!-- TRENDS -->
         <div class="section-header">
@@ -217,12 +222,10 @@
         </div>
 
         <div class="modal-body">
-          <div class="tabs">
-            <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
-            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
-            <button class="tab" data-type="text" onclick="setType('text')">Текст</button>
-            <button class="tab" data-type="music" onclick="setType('music')">Музыка</button>
-          </div>
+      <div class="tabs">
+  <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
+  <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
+</div>
 
           <div class="field">
             <label>Нейросеть</label>
@@ -234,6 +237,17 @@
             <label>Промпт *</label>
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
           </div>
+          
+          <div class="field">
+  <label>Пропорции</label>
+  <select id="aspect-ratio">
+    <option value="1:1">Квадрат (1:1)</option>
+    <option value="16:9">Широкоэкранный (16:9)</option>
+    <option value="9:16">Вертикальный (9:16)</option>
+    <option value="4:3">4:3</option>
+    <option value="3:4">3:4</option>
+  </select>
+</div>
 
           <div class="field">
             <label>Фото</label>
