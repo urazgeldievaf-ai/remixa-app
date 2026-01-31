@@ -284,10 +284,8 @@ body{
   color: var(--neon);
   text-shadow: 0 0 12px var(--neon);
 }
-
 .nav-btn.active .icon {
-  fill: var(--neon);
-  filter: drop-shadow(0 0 12px var(--neon));
+  filter: brightness(1.3) drop-shadow(0 0 12px var(--neon)); /* Неон + свечение для всех иконок (и SVG, и PNG) */
 }
 .nav-btn.create{
   width:20%;
