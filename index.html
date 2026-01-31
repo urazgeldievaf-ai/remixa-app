@@ -1,258 +1,338 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Remixa</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="app">
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
 
-    <!-- SVG ICONS -->
-    <svg style="display:none;">
-      <symbol id="icon-home" viewBox="0 0 24 24">
-        <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z"/>
-      </symbol>
+:root{
+  --bg1:#050615;
+  --bg2:#04040f;
+  --neon:#2cf0ff;
+  --neon2:#5b3cff;
+  --text:#e9f2ff;
+  --muted:#aab3c8;
+  --card:rgba(20,20,45,0.55);
+  --border:rgba(44,240,255,0.28);
+}
 
-      <symbol id="icon-ideas" viewBox="0 0 24 24">
-        <path d="M12 2C9.8 2 7.8 3 7 5c-.7 1.5-.5 3.2.7 4.5C8.2 10 9 11 9 12c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1-.8-2-1.3-2.5 1.2-1.2 1.4-3 0.7-4.5-0.8-2-2.8-3-5-3z"/>
-      </symbol>
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Manrope',sans-serif;
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:var(--text);
+}
 
-      <symbol id="icon-create" viewBox="0 0 24 24">
-        <path d="M12 2l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z"/>
-      </symbol>
+.app{min-height:100vh; position:relative; padding-bottom:86px;}
 
-      <symbol id="icon-fire" viewBox="0 0 24 24">
-        <path d="M12 2C8 8 9 14 12 18c3-4 4-10 0-16z"/>
-      </symbol>
+/* TOPBAR */
+.topbar{
+  position:sticky; top:0; z-index:10;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 16px;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(44,240,255,0.18);
+}
+.logo img{
+  height:44px; /* увеличили */
+}
+.diamond-btn{
+  display:flex; align-items:center; gap:10px;
+  border:none; background:transparent; color:#fff;
+  font-weight:600; cursor:pointer;
+}
+.diamond-icon{
+  width:22px; height:22px;
+  fill:linear-gradient(135deg,var(--neon),var(--neon2));
+  color: var(--neon);
+  filter: drop-shadow(0 0 14px rgba(44,240,255,0.55));
+}
 
-      <symbol id="icon-like" viewBox="0 0 24 24">
-        <path d="M12 21s-7-4.4-9-8.2C1 10.4 2.4 7.5 5.2 6.2c1.9-.9 4-.2 6.8 2.1 2.8-2.3 4.9-3 6.8-2.1 2.8 1.3 4.2 4.2 2.2 6.6-2 3.8-9 8.2-9 8.2z"/>
-      </symbol>
+/* MAIN PAGE */
+.page{display:none; padding:14px;}
+.page.active{display:block;}
 
-      <symbol id="icon-profile" viewBox="0 0 24 24">
-        <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/>
-      </symbol>
-    </svg>
+.hero{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:14px;
+  padding:14px;
+  border-radius:18px;
+  background:linear-gradient(135deg, rgba(44,240,255,0.12), rgba(91,60,255,0.12));
+  border:1px solid rgba(44,240,255,0.25);
+  box-shadow:0 0 35px rgba(44,240,255,0.12);
+}
+.hero-text h1{
+  font-size:22px; font-weight:700; margin:0 0 8px 0;
+}
+.hero-text p{color:var(--muted); margin:0 0 16px 0;}
+.hero-btn{
+  width:180px;
+  padding:14px;
+  border:none;
+  border-radius:22px;
+  background:linear-gradient(90deg, rgba(44,240,255,0.95), rgba(91,60,255,0.95));
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+  display:flex; justify-content:center; align-items:center; gap:10px;
+  box-shadow:0 0 24px rgba(44,240,255,0.5);
+}
+.hero-img img{
+  width:100%;
+  border-radius:16px;
+  box-shadow:0 0 20px rgba(44,240,255,0.25);
+}
 
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="logo">
-        <img src="logo.png" alt="Remixa" />
-      </div>
-      <div class="top-right">
-        <button class="diamond-btn" onclick="openWallet()">
-          <span id="balanceTop">14,125 💎</span>
-        </button>
-      </div>
-    </header>
+/* SECTION */
+.section-header{margin-top:16px; margin-bottom:10px;}
+.section-title{font-weight:700; font-size:18px;}
 
-    <!-- MAIN PAGES -->
-    <main>
-      <!-- PAGE: MAIN -->
-      <section id="page-main" class="page active">
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.card{
+  border-radius:16px;
+  background:var(--card);
+  border:1px solid rgba(44,240,255,0.22);
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  transition:transform .2s ease;
+}
+.card:hover{transform:translateY(-2px);}
+.card img{width:100%; height:140px; object-fit:cover; display:block;}
+.card .info{padding:10px;}
+.card .title{font-weight:600; font-size:14px;}
+.card .meta{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:8px; color:var(--muted); font-size:12px;
+}
+.card .like{display:flex; align-items:center; gap:6px;}
+.card .like svg{width:14px;height:14px; fill:var(--neon);}
 
-        <!-- HERO / BANNERS -->
-        <div class="hero">
-          <div class="hero-img carousel">
-            <a href="#" target="_blank" class="carousel-item active">
-              <img src="banner.jpg" alt="Баннер 1">
-            </a>
-            <a href="#" target="_blank" class="carousel-item">
-              <img src="banner2.jpg" alt="Баннер 2">
-            </a>
-          </div>
-          <div class="carousel-indicators" id="carousel-indicators">
-            <!-- полоски для баннеров -->
-          </div>
-        </div>
+/* PAGE HEADER */
+.page-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
+.page-title{font-weight:700; font-size:18px; display:flex; align-items:center;}
+.spark{
+  width:6px; height:6px; border-radius:50%;
+  background:var(--neon);
+  box-shadow:0 0 10px rgba(44,240,255,0.8);
+  display:inline-block; margin-right:10px;
+}
 
-        <!-- TRENDS -->
-        <div class="section-header">
-          <div class="section-title">Тренды</div>
-        </div>
-        <div class="grid" id="main-grid"></div>
+/* CATEGORIES */
+.categories{
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;
+}
+.cat{
+  padding:10px 12px;
+  border-radius:16px;
+  border:1px solid rgba(44,240,255,0.22);
+  background:rgba(10,10,30,0.55);
+  color:#fff;
+  cursor:pointer;
+  font-weight:600;
+}
+.cat.active{
+  background:linear-gradient(90deg, rgba(44,240,255,0.45), rgba(91,60,255,0.45));
+}
 
-      </section>
+/* EMPTY TEXT */
+.empty-text{
+  margin-top:14px;
+  padding:16px;
+  border-radius:16px;
+  background:rgba(10,10,30,0.55);
+  border:1px solid rgba(44,240,255,0.22);
+  color:var(--muted);
+  text-align:center;
+}
 
-      <!-- PAGE: IDEAS / ШЕДЕВРЫ -->
-      <section id="page-ideas" class="page">
-        <div class="page-header">
-          <div class="page-title">
-            <span class="spark"></span> Шедевры
-          </div>
-        </div>
+/* PROFILE */
+.profile-top{
+  display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+}
+.profile-balance, .profile-ref{
+  padding:12px;
+  border-radius:16px;
+  background:rgba(10,10,30,0.55);
+  border:1px solid rgba(44,240,255,0.22);
+}
+.bal-title, .ref-title{font-weight:600; color:var(--muted);}
+.bal-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:8px;
+}
+.bal-val{font-weight:700; font-size:20px;}
+.ref-val{font-weight:700; font-size:18px; display:flex; flex-direction:column; gap:6px;}
+.ref-val .hint{font-weight:500; font-size:12px; color:var(--muted);}
 
-        <div class="categories">
-          <button class="cat active" data-cat="new" onclick="setCategory('new')">НОВЫЕ</button>
-          <button class="cat" data-cat="trend" onclick="setCategory('trend')">ТРЕНДЫ</button>
-          <button class="cat" data-cat="female" onclick="setCategory('female')">ЖЕНСКОЕ</button>
-          <button class="cat" data-cat="male" onclick="setCategory('male')">МУЖСКОЕ</button>
-          <button class="cat" data-cat="kids" onclick="setCategory('kids')">ДЕТИ</button>
-          <button class="cat" data-cat="family" onclick="setCategory('family')">СЕМЕЙНОЕ</button>
-          <button class="cat" data-cat="14feb" onclick="setCategory('14feb')">14 февраля</button>
-          <button class="cat" data-cat="23feb" onclick="setCategory('23feb')">23 февраля</button>
-          <button class="cat" data-cat="8mar" onclick="setCategory('8mar')">8 марта</button>
-          <button class="cat" data-cat="history" onclick="setCategory('history')">Исторический</button>
-          <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">Фэнтези</button>
-          <button class="cat" data-cat="pair" onclick="setCategory('pair')">Пара</button>
-          <button class="cat" data-cat="birthday" onclick="setCategory('birthday')">ДР</button>
-          <button class="cat" data-cat="auto" onclick="setCategory('auto')">Авто</button>
-          <button class="cat" data-cat="interior" onclick="setCategory('interior')">Интерьер</button>
-        </div>
-        <div class="grid" id="ideas-grid"></div>
-      </section>
+/* PARTNERSHIP */
+.partnership-card{margin-top:10px; padding:14px; border-radius:18px; background:rgba(10,10,30,0.55); border:1px solid rgba(44,240,255,0.22);}
+.partnership-row{display:flex; gap:10px; margin-top:10px;}
+.partnership-row input{
+  flex:1;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid rgba(44,240,255,0.22);
+  background:rgba(10,10,30,0.55);
+  color:#fff;
+}
 
-      <!-- PAGE: LIKES -->
-      <section id="page-likes" class="page">
-        <div class="page-header">
-          <div class="page-title">
-            <span class="spark"></span> Лайки
-          </div>
-        </div>
-        <div id="likes-grid" class="grid"></div>
-        <div id="likes-empty" class="empty-text">
-          Скоро здесь появятся твои избранные картинки и видео ✨<br>
-          Нравится — сохраняй в “Лайки”, чтобы быстро найти лучшие работы.
-        </div>
-      </section>
+/* PAYMENTS */
+.payments{
+  display:flex; flex-direction:column; gap:10px; margin-top:10px;
+}
+.payment{
+  padding:12px;
+  border-radius:16px;
+  background:rgba(10,10,30,0.55);
+  border:1px solid rgba(44,240,255,0.22);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.payment .left{color:var(--muted); font-size:12px;}
+.payment .right{font-weight:700;}
 
-      <!-- PAGE: PROFILE -->
-      <section id="page-profile" class="page">
-        <div class="page-header">
-          <div class="page-title">
-            <span class="spark"></span> Профиль
-          </div>
-        </div>
+/* BUTTONS */
+.small-btn{
+  padding:12px 14px;
+  border-radius:16px;
+  border:none;
+  cursor:pointer;
+  background:rgba(44,240,255,0.18);
+  color:#fff;
+  font-weight:600;
+}
 
-        <!-- PROFILE TABS -->
-        <div class="profile-tabs">
-          <button class="tab active" data-sub="user" onclick="setProfileSub('user')">Профиль</button>
-          <button class="tab" data-sub="balance" onclick="setProfileSub('balance')">Баланс</button>
-          <button class="tab" data-sub="partner" onclick="setProfileSub('partner')">Партнёрство</button>
-        </div>
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed; bottom:0; left:0; width:100%;
+  display:flex; justify-content:space-between;
+  padding:10px 10px;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(12px);
+  border-top:1px solid rgba(44,240,255,0.18);
+}
+.nav-btn{
+  width:20%;
+  border:none;
+  background:none;
+  color:rgba(255,255,255,0.65);
+  font-size:12px;
+  font-weight:600;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+}
+.nav-btn.active{color:#fff;}
+.nav-btn .icon{
+  width:22px; height:22px;
+  fill:rgba(255,255,255,0.8);
+}
+.nav-btn.create{
+  width:20%;
+  padding:10px 0;
+  border-radius:16px;
+  background:linear-gradient(90deg, rgba(44,240,255,0.95), rgba(91,60,255,0.95));
+  box-shadow:0 0 24px rgba(44,240,255,0.55);
+}
 
-        <!-- PROFILE CONTENT -->
-        <div class="profile-subpage" id="profile-user">
-          <div class="profile-info">
-            <img src="user.jpg" alt="Фото пользователя" class="profile-photo">
-            <div class="profile-name">Имя пользователя</div>
-            <div class="profile-link-row">
-              <input type="text" id="profileLink" value="t.me/user" readonly>
-              <button class="small-btn" onclick="copyRef('profileLink')">Копировать</button>
-            </div>
-          </div>
-          <div class="profile-generations grid" id="profile-history"></div>
-        </div>
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.75);
+  z-index:50;
+  justify-content:center; align-items:center;
+}
+.modal-inner{
+  width:92%;
+  max-width:420px;
+  background:rgba(10,10,30,0.92);
+  border-radius:22px;
+  border:1px solid rgba(44,240,255,0.25);
+  overflow:hidden;
+}
+.modal-header{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 16px;
+  border-bottom:1px solid rgba(44,240,255,0.15);
+}
+.modal-title{font-weight:700;}
+.close-btn{
+  background:none; border:none; color:rgba(255,255,255,0.8);
+  font-size:24px; cursor:pointer;
+}
+.modal-body{padding:14px;}
+.field{margin-bottom:12px;}
+.field label{display:block; font-weight:600; margin-bottom:6px;}
+.field select, .field textarea, .field input[type="file"]{
+  width:100%;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid rgba(44,240,255,0.22);
+  background:rgba(10,10,30,0.55);
+  color:#fff;
+}
+.field textarea{height:90px; resize:none;}
+.hint{color:rgba(44,240,255,0.9); font-size:12px; margin-top:6px;}
+.tabs{display:flex; gap:8px; margin-bottom:12px;}
+.tab{
+  flex:1;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid rgba(44,240,255,0.22);
+  background:rgba(10,10,30,0.55);
+  cursor:pointer;
+  font-weight:700;
+}
+.tab.active{background:linear-gradient(90deg, rgba(44,240,255,0.45), rgba(91,60,255,0.45));}
 
-        <div class="profile-subpage" id="profile-balance" style="display:none;">
-          <div class="profile-balance-block">
-            <div class="bal-title">Баланс</div>
-            <div class="bal-row">
-              <div class="bal-val" id="balanceTotal">14,125 💎</div>
-              <button class="small-btn" onclick="topUp()">Пополнить</button>
-            </div>
-            <div class="balance-options">
-              <button onclick="topUpAmount(100)">100 💎</button>
-              <button onclick="topUpAmount(300)">300 💎</button>
-              <button onclick="topUpAmount(500)">500 💎</button>
-              <button onclick="topUpAmount(1000)">1000 💎</button>
-              <button onclick="topUpAmount(3000)">3000 💎</button>
-              <button onclick="topUpAmount(5000)">5000 💎</button>
-            </div>
-          </div>
-          <div class="profile-payments" id="profile-payments"></div>
-        </div>
+.big-btn.generate{
+  width:100%;
+  padding:16px;
+  border-radius:24px;
+  border:none;
+  background:linear-gradient(90deg, rgba(44,240,255,0.95), rgba(91,60,255,0.95));
+  color:#fff;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex; justify-content:center; align-items:center; gap:12px;
+  box-shadow:0 0 26px rgba(44,240,255,0.55);
+}
 
-        <div class="profile-subpage" id="profile-partner" style="display:none;">
-          <div class="partnership-card">
-            <div class="partnership-title">Приглашай друзей — получай 15% от их платежей</div>
-            <div class="partnership-row">
-              <input type="text" id="refLink" readonly value="t.me/remixa_bot?start=ref_000">
-              <button class="small-btn" onclick="copyRef()">Копировать</button>
-            </div>
-          </div>
-          <div class="referrals-list" id="referralsList"></div>
-          <div class="ref-income">
-            <span id="refIncome">0 💎</span>
-            <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
-          </div>
-        </div>
-      </section>
 
-    </main>
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-      <button data-page="main" class="nav-btn active" onclick="switchPage('main')">
-        <svg class="icon" width="22" height="22"><use href="#icon-home"></use></svg>
-        <span>Главная</span>
-      </button>
-      <button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
-        <svg class="icon" width="22" height="22"><use href="#icon-fire"></use></svg>
-        <span>Шедевры</span>
-      </button>
-      <button class="nav-btn create" onclick="openCreateModal('image')">
-        <svg class="icon" width="26" height="26"><use href="#icon-create"></use></svg>
-        <span>Создать</span>
-      </button>
-      <button data-page="likes" class="nav-btn" onclick="switchPage('likes')">
-        <svg class="icon" width="22" height="22"><use href="#icon-like"></use></svg>
-        <span>Лайки</span>
-      </button>
-      <button data-page="profile" class="nav-btn" onclick="switchPage('profile')">
-        <svg class="icon" width="22" height="22"><use href="#icon-profile"></use></svg>
-        <span>Профиль</span>
-      </button>
-    </nav>
 
-    <!-- CREATE MODAL -->
-    <div class="modal" id="create-modal">
-      <div class="modal-inner">
-        <div class="modal-header">
-          <div class="modal-title">Создать</div>
-          <button class="close-btn" onclick="closeCreate()">×</button>
-        </div>
 
-        <div class="modal-body">
-          <div class="tabs">
-            <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
-            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
-            <button class="tab" data-type="text" onclick="setType('text')">Текст</button>
-            <button class="tab" data-type="music" onclick="setType('music')">Музыка</button>
-          </div>
 
-          <div class="field">
-            <label>Нейросеть</label>
-            <select id="model" onchange="updateModelHint()"></select>
-            <div class="hint" id="modelHint"></div>
-          </div>
 
-          <div class="field">
-            <label>Промпт *</label>
-            <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
-          </div>
 
-          <div class="field">
-            <label>Фото</label>
-            <input type="file" accept="image/*">
-            <div class="hint">Добавить фото</div>
-          </div>
 
-          <button class="big-btn generate" onclick="generate()">
-            <span id="genText">Создать</span>
-            <span id="genPrice" class="price">— 5💎</span>
-          </button>
-        </div>
-      </div>
-    </div>
 
-  </div>
 
-  <script src="app.js"></script>
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
