@@ -137,9 +137,11 @@ body{
   font-weight:600;
 }
 .cat.active{
-  background: linear-gradient(90deg, var(--neon), var(--neon2));
-  box-shadow: 0 0 6px var(--neon); /* меньше размытия */
-  color:#fff;
+.cat.active, .tab.active {
+  background: none;  /* убираем блок */
+  border-color: var(--neon); /* оставляем границу по неону */
+  color: var(--neon);
+  text-shadow: 0 0 6px var(--neon);
 }
 
 /* EMPTY TEXT */
@@ -236,9 +238,10 @@ body{
   gap:6px;
   cursor:pointer;
 }
-.nav-btn.active{
+.nav-btn.active {
   color: var(--neon);
-  text-shadow: 0 0 4px rgba(31,60,255,1);  /* меньше размытия, ярче */
+  text-shadow: 0 0 6px var(--neon); /* glow без фона */
+  background: none;  /* убрать прямоугольник */
 }
 
 .nav-btn.active .icon{
