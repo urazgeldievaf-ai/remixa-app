@@ -14,7 +14,6 @@ const models = {
     { id: "kling_motion", name: "Клинг Моушн Контрол", price: 100, hint: "Повтори движение из видео, выбор версии", versionOptions: [{name: "Быстрая", price: 45}, {name: "Качественная", price: 65}], fields: ["photo", "motion_video", "aspect", "version"] }
   ]
 };
-
 let balance = 14125;
 let refIncome = 0;
 let likes = [];
@@ -31,7 +30,6 @@ let currentCategory = "new";
 let currentProfileSub = "user";
 let carouselIndex = 0;
 let carouselInterval = null;
-
 // -------------------- UI --------------------
 function switchPage(page) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
@@ -39,7 +37,6 @@ function switchPage(page) {
   document.querySelectorAll(".bottom-nav .nav-btn").forEach(btn => btn.classList.remove("active"));
   document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add("active");
 }
-
 function setProfileSub(sub){
   currentProfileSub = sub;
   document.querySelectorAll(".profile-tabs .tab").forEach(t => t.classList.remove("active"));
@@ -47,17 +44,14 @@ function setProfileSub(sub){
   document.querySelectorAll(".profile-subpage").forEach(p => p.style.display = "none");
   document.getElementById(`profile-${sub}`).style.display = "block";
 }
-
 function openWallet() {
   alert("Кошелёк: пока заглушка (в будущем добавим оплату)");
 }
-
 function updateTopBalance(){
-  document.getElementById("balanceTop").textContent = `${balance.toLocaleString()} 💎`;
+  document.getElementById("balanceTop").textContent = balance.toLocaleString() + " 💎";
   document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("refIncome").textContent = `${refIncome.toLocaleString()} 💎`;
 }
-
 function topUp(){
   balance += 50;
   payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount: 50, status: "Пополнение" });
@@ -65,7 +59,6 @@ function topUp(){
   renderPayments();
   alert("Баланс пополнен на 50💎");
 }
-
 function topUpAmount(amount){
   balance += amount;
   payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount, status: "Пополнение" });
@@ -73,14 +66,12 @@ function topUpAmount(amount){
   renderPayments();
   alert(`Баланс пополнен на ${amount} 💎`);
 }
-
 function copyRef(id="refLink"){
   const input = document.getElementById(id);
   input.select();
   document.execCommand("copy");
   alert("Ссылка скопирована");
 }
-
 function createCard(item, showStatus = false){ // ДОБАВЛЕНО — параметр showStatus
   let statusIcon = '';
   if (showStatus && item.status) { // Статус только в профиле
@@ -108,7 +99,6 @@ function createCard(item, showStatus = false){ // ДОБАВЛЕНО — пар�
     </div>
   `;
 }
-
 // -------------------- RENDER --------------------
 function renderMain(){
   const grid = document.getElementById("main-grid");
@@ -121,7 +111,6 @@ function renderMain(){
   items.forEach(i => grid.innerHTML += createCard(i, false)); // Статусы НЕ показываем
   startCarousel();
 }
-
 function renderIdeas(){
   const grid = document.getElementById("ideas-grid");
   grid.innerHTML = "";
@@ -132,7 +121,6 @@ function renderIdeas(){
   }
   items.forEach(i => grid.innerHTML += createCard(i, false)); // Статусы НЕ показываем
 }
-
 function renderLikes(){
   const grid = document.getElementById("likes-grid");
   const empty = document.getElementById("likes-empty");
@@ -147,7 +135,6 @@ function renderLikes(){
     if(item) grid.innerHTML += createCard(item, false); // Статусы НЕ показываем
   });
 }
-
 function renderProfileHistory(){
   const grid = document.getElementById("profile-history");
   grid.innerHTML = "";
@@ -157,7 +144,6 @@ function renderProfileHistory(){
   }
   history.forEach(i => grid.innerHTML += createCard(i, true)); // Статусы ТОЛЬКО здесь
 }
-
 function renderPayments(){
   const container = document.getElementById("profile-payments");
   container.innerHTML = "";
@@ -170,7 +156,6 @@ function renderPayments(){
     `;
   });
 }
-
 // -------------------- CATEGORIES --------------------
 function setCategory(cat){
   currentCategory = cat;
@@ -178,7 +163,6 @@ function setCategory(cat){
   document.querySelector(`.cat[data-cat="${cat}"]`)?.classList.add("active");
   renderIdeas();
 }
-
 // -------------------- CREATE MODAL --------------------
 function openCreateModal(type="image", fromId=null){
   document.getElementById("create-modal").style.display = "flex";
@@ -189,23 +173,18 @@ function openCreateModal(type="image", fromId=null){
       document.getElementById("prompt").value = item.prompt || item.title;
       document.getElementById("model").value = item.modelId;
       updateModelHint();
-      updateFormFields();
     }
   }
 }
-
 function closeCreate(){
   document.getElementById("create-modal").style.display = "none";
 }
-
 function setType(type){
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.querySelector(`.tab[data-type="${type}"]`)?.classList.add("active");
   populateModels(type);
   updateGenButton(type);
-  updateFormFields();
 }
-
 function populateModels(type){
   const select = document.getElementById("model");
   select.innerHTML = "";
@@ -213,9 +192,7 @@ function populateModels(type){
     select.innerHTML += `<option value="${m.id}">${m.name}</option>`;
   });
   updateModelHint();
-  updateFormFields();
 }
-
 function updateModelHint(){
   const type = document.querySelector(".tab.active").dataset.type;
   const modelId = document.getElementById("model").value;
@@ -223,28 +200,12 @@ function updateModelHint(){
   document.getElementById("modelHint").textContent = model ? model.hint : "";
   updateGenButton(type);
 }
-
 function updateGenButton(type){
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
-  if (!model) {
-    document.getElementById("genText").textContent = "Создать";
-    document.getElementById("genPrice").textContent = "";
-    return;
-  }
-
-  let priceText = `— ${model.price}💎`;
-  if (model.id === "kling_motion") {
-    const versionSelect = document.getElementById("version");
-    if (versionSelect) {
-      priceText = `— ${versionSelect.value}💎`;
-    }
-  }
-
   document.getElementById("genText").textContent = type === "image" ? "Создать" : "Сгенерировать";
-  document.getElementById("genPrice").textContent = priceText;
+  document.getElementById("genPrice").textContent = model ? `— ${model.price}💎` : "";
 }
-
 // -------------------- FORM FIELDS DYNAMIC --------------------
 function updateFormFields() {
   const modelId = document.getElementById("model").value;
@@ -260,7 +221,7 @@ function updateFormFields() {
   const promptField = document.querySelector('#prompt').parentElement;
   const container = promptField.parentElement;
 
-  // Всегда добавляем пропорции
+  // Всегда добавляем пропорции (только один раз)
   const aspectDiv = document.createElement('div');
   aspectDiv.className = 'field extra-field';
   aspectDiv.innerHTML = `
@@ -281,8 +242,8 @@ function updateFormFields() {
     let inputHtml = '';
 
     if (field === 'start_frame' || field === 'end_frame' || field === 'photo') {
-      labelText = field === 'start_frame' ? 'Начальный кадр (по желанию)' : 
-                  field === 'end_frame' ? 'Конечный кадр (по желанию)' : 
+      labelText = field === 'start_frame' ? 'Начальный кадр (по желанию)' :
+                  field === 'end_frame' ? 'Конечный кадр (по желанию)' :
                   'Фото/видео (по желанию)';
       inputHtml = `<input type="file" id="${field}-upload" accept="image/*,video/*">`;
     } else if (field === 'prompt') {
@@ -309,7 +270,6 @@ function updateFormFields() {
     }
   });
 }
-
 // -------------------- GENERATE --------------------
 function generate(){
   const type = document.querySelector(".tab.active").dataset.type;
@@ -342,13 +302,13 @@ function generate(){
     category: currentCategory === "new" ? "trend" : currentCategory,
     likes: 0,
     img: `https://picsum.photos/400/300?random=${id}`,
-    status: "pending", // на модерации
+    status: "pending",
     hiddenPrompt: false
   };
   history.unshift(newItem);
   renderProfileHistory();
 
-  // Показываем кнопки после генерации (вместо alert)
+  // Показываем кнопки после генерации
   const afterGenerate = document.createElement('div');
   afterGenerate.style.marginTop = "16px";
   afterGenerate.innerHTML = `
@@ -362,7 +322,6 @@ function generate(){
 
   closeCreate();
 }
-
 // -------------------- PUBLISH & STATUS --------------------
 function publishToIdeas(id) {
   const item = history.find(i => i.id === id);
@@ -374,7 +333,6 @@ function publishToIdeas(id) {
   renderIdeas();
   alert("Работа отправлена на модерацию!");
 }
-
 function saveToProfile(id) {
   const item = history.find(i => i.id === id);
   if (!item) return;
@@ -382,7 +340,6 @@ function saveToProfile(id) {
   renderProfileHistory();
   alert("Сохранено в профиль!");
 }
-
 // -------------------- CAROUSEL --------------------
 function startCarousel(){
   const slides = document.querySelectorAll(".carousel-item");
@@ -410,7 +367,6 @@ function startCarousel(){
     nextSlide();
   }, 4000);
 }
-
 function showSlide(index){
   const slides = document.querySelectorAll(".carousel-item");
   const indicators = document.querySelectorAll(".carousel-indicators .indicator");
@@ -419,18 +375,15 @@ function showSlide(index){
   if (slides[index]) slides[index].classList.add("active");
   if (indicators[index]) indicators[index].classList.add("active");
 }
-
 function nextSlide(){
   const slides = document.querySelectorAll(".carousel-item");
   carouselIndex = (carouselIndex + 1) % slides.length;
   showSlide(carouselIndex);
 }
-
 function goToSlide(index){
   carouselIndex = index;
   showSlide(carouselIndex);
 }
-
 // -------------------- INIT --------------------
 updateTopBalance();
 renderMain();
