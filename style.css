@@ -330,6 +330,40 @@ body{
   object-fit:cover;
   display:block;
 }
+.hero-img {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.hero-img img {
+  width: 100%;
+  display: none; /* по умолчанию скрыты */
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(31,60,255,0.7); /* насыщенный синий */
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  z-index: 10;
+}
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+.carousel-btn:hover {
+  background: rgba(31,60,255,1);
+}
 
 
 
