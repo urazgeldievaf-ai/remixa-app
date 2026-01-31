@@ -156,6 +156,10 @@ body{
   background:linear-gradient(90deg, rgba(44,240,255,0.45), rgba(91,60,255,0.45));
   box-shadow:0 0 10px rgba(44,240,255,0.6);
 }
+.spark-blue {
+  color: var(--neon);
+  text-shadow: 0 0 12px var(--neon);
+}
 
 /* EMPTY TEXT */
 .empty-text{
