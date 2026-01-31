@@ -78,22 +78,25 @@ body{
   scroll-snap-align: start;
 }
 
-/* Carousel indicators */
-.carousel-indicators{
-  display:flex;
-  justify-content:center;
-  gap:6px;
-  margin-top:8px;
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
 }
-.carousel-indicators .indicator{
-  width:24px;
-  height:3px;
-  border-radius:2px;
-  background:rgba(44,240,255,0.25);
-  transition:all 0.3s ease;
+
+.carousel-indicators .indicator {
+  width: 30px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(44,240,255,0.3);
+  transition: all 0.4s ease;
+  cursor: pointer;
 }
-.carousel-indicators .indicator.active{
-  background:var(--neon);
+
+.carousel-indicators .indicator.active {
+  background: var(--neon);
+  box-shadow: 0 0 12px var(--neon);
 }
 
 /* SECTION */
