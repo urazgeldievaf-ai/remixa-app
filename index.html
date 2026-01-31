@@ -16,7 +16,7 @@
       </symbol>
 
       <symbol id="icon-ideas" viewBox="0 0 24 24">
-        <path d="M9 21h6v-1H9v1zm3-19a7 7 0 0 0-4 12.6V16h8v-1.4A7 7 0 0 0 12 2zm1 13h-2v-1h2v1z"/>
+        <path d="M12 2a9 9 0 0 0-9 9c0 4.97 4 9 9 9s9-4.03 9-9a9 9 0 0 0-9-9zm0 16a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/>
       </symbol>
 
       <symbol id="icon-create" viewBox="0 0 24 24">
@@ -31,12 +31,9 @@
         <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/>
       </symbol>
 
+      <!-- Новая иконка для Шедевров -->
       <symbol id="icon-masterpiece" viewBox="0 0 24 24">
-        <path d="M12 2l3 7h7l-5.5 4 2 7-6-4-6 4 2-7-5.5-4h7z"/>
-      </symbol>
-
-      <symbol id="icon-diamond" viewBox="0 0 24 24">
-        <path d="M12 2l7 7-7 13-7-13 7-7z"/>
+        <path d="M12 2l2 5h5l-4 4 1 5-5-3-5 3 1-5-4-4h5z"/>
       </symbol>
     </svg>
 
@@ -48,9 +45,6 @@
 
       <div class="top-right">
         <button class="diamond-btn" onclick="openWallet()">
-          <svg class="diamond-icon" viewBox="0 0 24 24">
-            <use href="#icon-diamond"></use>
-          </svg>
           <span id="balanceTop">14,125 💎</span>
         </button>
       </div>
@@ -60,35 +54,38 @@
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
+
+        <!-- HERO / BANNERS -->
         <div class="hero">
-          <div class="hero-text">
-            <h1>Создай потрясающее фото с Remixa!</h1>
-            <p>Быстро. Красиво. Вдохновляюще.</p>
-            <button class="hero-btn" onclick="openCreateModal('image')">
-              Создать
-            </button>
-          </div>
-          <div class="hero-img">
-            <img src="banner-img.jpg" alt="Remixa banner">
-            <div class="banner-indicators" id="banner-indicators"></div>
+          <div class="hero-img carousel">
+            <a href="https://example.com" target="_blank" class="carousel-item">
+              <img src="banner.jpg" alt="Баннер 1">
+            </a>
+            <a href="https://t.me/WowPhotoPromt" target="_blank" class="carousel-item">
+              <img src="banner2.jpg" alt="Баннер 2">
+            </a>
+            <div class="carousel-indicators">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+            </div>
           </div>
         </div>
 
+        <!-- TRENDS -->
         <div class="section-header">
-          <div class="section-title">
-            <svg class="icon" width="20" height="20"><use href="#icon-masterpiece"></use></svg>
-            Шедевры
-          </div>
+          <div class="section-title neon-title">Тренды</div>
         </div>
 
         <div class="grid" id="main-grid"></div>
+
       </section>
 
-      <!-- PAGE: IDEAS -->
+      <!-- PAGE: IDEAS / ШЕДЕВРЫ -->
       <section id="page-ideas" class="page">
         <div class="page-header">
-          <div class="page-title">
-            <span class="spark"></span> Идеи
+          <div class="page-title neon-title">
+            <svg class="icon" width="22" height="22"><use href="#icon-masterpiece"></use></svg>
+            <span>Шедевры</span>
           </div>
         </div>
 
@@ -105,6 +102,9 @@
           <button class="cat" data-cat="history" onclick="setCategory('history')">Исторический</button>
           <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">Фэнтези</button>
           <button class="cat" data-cat="pair" onclick="setCategory('pair')">Пара</button>
+          <button class="cat" data-cat="birthday" onclick="setCategory('birthday')">ДР</button>
+          <button class="cat" data-cat="auto" onclick="setCategory('auto')">Авто</button>
+          <button class="cat" data-cat="interior" onclick="setCategory('interior')">Интерьер</button>
         </div>
 
         <div class="grid" id="ideas-grid"></div>
@@ -113,7 +113,7 @@
       <!-- PAGE: LIKES -->
       <section id="page-likes" class="page">
         <div class="page-header">
-          <div class="page-title">
+          <div class="page-title neon-title">
             <span class="spark"></span> Лайки
           </div>
         </div>
@@ -127,30 +127,12 @@
       <!-- PAGE: PROFILE -->
       <section id="page-profile" class="page">
         <div class="page-header">
-          <div class="page-title">
+          <div class="page-title neon-title">
             <span class="spark"></span> Профиль
           </div>
         </div>
 
-        <div class="profile-top">
-          <div class="profile-balance">
-            <div class="bal-title">Баланс 💎</div>
-            <div class="bal-row">
-              <div class="bal-val" id="balanceTotal">14,125 💎</div>
-              <button class="small-btn" onclick="topUp()">Пополнить</button>
-            </div>
-          </div>
-
-          <div class="profile-ref">
-            <div class="ref-title">Доход от рефералов</div>
-            <div class="ref-val">
-              <span id="refIncome">0 💎</span>
-              <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
-              <button class="small-btn" onclick="withdraw()">Вывести</button>
-            </div>
-          </div>
-        </div>
-
+        <!-- ПОДРАЗДЕЛ: ПАРТНЕРСКАЯ ПРОГРАММА -->
         <div class="profile-block">
           <div class="block-title">Партнёрская программа</div>
           <div class="partnership-card">
@@ -162,11 +144,45 @@
           </div>
         </div>
 
+        <!-- ПОДРАЗДЕЛ: ДОХОД ОТ РЕФЕРАЛОВ -->
         <div class="profile-block">
-          <div class="block-title">История генераций</div>
+          <div class="block-title">Доход от рефералов</div>
+          <div class="ref-val">
+            <span id="refIncome">0 💎</span>
+            <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
+          </div>
+        </div>
+
+        <!-- ПОДРАЗДЕЛ: СПИСОК РЕФЕРАЛОВ -->
+        <div class="profile-block">
+          <div class="block-title">Рефералы</div>
+          <div class="grid" id="ref-list"></div>
+        </div>
+
+        <!-- ПОДРАЗДЕЛ: ГЕНЕРАЦИИ ПОЛЬЗОВАТЕЛЯ -->
+        <div class="profile-block">
+          <div class="block-title">Мои генерации</div>
           <div id="profile-history" class="grid"></div>
         </div>
 
+        <!-- ПОДРАЗДЕЛ: БАЛАНС / КОШЕЛЁК -->
+        <div class="profile-block">
+          <div class="block-title">Баланс</div>
+          <div class="bal-row">
+            <div class="bal-val" id="balanceTotal">14,125 💎</div>
+            <button class="small-btn" onclick="topUp()">Пополнить</button>
+          </div>
+          <div class="balance-options">
+            <button onclick="topUpAmount(100)">100 💎</button>
+            <button onclick="topUpAmount(300)">300 💎</button>
+            <button onclick="topUpAmount(500)">500 💎</button>
+            <button onclick="topUpAmount(1000)">1000 💎</button>
+            <button onclick="topUpAmount(3000)">3000 💎</button>
+            <button onclick="topUpAmount(5000)">5000 💎</button>
+          </div>
+        </div>
+
+        <!-- ПОДРАЗДЕЛ: ИСТОРИЯ ПЛАТЕЖЕЙ -->
         <div class="profile-block">
           <div class="block-title">История платежей</div>
           <div id="profile-payments" class="payments"></div>
@@ -182,7 +198,7 @@
       </button>
       <button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
         <svg class="icon" width="22" height="22"><use href="#icon-ideas"></use></svg>
-        <span>Идеи</span>
+        <span>Шедевры</span>
       </button>
 
       <button class="nav-btn create" onclick="openCreateModal('image')">
@@ -211,6 +227,9 @@
         <div class="modal-body">
           <div class="tabs">
             <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
+            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
+            <button class="tab" data-type="text" onclick="setType('text')">Текст</button>
+            <button class="tab" data-type="music" onclick="setType('music')">Музыка</button>
           </div>
 
           <div class="field">
@@ -222,6 +241,12 @@
           <div class="field">
             <label>Промпт *</label>
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
+          </div>
+
+          <div class="field">
+            <label>Фото</label>
+            <input type="file" accept="image/*">
+            <div class="hint">Добавить фото</div>
           </div>
 
           <button class="big-btn generate" onclick="generate()">
@@ -237,6 +262,7 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
