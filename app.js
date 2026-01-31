@@ -1,19 +1,18 @@
 // -------------------- DATA --------------------
 const models = {
   image: [
-    { id: "nano", name: "Нано Банана", price: 5, hint: "Быстро и доступно" }, // ИЗМЕНЕНО
-    { id: "nano_pro", name: "Нано Банана Про", price: 15, hint: "Высокая детализация, чуть дольше" }, // ИЗМЕНЕНО
-    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Умный и креативный" } // ИЗМЕНЕНО
+    { id: "nano", name: "Нано Банана", price: 5, hint: "Быстро и доступно" },
+    { id: "nano_pro", name: "Нано Банана Про", price: 15, hint: "Высокая детализация, чуть дольше" },
+    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Умный и креативный" }
   ],
-  video: [ // ДОБАВЛЕНО полностью новые модели для видео
+  video: [
     { id: "veo_fast", name: "Veo 3.1 (быстрая)", price: 60, hint: "Быстрая генерация ~8 сек", duration: 8, fields: ["start_frame", "end_frame", "prompt", "aspect"] },
     { id: "veo", name: "Veo 3.1", price: 250, hint: "Максимальное качество ~8 сек", duration: 8, fields: ["start_frame", "end_frame", "prompt", "aspect"] },
     { id: "sora2", name: "Sora 2", price: 50, hint: "~8 сек, креативные видео", duration: 8, fields: ["start_frame", "prompt", "aspect"] },
-    { id: "sora_pro", name: "Sora 2 Pro", price: 135, hint: "Киношное качество до 15 сек, генерация долгая", duration: 15, fields: ["start_frame", "prompt", "aspect"] },
+    { id: "sora_pro", name: "Sora 2 Про", price: 135, hint: "Киношное качество до 15 сек, генерация долгая", duration: 15, fields: ["start_frame", "prompt", "aspect"] },
     { id: "kling26", name: "Клинг 2.6", price: 50, hint: "Стабильные видео, выбор длительности", durationOptions: [5, 10], fields: ["photo", "prompt", "aspect", "duration", "sound"] },
     { id: "kling_motion", name: "Клинг Моушн Контрол", price: 100, hint: "Повтори движение из видео, выбор версии", versionOptions: [{name: "Быстрая", price: 45}, {name: "Качественная", price: 65}], fields: ["photo", "motion_video", "aspect", "version"] }
   ]
-  // text и music полностью удалены, как ты просила
 };
 
 let balance = 14125;
@@ -23,8 +22,7 @@ let history = [];
 let published = [
   { id: "1", title: "Красивый закат", category: "new", model: "Нано Банана", likes: 12, img: "https://picsum.photos/400/300?random=1", type: "image", status: "approved", hiddenPrompt: false },
   { id: "2", title: "Город ночью", category: "trend", model: "Нано Банана Про", likes: 25, img: "https://picsum.photos/400/300?random=2", type: "image", status: "pending", hiddenPrompt: false }
-]; // ДОБАВЛЕНО поле status и hiddenPrompt для модерации и скрытия промпта
-
+];
 let payments = [
   { id: 1, date: "20.01.2026", amount: 500, status: "Пополнение" },
   { id: 2, date: "22.01.2026", amount: 1000, status: "Пополнение" }
@@ -33,6 +31,7 @@ let currentCategory = "new";
 let currentProfileSub = "user";
 let carouselIndex = 0;
 let carouselInterval = null;
+
 // -------------------- UI --------------------
 function switchPage(page) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
@@ -40,6 +39,7 @@ function switchPage(page) {
   document.querySelectorAll(".bottom-nav .nav-btn").forEach(btn => btn.classList.remove("active"));
   document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add("active");
 }
+
 function setProfileSub(sub){
   currentProfileSub = sub;
   document.querySelectorAll(".profile-tabs .tab").forEach(t => t.classList.remove("active"));
@@ -47,14 +47,17 @@ function setProfileSub(sub){
   document.querySelectorAll(".profile-subpage").forEach(p => p.style.display = "none");
   document.getElementById(`profile-${sub}`).style.display = "block";
 }
+
 function openWallet() {
   alert("Кошелёк: пока заглушка (в будущем добавим оплату)");
 }
+
 function updateTopBalance(){
   document.getElementById("balanceTop").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("refIncome").textContent = `${refIncome.toLocaleString()} 💎`;
 }
+
 function topUp(){
   balance += 50;
   payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount: 50, status: "Пополнение" });
@@ -62,6 +65,7 @@ function topUp(){
   renderPayments();
   alert("Баланс пополнен на 50💎");
 }
+
 function topUpAmount(amount){
   balance += amount;
   payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount, status: "Пополнение" });
@@ -69,15 +73,17 @@ function topUpAmount(amount){
   renderPayments();
   alert(`Баланс пополнен на ${amount} 💎`);
 }
+
 function copyRef(id="refLink"){
   const input = document.getElementById(id);
   input.select();
   document.execCommand("copy");
   alert("Ссылка скопирована");
 }
-function createCard(item){
+
+function createCard(item, showStatus = false){ // ДОБАВЛЕНО — параметр showStatus
   let statusIcon = '';
-  if (item.status) {
+  if (showStatus && item.status) { // Статус только в профиле
     if (item.status === 'pending') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:yellow;color:black;padding:2px 6px;border-radius:4px;font-size:10px;">На модерации</span>';
     else if (item.status === 'approved') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:green;color:white;padding:2px 6px;border-radius:4px;font-size:10px;">Прошло</span>';
     else if (item.status === 'rejected') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:red;color:white;padding:2px 6px;border-radius:4px;font-size:10px;">Не прошло</span>';
@@ -102,6 +108,7 @@ function createCard(item){
     </div>
   `;
 }
+
 // -------------------- RENDER --------------------
 function renderMain(){
   const grid = document.getElementById("main-grid");
@@ -111,9 +118,10 @@ function renderMain(){
     grid.innerHTML = `<div class="empty-text">Пока нет трендов — создай первую генерацию!</div>`;
     return;
   }
-  items.forEach(i => grid.innerHTML += createCard(i));
+  items.forEach(i => grid.innerHTML += createCard(i, false)); // Статусы НЕ показываем
   startCarousel();
 }
+
 function renderIdeas(){
   const grid = document.getElementById("ideas-grid");
   grid.innerHTML = "";
@@ -122,8 +130,9 @@ function renderIdeas(){
     grid.innerHTML = `<div class="empty-text">Пока нет идей в этой категории!</div>`;
     return;
   }
-  items.forEach(i => grid.innerHTML += createCard(i));
+  items.forEach(i => grid.innerHTML += createCard(i, false)); // Статусы НЕ показываем
 }
+
 function renderLikes(){
   const grid = document.getElementById("likes-grid");
   const empty = document.getElementById("likes-empty");
@@ -135,9 +144,10 @@ function renderLikes(){
   empty.style.display = "none";
   likes.forEach(id => {
     const item = published.find(p => p.id === id);
-    if(item) grid.innerHTML += createCard(item);
+    if(item) grid.innerHTML += createCard(item, false); // Статусы НЕ показываем
   });
 }
+
 function renderProfileHistory(){
   const grid = document.getElementById("profile-history");
   grid.innerHTML = "";
@@ -145,8 +155,9 @@ function renderProfileHistory(){
     grid.innerHTML = `<div class="empty-text">Скоро здесь будут твои генерации ✨</div>`;
     return;
   }
-  history.forEach(i => grid.innerHTML += createCard(i));
+  history.forEach(i => grid.innerHTML += createCard(i, true)); // Статусы ТОЛЬКО здесь
 }
+
 function renderPayments(){
   const container = document.getElementById("profile-payments");
   container.innerHTML = "";
@@ -159,6 +170,7 @@ function renderPayments(){
     `;
   });
 }
+
 // -------------------- CATEGORIES --------------------
 function setCategory(cat){
   currentCategory = cat;
@@ -166,6 +178,7 @@ function setCategory(cat){
   document.querySelector(`.cat[data-cat="${cat}"]`)?.classList.add("active");
   renderIdeas();
 }
+
 // -------------------- CREATE MODAL --------------------
 function openCreateModal(type="image", fromId=null){
   document.getElementById("create-modal").style.display = "flex";
@@ -176,20 +189,23 @@ function openCreateModal(type="image", fromId=null){
       document.getElementById("prompt").value = item.prompt || item.title;
       document.getElementById("model").value = item.modelId;
       updateModelHint();
-      updateFormFields(); // ДОБАВЛЕНО — чтобы сразу показались нужные поля при повторе
+      updateFormFields();
     }
   }
 }
+
 function closeCreate(){
   document.getElementById("create-modal").style.display = "none";
 }
+
 function setType(type){
-  document.querySelectorAll(".modal .tab").forEach(t => t.classList.remove("active"));
-  document.querySelector(`.modal .tab[data-type="${type}"]`)?.classList.add("active");
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelector(`.tab[data-type="${type}"]`)?.classList.add("active");
   populateModels(type);
   updateGenButton(type);
-  updateFormFields(); // ДОБАВЛЕНО — обновляем поля при смене типа
+  updateFormFields();
 }
+
 function populateModels(type){
   const select = document.getElementById("model");
   select.innerHTML = "";
@@ -197,15 +213,17 @@ function populateModels(type){
     select.innerHTML += `<option value="${m.id}">${m.name}</option>`;
   });
   updateModelHint();
-  updateFormFields(); // ДОБАВЛЕНО — сразу показываем поля после выбора модели
+  updateFormFields();
 }
+
 function updateModelHint(){
-  const type = document.querySelector(".modal .tab.active").dataset.type;
+  const type = document.querySelector(".tab.active").dataset.type;
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
   document.getElementById("modelHint").textContent = model ? model.hint : "";
   updateGenButton(type);
 }
+
 function updateGenButton(type){
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
@@ -215,19 +233,20 @@ function updateGenButton(type){
     return;
   }
 
-  let priceText = `— ${model.price}р`;
+  let priceText = `— ${model.price}💎`;
   if (model.id === "kling_motion") {
     const versionSelect = document.getElementById("version");
     if (versionSelect) {
-      priceText = `— ${versionSelect.value}р`;
+      priceText = `— ${versionSelect.value}💎`;
     }
   }
 
   document.getElementById("genText").textContent = type === "image" ? "Создать" : "Сгенерировать";
   document.getElementById("genPrice").textContent = priceText;
 }
+
 // -------------------- FORM FIELDS DYNAMIC --------------------
-function updateFormFields() { // ДОБАВЛЕНО полностью
+function updateFormFields() {
   const modelId = document.getElementById("model").value;
   const type = document.querySelector(".tab.active").dataset.type;
   const model = models[type].find(m => m.id === modelId);
@@ -276,7 +295,7 @@ function updateFormFields() { // ДОБАВЛЕНО полностью
       inputHtml = `<select id="sound"><option value="no">Без звука</option><option value="yes">Со звуком</option></select>`;
     } else if (field === 'version') {
       labelText = 'Версия';
-      inputHtml = `<select id="version">${model.versionOptions.map(v => `<option value="${v.price}">${v.name} (${v.price}р)</option>`).join('')}</select>`;
+      inputHtml = `<select id="version">${model.versionOptions.map(v => `<option value="${v.price}">${v.name} (${v.price}💎)</option>`).join('')}</select>`;
     } else if (field === 'motion_video') {
       labelText = 'Видео-пример движения';
       inputHtml = `<input type="file" id="motion-video" accept="video/*">`;
@@ -290,9 +309,10 @@ function updateFormFields() { // ДОБАВЛЕНО полностью
     }
   });
 }
+
 // -------------------- GENERATE --------------------
 function generate(){
-  const type = document.querySelector(".modal .tab.active").dataset.type;
+  const type = document.querySelector(".tab.active").dataset.type;
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
   const prompt = document.getElementById("prompt").value.trim();
@@ -317,36 +337,61 @@ function generate(){
     type,
     modelId,
     model: model.name,
-    title: prompt.slice(0,28) + (prompt.length>28?"...":""),
+    title: prompt.slice(0, 28) + (prompt.length > 28 ? "..." : ""),
     prompt,
     category: currentCategory === "new" ? "trend" : currentCategory,
     likes: 0,
     img: `https://picsum.photos/400/300?random=${id}`,
-    status: "pending", // ДОБАВЛЕНО — по умолчанию на модерации
-    hiddenPrompt: false // ДОБАВЛЕНО
+    status: "pending", // на модерации
+    hiddenPrompt: false
   };
   history.unshift(newItem);
   renderProfileHistory();
 
-  // ДОБАВЛЕНО — показываем кнопки после генерации
-  alert(`Генерация создана и добавлена в историю!\n\nХотите выложить в идеи? (модерация) или сохранить только в профиль?`);
+  // Показываем кнопки после генерации (вместо alert)
+  const afterGenerate = document.createElement('div');
+  afterGenerate.style.marginTop = "16px";
+  afterGenerate.innerHTML = `
+    <button class="small-btn" onclick="publishToIdeas('${id}')">Выложить в идеи (модерация)</button>
+    <button class="small-btn" onclick="saveToProfile('${id}')">Сохранить в профиль</button>
+    <label style="display:block;margin-top:8px;">
+      <input type="checkbox" id="hidePrompt_${id}"> Скрыть промпт от других пользователей
+    </label>
+  `;
+  document.querySelector('.modal-body').appendChild(afterGenerate);
 
   closeCreate();
 }
+
+// -------------------- PUBLISH & STATUS --------------------
+function publishToIdeas(id) {
+  const item = history.find(i => i.id === id);
+  if (!item) return;
+  const hidePrompt = document.getElementById(`hidePrompt_${id}`).checked;
+  item.hiddenPrompt = hidePrompt;
+  item.status = "pending";
+  published.push(item);
+  renderIdeas();
+  alert("Работа отправлена на модерацию!");
+}
+
+function saveToProfile(id) {
+  const item = history.find(i => i.id === id);
+  if (!item) return;
+  item.status = "approved"; // сразу одобрено в профиле
+  renderProfileHistory();
+  alert("Сохранено в профиль!");
+}
+
 // -------------------- CAROUSEL --------------------
 function startCarousel(){
   const slides = document.querySelectorAll(".carousel-item");
-  const indicators = document.querySelectorAll(".carousel-indicators .indicator"); // ИЗМЕНЕНО — теперь используем data-index
+  const indicators = document.querySelectorAll(".carousel-indicators .indicator");
   if (slides.length === 0) return;
 
   carouselIndex = 0;
   showSlide(carouselIndex);
 
-  // Убираем автоматический интервал, если не нужен
-  // if(carouselInterval) clearInterval(carouselInterval);
-  // carouselInterval = setInterval(()=>{nextSlide()}, 3000);
-
-  // ДОБАВЛЕНО — переключение при скролле
   const carousel = document.querySelector('.carousel');
   if (carousel) {
     carousel.addEventListener('scroll', () => {
@@ -358,7 +403,14 @@ function startCarousel(){
       });
     });
   }
+
+  // Авто-листание каждые 4 секунды
+  if(carouselInterval) clearInterval(carouselInterval);
+  carouselInterval = setInterval(() => {
+    nextSlide();
+  }, 4000);
 }
+
 function showSlide(index){
   const slides = document.querySelectorAll(".carousel-item");
   const indicators = document.querySelectorAll(".carousel-indicators .indicator");
@@ -367,15 +419,18 @@ function showSlide(index){
   if (slides[index]) slides[index].classList.add("active");
   if (indicators[index]) indicators[index].classList.add("active");
 }
+
 function nextSlide(){
   const slides = document.querySelectorAll(".carousel-item");
   carouselIndex = (carouselIndex + 1) % slides.length;
   showSlide(carouselIndex);
 }
+
 function goToSlide(index){
   carouselIndex = index;
   showSlide(carouselIndex);
 }
+
 // -------------------- INIT --------------------
 updateTopBalance();
 renderMain();
