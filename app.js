@@ -58,10 +58,11 @@ function copyRef(){
   alert("Ссылка скопирована");
 }
 
+// -------------------- CARD --------------------
 function createCard(item){
   return `
     <div class="card" onclick="openCreateModal('${item.type}', '${item.id}')">
-      <img src="${item.img}" alt="idea" />
+      <img src="${item.img}" alt="Фото" />
       <div class="info">
         <div class="title">${item.title}</div>
         <div class="meta">
@@ -76,6 +77,7 @@ function createCard(item){
   `;
 }
 
+// -------------------- RENDER --------------------
 function renderMain(){
   const grid = document.getElementById("main-grid");
   grid.innerHTML = "";
@@ -233,46 +235,13 @@ function generate(){
 
 // INITIALIZE
 updateTopBalance();
-let currentBanner = 0;
-const banners = document.querySelectorAll("#hero-carousel img");
-
-// показать первый баннер
-banners.forEach((b, i) => b.style.display = i === currentBanner ? "block" : "none");
-
-// функция показа баннера по индексу
-function showBanner(index) {
-  banners.forEach((b, i) => b.style.display = i === index ? "block" : "none");
-  currentBanner = index;
-}
-
-// кнопки
-function nextBanner() {
-  showBanner((currentBanner + 1) % banners.length);
-}
-
-function prevBanner() {
-  showBanner((currentBanner - 1 + banners.length) % banners.length);
-}
-
-// автоперелистывание каждые 3 сек
-setInterval(() => {
-  nextBanner();
-}, 3000);
-
 renderMain();
 renderIdeas();
 renderLikes();
 renderProfileHistory();
 renderPayments();
 populateModels("image");
-}
 
-let currentBanner = 0;
-const banners = document.querySelectorAll("#hero-carousel img");
-setInterval(() => {
-  banners.forEach((b, i) => b.style.display = i === currentBanner ? "block" : "none");
-  currentBanner = (currentBanner + 1) % banners.length;
-}, 3000);
 
 
 
