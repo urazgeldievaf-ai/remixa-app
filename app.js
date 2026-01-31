@@ -1,19 +1,19 @@
 // -------------------- DATA --------------------
 const models = {
   image: [
-    { id: "nano", name: "NanoBanana", price: 5, hint: "Быстрое и недорогое решение для первых генераций!" },
-    { id: "nano_pro", name: "Nanobanana Pro", price: 15, hint: "Профессиональный инструмент для качественных изображений." },
-    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Умная нейросеть для генерации текстов и идей." }
+    { id: "nano", name: "Нано Банана", price: 5, hint: "Быстро и доступно" }, // ИЗМЕНЕНО
+    { id: "nano_pro", name: "Нано Банана Про", price: 15, hint: "Высокая детализация, чуть дольше" }, // ИЗМЕНЕНО
+    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Умный и креативный" } // ИЗМЕНЕНО
   ],
-  video: [
-    { id: "vid_basic", name: "VideoBasic", price: 20, hint: "Быстрое создание коротких видео без потери качества." }
-  ],
-  text: [
-    { id: "text_gen", name: "TextGen", price: 5, hint: "Создавай тексты мгновенно с креативным подходом." }
-  ],
-  music: [
-    { id: "music_ai", name: "MusicAI", price: 10, hint: "Генерируй уникальную музыку для видео и проектов." }
+  video: [ // ДОБАВЛЕНО полностью новые модели для видео
+    { id: "veo_fast", name: "Veo 3.1 (быстрая)", price: 60, hint: "Быстрая генерация ~8 сек", duration: 8, fields: ["start_frame", "end_frame", "prompt", "aspect"] },
+    { id: "veo", name: "Veo 3.1", price: 250, hint: "Максимальное качество ~8 сек", duration: 8, fields: ["start_frame", "end_frame", "prompt", "aspect"] },
+    { id: "sora2", name: "Sora 2", price: 50, hint: "~8 сек, креативные видео", duration: 8, fields: ["start_frame", "prompt", "aspect"] },
+    { id: "sora_pro", name: "Sora 2 Pro", price: 135, hint: "Киношное качество до 15 сек, генерация долгая", duration: 15, fields: ["start_frame", "prompt", "aspect"] },
+    { id: "kling26", name: "Клинг 2.6", price: 50, hint: "Стабильные видео, выбор длительности", durationOptions: [5, 10], fields: ["photo", "prompt", "aspect", "duration", "sound"] },
+    { id: "kling_motion", name: "Клинг Моушн Контрол", price: 100, hint: "Повтори движение из видео, выбор версии", versionOptions: [{name: "Быстрая", price: 45}, {name: "Качественная", price: 65}], fields: ["photo", "motion_video", "aspect", "version"] }
   ]
+  // text и music полностью удалены, как ты просила
 };
 
 let balance = 14125;
@@ -21,47 +21,40 @@ let refIncome = 0;
 let likes = [];
 let history = [];
 let published = [
-  { id: "1", title: "Красивый закат", category: "new", model: "NanoBanana", likes: 12, img: "https://picsum.photos/400/300?random=1", type: "image" },
-  { id: "2", title: "Город ночью", category: "trend", model: "Nanobanana Pro", likes: 25, img: "https://picsum.photos/400/300?random=2", type: "image" }
-];
+  { id: "1", title: "Красивый закат", category: "new", model: "Нано Банана", likes: 12, img: "https://picsum.photos/400/300?random=1", type: "image", status: "approved", hiddenPrompt: false },
+  { id: "2", title: "Город ночью", category: "trend", model: "Нано Банана Про", likes: 25, img: "https://picsum.photos/400/300?random=2", type: "image", status: "pending", hiddenPrompt: false }
+]; // ДОБАВЛЕНО поле status и hiddenPrompt для модерации и скрытия промпта
+
 let payments = [
   { id: 1, date: "20.01.2026", amount: 500, status: "Пополнение" },
   { id: 2, date: "22.01.2026", amount: 1000, status: "Пополнение" }
 ];
-
 let currentCategory = "new";
 let currentProfileSub = "user";
 let carouselIndex = 0;
 let carouselInterval = null;
-
 // -------------------- UI --------------------
 function switchPage(page) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(`page-${page}`).classList.add("active");
-
   document.querySelectorAll(".bottom-nav .nav-btn").forEach(btn => btn.classList.remove("active"));
   document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add("active");
 }
-
 function setProfileSub(sub){
   currentProfileSub = sub;
   document.querySelectorAll(".profile-tabs .tab").forEach(t => t.classList.remove("active"));
   document.querySelector(`.profile-tabs .tab[data-sub="${sub}"]`)?.classList.add("active");
-
   document.querySelectorAll(".profile-subpage").forEach(p => p.style.display = "none");
   document.getElementById(`profile-${sub}`).style.display = "block";
 }
-
 function openWallet() {
   alert("Кошелёк: пока заглушка (в будущем добавим оплату)");
 }
-
 function updateTopBalance(){
   document.getElementById("balanceTop").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("refIncome").textContent = `${refIncome.toLocaleString()} 💎`;
 }
-
 function topUp(){
   balance += 50;
   payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount: 50, status: "Пополнение" });
@@ -69,7 +62,6 @@ function topUp(){
   renderPayments();
   alert("Баланс пополнен на 50💎");
 }
-
 function topUpAmount(amount){
   balance += amount;
   payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount, status: "Пополнение" });
@@ -77,18 +69,26 @@ function topUpAmount(amount){
   renderPayments();
   alert(`Баланс пополнен на ${amount} 💎`);
 }
-
 function copyRef(id="refLink"){
   const input = document.getElementById(id);
   input.select();
   document.execCommand("copy");
   alert("Ссылка скопирована");
 }
-
 function createCard(item){
+  let statusIcon = '';
+  if (item.status) {
+    if (item.status === 'pending') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:yellow;color:black;padding:2px 6px;border-radius:4px;font-size:10px;">На модерации</span>';
+    else if (item.status === 'approved') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:green;color:white;padding:2px 6px;border-radius:4px;font-size:10px;">Прошло</span>';
+    else if (item.status === 'rejected') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:red;color:white;padding:2px 6px;border-radius:4px;font-size:10px;">Не прошло</span>';
+  }
+
   return `
     <div class="card" onclick="openCreateModal('${item.type}', '${item.id}')">
-      <img src="${item.img}" alt="idea" />
+      <div style="position:relative;">
+        ${statusIcon}
+        <img src="${item.img}" alt="idea" />
+      </div>
       <div class="info">
         <div class="title">${item.title}</div>
         <div class="meta">
@@ -102,7 +102,6 @@ function createCard(item){
     </div>
   `;
 }
-
 // -------------------- RENDER --------------------
 function renderMain(){
   const grid = document.getElementById("main-grid");
@@ -115,7 +114,6 @@ function renderMain(){
   items.forEach(i => grid.innerHTML += createCard(i));
   startCarousel();
 }
-
 function renderIdeas(){
   const grid = document.getElementById("ideas-grid");
   grid.innerHTML = "";
@@ -126,7 +124,6 @@ function renderIdeas(){
   }
   items.forEach(i => grid.innerHTML += createCard(i));
 }
-
 function renderLikes(){
   const grid = document.getElementById("likes-grid");
   const empty = document.getElementById("likes-empty");
@@ -141,7 +138,6 @@ function renderLikes(){
     if(item) grid.innerHTML += createCard(item);
   });
 }
-
 function renderProfileHistory(){
   const grid = document.getElementById("profile-history");
   grid.innerHTML = "";
@@ -151,7 +147,6 @@ function renderProfileHistory(){
   }
   history.forEach(i => grid.innerHTML += createCard(i));
 }
-
 function renderPayments(){
   const container = document.getElementById("profile-payments");
   container.innerHTML = "";
@@ -164,7 +159,6 @@ function renderPayments(){
     `;
   });
 }
-
 // -------------------- CATEGORIES --------------------
 function setCategory(cat){
   currentCategory = cat;
@@ -172,34 +166,30 @@ function setCategory(cat){
   document.querySelector(`.cat[data-cat="${cat}"]`)?.classList.add("active");
   renderIdeas();
 }
-
 // -------------------- CREATE MODAL --------------------
 function openCreateModal(type="image", fromId=null){
   document.getElementById("create-modal").style.display = "flex";
   setType(type);
-
   if(fromId){
     const item = published.find(p => p.id === fromId) || history.find(p => p.id === fromId);
     if(item){
       document.getElementById("prompt").value = item.prompt || item.title;
       document.getElementById("model").value = item.modelId;
       updateModelHint();
+      updateFormFields(); // ДОБАВЛЕНО — чтобы сразу показались нужные поля при повторе
     }
   }
 }
-
 function closeCreate(){
   document.getElementById("create-modal").style.display = "none";
 }
-
 function setType(type){
   document.querySelectorAll(".modal .tab").forEach(t => t.classList.remove("active"));
   document.querySelector(`.modal .tab[data-type="${type}"]`)?.classList.add("active");
-
   populateModels(type);
   updateGenButton(type);
+  updateFormFields(); // ДОБАВЛЕНО — обновляем поля при смене типа
 }
-
 function populateModels(type){
   const select = document.getElementById("model");
   select.innerHTML = "";
@@ -207,8 +197,8 @@ function populateModels(type){
     select.innerHTML += `<option value="${m.id}">${m.name}</option>`;
   });
   updateModelHint();
+  updateFormFields(); // ДОБАВЛЕНО — сразу показываем поля после выбора модели
 }
-
 function updateModelHint(){
   const type = document.querySelector(".modal .tab.active").dataset.type;
   const modelId = document.getElementById("model").value;
@@ -216,33 +206,111 @@ function updateModelHint(){
   document.getElementById("modelHint").textContent = model ? model.hint : "";
   updateGenButton(type);
 }
-
 function updateGenButton(type){
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
-  document.getElementById("genText").textContent = type === "image" ? "Создать" : "Скоро";
-  document.getElementById("genPrice").textContent = model ? `— ${model.price}💎` : "";
-}
+  if (!model) {
+    document.getElementById("genText").textContent = "Создать";
+    document.getElementById("genPrice").textContent = "";
+    return;
+  }
 
+  let priceText = `— ${model.price}р`;
+  if (model.id === "kling_motion") {
+    const versionSelect = document.getElementById("version");
+    if (versionSelect) {
+      priceText = `— ${versionSelect.value}р`;
+    }
+  }
+
+  document.getElementById("genText").textContent = type === "image" ? "Создать" : "Сгенерировать";
+  document.getElementById("genPrice").textContent = priceText;
+}
+// -------------------- FORM FIELDS DYNAMIC --------------------
+function updateFormFields() { // ДОБАВЛЕНО полностью
+  const modelId = document.getElementById("model").value;
+  const type = document.querySelector(".tab.active").dataset.type;
+  const model = models[type].find(m => m.id === modelId);
+  if (!model) return;
+
+  // Удаляем старые дополнительные поля
+  const extraFields = document.querySelectorAll('.extra-field');
+  extraFields.forEach(f => f.remove());
+
+  // Добавляем нужные поля после "Промпт"
+  const promptField = document.querySelector('#prompt').parentElement;
+  const container = promptField.parentElement;
+
+  // Всегда добавляем пропорции
+  const aspectDiv = document.createElement('div');
+  aspectDiv.className = 'field extra-field';
+  aspectDiv.innerHTML = `
+    <label>Пропорции</label>
+    <select id="aspect-ratio">
+      <option value="1:1">Квадрат (1:1)</option>
+      <option value="16:9">Широкоэкранный (16:9)</option>
+      <option value="9:16">Вертикальный (9:16)</option>
+      <option value="4:3">4:3</option>
+      <option value="3:4">3:4</option>
+    </select>
+  `;
+  container.insertBefore(aspectDiv, promptField.nextSibling);
+
+  // Добавляем остальные поля по модели
+  model.fields.forEach(field => {
+    let labelText = '';
+    let inputHtml = '';
+
+    if (field === 'start_frame' || field === 'end_frame' || field === 'photo') {
+      labelText = field === 'start_frame' ? 'Начальный кадр (по желанию)' : 
+                  field === 'end_frame' ? 'Конечный кадр (по желанию)' : 
+                  'Фото/видео (по желанию)';
+      inputHtml = `<input type="file" id="${field}-upload" accept="image/*,video/*">`;
+    } else if (field === 'prompt') {
+      return; // Промпт уже есть
+    } else if (field === 'duration') {
+      labelText = 'Длительность';
+      inputHtml = `<select id="duration">${model.durationOptions.map(d => `<option value="${d}">${d} секунд</option>`).join('')}</select>`;
+    } else if (field === 'sound') {
+      labelText = 'Добавить звук';
+      inputHtml = `<select id="sound"><option value="no">Без звука</option><option value="yes">Со звуком</option></select>`;
+    } else if (field === 'version') {
+      labelText = 'Версия';
+      inputHtml = `<select id="version">${model.versionOptions.map(v => `<option value="${v.price}">${v.name} (${v.price}р)</option>`).join('')}</select>`;
+    } else if (field === 'motion_video') {
+      labelText = 'Видео-пример движения';
+      inputHtml = `<input type="file" id="motion-video" accept="video/*">`;
+    }
+
+    if (inputHtml) {
+      const div = document.createElement('div');
+      div.className = 'field extra-field';
+      div.innerHTML = `<label>${labelText}</label>${inputHtml}`;
+      container.insertBefore(div, promptField.nextSibling);
+    }
+  });
+}
 // -------------------- GENERATE --------------------
 function generate(){
   const type = document.querySelector(".modal .tab.active").dataset.type;
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
   const prompt = document.getElementById("prompt").value.trim();
-
   if(!prompt){
     alert("Пожалуйста, заполните поле «Промпт»");
     return;
   }
-  if(balance < model.price){
+  let finalPrice = model.price;
+  if (model.id === "kling_motion") {
+    const versionSelect = document.getElementById("version");
+    if (versionSelect) finalPrice = Number(versionSelect.value);
+  }
+  if(balance < finalPrice){
     alert("Недостаточно средств. Пополните баланс.");
     return;
   }
-
-  balance -= model.price;
+  balance -= finalPrice;
   updateTopBalance();
-
   const id = Date.now().toString();
   const newItem = {
     id,
@@ -253,48 +321,61 @@ function generate(){
     prompt,
     category: currentCategory === "new" ? "trend" : currentCategory,
     likes: 0,
-    img: `https://picsum.photos/400/300?random=${id}`
+    img: `https://picsum.photos/400/300?random=${id}`,
+    status: "pending", // ДОБАВЛЕНО — по умолчанию на модерации
+    hiddenPrompt: false // ДОБАВЛЕНО
   };
-
   history.unshift(newItem);
   renderProfileHistory();
-  closeCreate();
-  alert("Генерация создана и добавлена в историю.");
-}
 
+  // ДОБАВЛЕНО — показываем кнопки после генерации
+  alert(`Генерация создана и добавлена в историю!\n\nХотите выложить в идеи? (модерация) или сохранить только в профиль?`);
+
+  closeCreate();
+}
 // -------------------- CAROUSEL --------------------
 function startCarousel(){
   const slides = document.querySelectorAll(".carousel-item");
-  const indicators = document.getElementById("carousel-indicators");
-  indicators.innerHTML = slides.map((s,i)=>`<span class="indicator${i===0?" active":""}" onclick="goToSlide(${i})"></span>`).join("");
+  const indicators = document.querySelectorAll(".carousel-indicators .indicator"); // ИЗМЕНЕНО — теперь используем data-index
+  if (slides.length === 0) return;
 
   carouselIndex = 0;
   showSlide(carouselIndex);
 
-  if(carouselInterval) clearInterval(carouselInterval);
-  carouselInterval = setInterval(()=>{nextSlide()}, 3000);
-}
+  // Убираем автоматический интервал, если не нужен
+  // if(carouselInterval) clearInterval(carouselInterval);
+  // carouselInterval = setInterval(()=>{nextSlide()}, 3000);
 
+  // ДОБАВЛЕНО — переключение при скролле
+  const carousel = document.querySelector('.carousel');
+  if (carousel) {
+    carousel.addEventListener('scroll', () => {
+      const scrollPosition = carousel.scrollLeft;
+      const itemWidth = carousel.offsetWidth;
+      const currentIndex = Math.round(scrollPosition / itemWidth);
+      indicators.forEach((ind, i) => {
+        ind.classList.toggle('active', i === currentIndex);
+      });
+    });
+  }
+}
 function showSlide(index){
   const slides = document.querySelectorAll(".carousel-item");
-  const indicators = document.querySelectorAll("#carousel-indicators .indicator");
+  const indicators = document.querySelectorAll(".carousel-indicators .indicator");
   slides.forEach(s=>s.classList.remove("active"));
   indicators.forEach(i=>i.classList.remove("active"));
-  slides[index].classList.add("active");
-  indicators[index].classList.add("active");
+  if (slides[index]) slides[index].classList.add("active");
+  if (indicators[index]) indicators[index].classList.add("active");
 }
-
 function nextSlide(){
   const slides = document.querySelectorAll(".carousel-item");
   carouselIndex = (carouselIndex + 1) % slides.length;
   showSlide(carouselIndex);
 }
-
 function goToSlide(index){
   carouselIndex = index;
   showSlide(carouselIndex);
 }
-
 // -------------------- INIT --------------------
 updateTopBalance();
 renderMain();
