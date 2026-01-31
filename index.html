@@ -8,34 +8,27 @@
 </head>
 <body>
   <div class="app">
-
     <!-- SVG ICONS -->
     <svg style="display:none;">
       <symbol id="icon-home" viewBox="0 0 24 24">
         <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z"/>
       </symbol>
-
       <symbol id="icon-ideas" viewBox="0 0 24 24">
         <path d="M12 2C9.8 2 7.8 3 7 5c-.7 1.5-.5 3.2.7 4.5C8.2 10 9 11 9 12c0 2.2 1.8 4 4 4s4-1.8 4-4c0-1-.8-2-1.3-2.5 1.2-1.2 1.4-3 0.7-4.5-0.8-2-2.8-3-5-3z"/>
       </symbol>
-
       <symbol id="icon-create" viewBox="0 0 24 24">
         <path d="M12 2l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z"/>
       </symbol>
-
       <symbol id="icon-fire" viewBox="0 0 24 24">
         <path d="M12 2C7 10 10 16 12 18c2-2 5-8 0-16z"/>
       </symbol>
-
       <symbol id="icon-like" viewBox="0 0 24 24">
         <path d="M12 21s-7-4.4-9-8.2C1 10.4 2.4 7.5 5.2 6.2c1.9-.9 4-.2 6.8 2.1 2.8-2.3 4.9-3 6.8-2.1 2.8 1.3 4.2 4.2 2.2 6.6-2 3.8-9 8.2-9 8.2z"/>
       </symbol>
-
       <symbol id="icon-profile" viewBox="0 0 24 24">
         <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/>
       </symbol>
     </svg>
-
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="logo">
@@ -47,40 +40,35 @@
         </button>
       </div>
     </header>
-
     <!-- MAIN PAGES -->
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
-
         <!-- HERO / BANNERS -->
         <div class="hero">
-  <div class="carousel">
-    <a href="https://t.me/WowPhotoPromt" target="_blank" class="carousel-item active">
-      <img src="banner.jpg" alt="Баннер 1">
-    </a>
-    <a href="https://example.com/2" target="_blank" class="carousel-item">
-      <img src="banner2.jpg" alt="Баннер 2">
-    </a>
-    <a href="https://example.com/3" target="_blank" class="carousel-item">
-      <img src="banner3.jpg" alt="Баннер 3">
-    </a>
-  </div>
-<div class="carousel-indicators">
-  <span class="indicator active" data-index="0"></span>
-  <span class="indicator" data-index="1"></span>
-  <span class="indicator" data-index="2"></span>
-</div>
-</div>
-
+          <div class="carousel">
+            <a href="https://t.me/WowPhotoPromt" target="_blank" class="carousel-item active">
+              <img src="banner.jpg" alt="Баннер 1">
+            </a>
+            <a href="https://example.com/2" target="_blank" class="carousel-item">
+              <img src="banner2.jpg" alt="Баннер 2">
+            </a>
+            <a href="https://example.com/3" target="_blank" class="carousel-item">
+              <img src="banner3.jpg" alt="Баннер 3">
+            </a>
+          </div>
+          <div class="carousel-indicators">
+            <span class="indicator active" data-index="0"></span>
+            <span class="indicator" data-index="1"></span>
+            <span class="indicator" data-index="2"></span>
+          </div>
+        </div>
         <!-- TRENDS -->
         <div class="section-header">
           <div class="section-title spark-blue">Тренды</div>
         </div>
         <div class="grid" id="main-grid"></div>
-
       </section>
-
       <!-- PAGE: IDEAS / ШЕДЕВРЫ -->
       <section id="page-ideas" class="page">
         <div class="page-header">
@@ -88,7 +76,6 @@
             <span class="spark"></span> Шедевры
           </div>
         </div>
-
         <div class="categories">
           <button class="cat active spark-blue" data-cat="new" onclick="setCategory('new')">НОВЫЕ</button>
           <button class="cat" data-cat="trend" onclick="setCategory('trend')">ТРЕНДЫ</button>
@@ -108,7 +95,6 @@
         </div>
         <div class="grid" id="ideas-grid"></div>
       </section>
-
       <!-- PAGE: LIKES -->
       <section id="page-likes" class="page">
         <div class="page-header">
@@ -122,7 +108,6 @@
           Нравится — сохраняй в “Лайки”, чтобы быстро найти лучшие работы.
         </div>
       </section>
-
       <!-- PAGE: PROFILE -->
       <section id="page-profile" class="page">
         <div class="page-header">
@@ -130,14 +115,12 @@
             <span class="spark"></span> Профиль
           </div>
         </div>
-
         <!-- PROFILE TABS -->
         <div class="profile-tabs">
           <button class="tab active spark-blue" data-sub="user" onclick="setProfileSub('user')">Профиль</button>
           <button class="tab" data-sub="balance" onclick="setProfileSub('balance')">Баланс</button>
           <button class="tab" data-sub="partner" onclick="setProfileSub('partner')">Партнёрство</button>
         </div>
-
         <!-- PROFILE CONTENT -->
         <div class="profile-subpage" id="profile-user">
           <div class="profile-info">
@@ -152,7 +135,6 @@
             <div class="empty-text">Скоро здесь будут ваши генерации ✨</div>
           </div>
         </div>
-
         <div class="profile-subpage" id="profile-balance" style="display:none;">
           <div class="profile-balance-block">
             <div class="bal-title">Баланс</div>
@@ -169,9 +151,11 @@
               <button onclick="topUpAmount(5000)">5000 💎</button>
             </div>
           </div>
-          <div class="profile-payments" id="profile-payments"></div>
+          <div class="profile-balance-block"> // ДОБАВЛЕНО — прямоугольник "История пополнений"
+            <div class="bal-title">История пополнений</div>
+            <div id="profile-payments"></div>
+          </div>
         </div>
-
         <div class="profile-subpage" id="profile-partner" style="display:none;">
           <div class="partnership-card">
             <div class="partnership-title">Приглашай друзей — получай 15% от их платежей</div>
@@ -180,25 +164,29 @@
               <button class="small-btn" onclick="copyRef()">Копировать</button>
             </div>
           </div>
-          <div class="referrals-list" id="referralsList"></div>
-          <div class="ref-income">
-            <span id="refIncome">0 💎</span>
-            <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
+          <div class="partnership-card"> // ДОБАВЛЕНО — прямоугольник "Доход от друзей"
+            <div class="partnership-title">Доход от друзей</div>
+            <div class="ref-income">
+              <span id="refIncome">0 💎</span>
+            </div>
+          </div>
+          <div class="partnership-card"> // ДОБАВЛЕНО — прямоугольник "Список рефералов"
+            <div class="partnership-title">Список рефералов</div>
+            <div id="referralsList"></div>
           </div>
         </div>
       </section>
     </main>
-
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
       <button data-page="main" class="nav-btn active spark-blue" onclick="switchPage('main')">
         <svg class="icon" width="22" height="22"><use href="#icon-home"></use></svg>
         <span>Главная</span>
       </button>
-<button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
-  <img src="fire-icon.svg" class="icon" width="22" height="22" alt="Огонь">
-  <span>Шедевры</span>
-</button>
+      <button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
+        <svg class="icon" width="22" height="22"><use href="#icon-fire"></use></svg> // ИЗМЕНЕНО — SVG вместо PNG
+        <span>Шедевры</span>
+      </button>
       <button class="nav-btn create" onclick="openCreateModal('image')">
         <svg class="icon" width="26" height="26"><use href="#icon-create"></use></svg>
         <span>Создать</span>
@@ -212,7 +200,6 @@
         <span>Профиль</span>
       </button>
     </nav>
-
     <!-- CREATE MODAL -->
     <div class="modal" id="create-modal">
       <div class="modal-inner">
@@ -220,41 +207,35 @@
           <div class="modal-title">Создать</div>
           <button class="close-btn" onclick="closeCreate()">×</button>
         </div>
-
         <div class="modal-body">
-      <div class="tabs">
-  <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
-  <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
-</div>
-
+          <div class="tabs">
+            <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
+            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
+          </div>
           <div class="field">
             <label>Нейросеть</label>
             <select id="model" onchange="updateModelHint()"></select>
             <div class="hint" id="modelHint">Выберите нейросеть, чтобы увидеть рекламное описание</div>
           </div>
-
           <div class="field">
             <label>Промпт *</label>
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
           </div>
-          
           <div class="field">
-  <label>Пропорции</label>
-  <select id="aspect-ratio">
-    <option value="1:1">Квадрат (1:1)</option>
-    <option value="16:9">Широкоэкранный (16:9)</option>
-    <option value="9:16">Вертикальный (9:16)</option>
-    <option value="4:3">4:3</option>
-    <option value="3:4">3:4</option>
-  </select>
-</div>
-
+            <label>Пропорции</label>
+            <select id="aspect-ratio">
+              <option value="1:1">Квадрат (1:1)</option>
+              <option value="16:9">Широкоэкранный (16:9)</option>
+              <option value="9:16">Вертикальный (9:16)</option>
+              <option value="4:3">4:3</option>
+              <option value="3:4">3:4</option>
+            </select>
+          </div>
           <div class="field">
             <label>Фото</label>
             <input type="file" accept="image/*">
             <div class="hint">Добавить фото</div>
           </div>
-
           <button class="big-btn generate" onclick="generate()">
             <span id="genText">Создать</span>
             <span id="genPrice" class="price">— 5💎</span>
@@ -262,9 +243,7 @@
         </div>
       </div>
     </div>
-
   </div>
-
   <script src="app.js"></script>
 </body>
 </html>
