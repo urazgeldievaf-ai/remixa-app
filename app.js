@@ -239,6 +239,15 @@ renderLikes();
 renderProfileHistory();
 renderPayments();
 populateModels("image");
+}
+
+let currentBanner = 0;
+const banners = document.querySelectorAll("#hero-carousel img");
+setInterval(() => {
+  banners.forEach((b, i) => b.style.display = i === currentBanner ? "block" : "none");
+  currentBanner = (currentBanner + 1) % banners.length;
+}, 3000);
+
 
 
 
