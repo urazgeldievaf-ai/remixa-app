@@ -72,14 +72,13 @@ function copyRef(id="refLink"){
   document.execCommand("copy");
   alert("Ссылка скопирована");
 }
-function createCard(item, showStatus = false){ // ДОБАВЛЕНО — параметр showStatus
+function createCard(item, showStatus = false){
   let statusIcon = '';
-  if (showStatus && item.status) { // Статус только в профиле
+  if (showStatus && item.status) {
     if (item.status === 'pending') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:yellow;color:black;padding:2px 6px;border-radius:4px;font-size:10px;">На модерации</span>';
     else if (item.status === 'approved') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:green;color:white;padding:2px 6px;border-radius:4px;font-size:10px;">Прошло</span>';
     else if (item.status === 'rejected') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:red;color:white;padding:2px 6px;border-radius:4px;font-size:10px;">Не прошло</span>';
   }
-
   return `
     <div class="card" onclick="openCreateModal('${item.type}', '${item.id}')">
       <div style="position:relative;">
@@ -108,7 +107,7 @@ function renderMain(){
     grid.innerHTML = `<div class="empty-text">Пока нет трендов — создай первую генерацию!</div>`;
     return;
   }
-  items.forEach(i => grid.innerHTML += createCard(i, false)); // Статусы НЕ показываем
+  items.forEach(i => grid.innerHTML += createCard(i, false));
   startCarousel();
 }
 function renderIdeas(){
@@ -119,7 +118,7 @@ function renderIdeas(){
     grid.innerHTML = `<div class="empty-text">Пока нет идей в этой категории!</div>`;
     return;
   }
-  items.forEach(i => grid.innerHTML += createCard(i, false)); // Статусы НЕ показываем
+  items.forEach(i => grid.innerHTML += createCard(i, false));
 }
 function renderLikes(){
   const grid = document.getElementById("likes-grid");
@@ -132,7 +131,7 @@ function renderLikes(){
   empty.style.display = "none";
   likes.forEach(id => {
     const item = published.find(p => p.id === id);
-    if(item) grid.innerHTML += createCard(item, false); // Статусы НЕ показываем
+    if(item) grid.innerHTML += createCard(item, false);
   });
 }
 function renderProfileHistory(){
@@ -142,7 +141,7 @@ function renderProfileHistory(){
     grid.innerHTML = `<div class="empty-text">Скоро здесь будут твои генерации ✨</div>`;
     return;
   }
-  history.forEach(i => grid.innerHTML += createCard(i, true)); // Статусы ТОЛЬКО здесь
+  history.forEach(i => grid.innerHTML += createCard(i, true));
 }
 function renderPayments(){
   const container = document.getElementById("profile-payments");
@@ -203,8 +202,8 @@ function updateModelHint(){
 function updateGenButton(type){
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
-  document.getElementById("genText").textContent = type === "image" ? "Создать" : "Сгенерировать";
-  document.getElementById("genPrice").textContent = model ? `— ${model.price}💎` : "";
+  document.getElementById("genText").textContent = type === "image" ? "Сгенерировать" : "Сгенерировать";
+  document.getElementById("genPrice").textContent = model ? `${model.price}💎` : "";
 }
 // -------------------- FORM FIELDS DYNAMIC --------------------
 function updateFormFields() {
@@ -307,7 +306,6 @@ function generate(){
   };
   history.unshift(newItem);
   renderProfileHistory();
-
   // Показываем кнопки после генерации
   const afterGenerate = document.createElement('div');
   afterGenerate.style.marginTop = "16px";
@@ -319,7 +317,6 @@ function generate(){
     </label>
   `;
   document.querySelector('.modal-body').appendChild(afterGenerate);
-
   closeCreate();
 }
 // -------------------- PUBLISH & STATUS --------------------
@@ -336,7 +333,7 @@ function publishToIdeas(id) {
 function saveToProfile(id) {
   const item = history.find(i => i.id === id);
   if (!item) return;
-  item.status = "approved"; // сразу одобрено в профиле
+  item.status = "approved";
   renderProfileHistory();
   alert("Сохранено в профиль!");
 }
@@ -345,10 +342,8 @@ function startCarousel(){
   const slides = document.querySelectorAll(".carousel-item");
   const indicators = document.querySelectorAll(".carousel-indicators .indicator");
   if (slides.length === 0) return;
-
   carouselIndex = 0;
   showSlide(carouselIndex);
-
   const carousel = document.querySelector('.carousel');
   if (carousel) {
     carousel.addEventListener('scroll', () => {
@@ -360,7 +355,6 @@ function startCarousel(){
       });
     });
   }
-
   // Авто-листание каждые 4 секунды
   if(carouselInterval) clearInterval(carouselInterval);
   carouselInterval = setInterval(() => {
