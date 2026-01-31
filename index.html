@@ -151,10 +151,7 @@
               <button onclick="topUpAmount(5000)">5000 💎</button>
             </div>
           </div>
-          <div class="profile-balance-block"> // ДОБАВЛЕНО — прямоугольник "История пополнений"
-            <div class="bal-title">История пополнений</div>
-            <div id="profile-payments"></div>
-          </div>
+          <div class="profile-payments" id="profile-payments"></div>
         </div>
         <div class="profile-subpage" id="profile-partner" style="display:none;">
           <div class="partnership-card">
@@ -164,15 +161,10 @@
               <button class="small-btn" onclick="copyRef()">Копировать</button>
             </div>
           </div>
-          <div class="partnership-card"> // ДОБАВЛЕНО — прямоугольник "Доход от друзей"
-            <div class="partnership-title">Доход от друзей</div>
-            <div class="ref-income">
-              <span id="refIncome">0 💎</span>
-            </div>
-          </div>
-          <div class="partnership-card"> // ДОБАВЛЕНО — прямоугольник "Список рефералов"
-            <div class="partnership-title">Список рефералов</div>
-            <div id="referralsList"></div>
+          <div class="referrals-list" id="referralsList"></div>
+          <div class="ref-income">
+            <span id="refIncome">0 💎</span>
+            <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
           </div>
         </div>
       </section>
@@ -184,7 +176,7 @@
         <span>Главная</span>
       </button>
       <button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
-        <svg class="icon" width="22" height="22"><use href="#icon-fire"></use></svg> // ИЗМЕНЕНО — SVG вместо PNG
+        <svg class="icon" width="22" height="22"><use href="#icon-fire"></use></svg>
         <span>Шедевры</span>
       </button>
       <button class="nav-btn create" onclick="openCreateModal('image')">
@@ -247,7 +239,6 @@
   <script src="app.js"></script>
 </body>
 </html>
-
 
 
 
