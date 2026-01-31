@@ -30,10 +30,6 @@
       <symbol id="icon-profile" viewBox="0 0 24 24">
         <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/>
       </symbol>
-
-      <symbol id="icon-diamond" viewBox="0 0 24 24">
-        <path d="M12 2l7 7-7 13-7-13 7-7z"/>
-      </symbol>
     </svg>
 
     <!-- TOPBAR -->
@@ -44,10 +40,7 @@
 
       <div class="top-right">
         <button class="diamond-btn" onclick="openWallet()">
-          <svg class="diamond-icon" viewBox="0 0 24 24">
-            <use href="#icon-diamond"></use>
-          </svg>
-          <span id="balanceTop">14,125</span>
+          <span id="balanceTop">14,125 💎</span>
         </button>
       </div>
     </header>
@@ -56,31 +49,37 @@
     <main>
       <!-- PAGE: MAIN -->
       <section id="page-main" class="page active">
+
+        <!-- HERO / BANNERS -->
         <div class="hero">
-          <div class="hero-text">
-            <h1>Создай потрясающее фото с Remixa!</h1>
-            <p>Быстро. Красиво. Вдохновляюще.</p>
-            <button class="hero-btn" onclick="openCreateModal('image')">
-              Создать
-            </button>
-          </div>
-          <div class="hero-img">
-            <img src="banner-img.jpg" alt="Remixa banner">
+          <div class="hero-img carousel">
+            <a href="https://example.com" target="_blank" class="carousel-item">
+              <img src="banner.jpg" alt="Баннер 1">
+            </a>
+            <a href="https://t.me/WowPhotoPromt" target="_blank" class="carousel-item">
+              <img src="banner2.jpg" alt="Баннер 2">
+            </a>
+            <div class="carousel-controls">
+              <button class="carousel-btn prev">‹</button>
+              <button class="carousel-btn next">›</button>
+            </div>
           </div>
         </div>
 
+        <!-- TRENDS -->
         <div class="section-header">
           <div class="section-title">Тренды</div>
         </div>
 
         <div class="grid" id="main-grid"></div>
+
       </section>
 
-      <!-- PAGE: IDEAS -->
+      <!-- PAGE: IDEAS / ШЕДЕВРЫ -->
       <section id="page-ideas" class="page">
         <div class="page-header">
           <div class="page-title">
-            <span class="spark"></span> Идеи
+            <span class="spark"></span> Шедевры
           </div>
         </div>
 
@@ -97,6 +96,9 @@
           <button class="cat" data-cat="history" onclick="setCategory('history')">Исторический</button>
           <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">Фэнтези</button>
           <button class="cat" data-cat="pair" onclick="setCategory('pair')">Пара</button>
+          <button class="cat" data-cat="birthday" onclick="setCategory('birthday')">ДР</button>
+          <button class="cat" data-cat="auto" onclick="setCategory('auto')">Авто</button>
+          <button class="cat" data-cat="interior" onclick="setCategory('interior')">Интерьер</button>
         </div>
 
         <div class="grid" id="ideas-grid"></div>
@@ -134,7 +136,7 @@
           </div>
 
           <div class="profile-ref">
-            <div class="ref-title">Доход от рефералов</div>
+            <div class="ref-title">Доход от друзей</div>
             <div class="ref-val">
               <span id="refIncome">0 💎</span>
               <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
@@ -174,7 +176,7 @@
       </button>
       <button data-page="ideas" class="nav-btn" onclick="switchPage('ideas')">
         <svg class="icon" width="22" height="22"><use href="#icon-ideas"></use></svg>
-        <span>Идеи</span>
+        <span>Шедевры</span>
       </button>
 
       <button class="nav-btn create" onclick="openCreateModal('image')">
@@ -203,6 +205,9 @@
         <div class="modal-body">
           <div class="tabs">
             <button class="tab active" data-type="image" onclick="setType('image')">Картинка</button>
+            <button class="tab" data-type="video" onclick="setType('video')">Видео</button>
+            <button class="tab" data-type="text" onclick="setType('text')">Текст</button>
+            <button class="tab" data-type="music" onclick="setType('music')">Музыка</button>
           </div>
 
           <div class="field">
@@ -214,6 +219,12 @@
           <div class="field">
             <label>Промпт *</label>
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
+          </div>
+
+          <div class="field">
+            <label>Фото</label>
+            <input type="file" accept="image/*">
+            <div class="hint">Добавить фото</div>
           </div>
 
           <button class="big-btn generate" onclick="generate()">
@@ -229,6 +240,7 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
