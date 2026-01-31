@@ -50,31 +50,46 @@
       </div>
     </header>
 
-    <!-- MAIN PAGES -->
-    <main>
-      <!-- PAGE: MAIN -->
-      <section id="page-main" class="page active">
-        <div class="hero">
-          <div class="hero-text">
-            <h1>Создай потрясающее фото с Remixa!</h1>
-            <p>Быстро. Красиво. Вдохновляюще.</p>
-            <button class="hero-btn" onclick="openCreateModal('image')">
-              Создать
-            </button>
-          </div>
-          <div class="hero-img">
-  <a href="https://example.com" target="_blank">
-    <img src="banner.jpg" alt="banner">
-  </a>
-</div>
+    <!-- PAGE: MAIN -->
+<section id="page-main" class="page active">
 
-        <div class="section-header">
-          <div class="section-title">Тренды</div>
-        </div>
+  <!-- HERO / BANNERS -->
+  <div class="hero">
 
-        <div class="grid" id="main-grid"></div>
-      </section>
+    <div class="hero-text">
+      <h1>Создай потрясающее фото с Remixa!</h1>
+      <p>Быстро. Красиво. Вдохновляюще.</p>
+      <button class="hero-btn" onclick="openCreateModal('image')">
+        Создать
+      </button>
+    </div>
+
+    <div class="hero-img">
+
+      <div class="banner-slider">
+
+        <a href="https://example.com" target="_blank" class="banner-slide active">
+          <img src="banner.jpg" alt="banner 1">
+        </a>
+
+        <a href="https://t.me/WowPhotoPromt" target="_blank" class="banner-slide">
+          <img src="banner2.jpg" alt="banner 2">
+        </a>
+
       </div>
+
+    </div>
+
+  </div> <!-- hero END -->
+
+  <!-- TRENDS -->
+  <div class="section-header">
+    <div class="section-title">Тренды</div>
+  </div>
+
+  <div class="grid" id="main-grid"></div>
+
+</section>
 
       <!-- PAGE: IDEAS -->
       <section id="page-ideas" class="page">
