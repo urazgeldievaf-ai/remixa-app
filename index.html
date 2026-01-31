@@ -16,7 +16,8 @@
       </symbol>
 
       <symbol id="icon-ideas" viewBox="0 0 24 24">
-        <path d="M12 2a9 9 0 0 0-9 9c0 4.97 4 9 9 9s9-4.03 9-9a9 9 0 0 0-9-9zm0 16a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/>
+        <!-- Заменена на огонь/шедевр -->
+        <path d="M12 2C10 8 2 10 6 18c4-5 8 0 10-6 2-6-2-10-4-10z"/>
       </symbol>
 
       <symbol id="icon-create" viewBox="0 0 24 24">
@@ -30,11 +31,6 @@
       <symbol id="icon-profile" viewBox="0 0 24 24">
         <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/>
       </symbol>
-
-      <!-- Новая иконка для Шедевров -->
-      <symbol id="icon-masterpiece" viewBox="0 0 24 24">
-        <path d="M12 2l2 5h5l-4 4 1 5-5-3-5 3 1-5-4-4h5z"/>
-      </symbol>
     </svg>
 
     <!-- TOPBAR -->
@@ -42,7 +38,6 @@
       <div class="logo">
         <img src="logo.png" alt="Remixa" />
       </div>
-
       <div class="top-right">
         <button class="diamond-btn" onclick="openWallet()">
           <span id="balanceTop">14,125 💎</span>
@@ -59,21 +54,18 @@
         <div class="hero">
           <div class="hero-img carousel">
             <a href="https://example.com" target="_blank" class="carousel-item">
-              <img src="banner.jpg" alt="Баннер 1">
+              <img src="banner1.jpg" alt="Баннер 1">
             </a>
             <a href="https://t.me/WowPhotoPromt" target="_blank" class="carousel-item">
               <img src="banner2.jpg" alt="Баннер 2">
             </a>
-            <div class="carousel-indicators">
-              <span class="dot active"></span>
-              <span class="dot"></span>
-            </div>
+            <div class="carousel-dots"></div>
           </div>
         </div>
 
         <!-- TRENDS -->
         <div class="section-header">
-          <div class="section-title neon-title">Тренды</div>
+          <div class="section-title">Тренды</div>
         </div>
 
         <div class="grid" id="main-grid"></div>
@@ -83,9 +75,8 @@
       <!-- PAGE: IDEAS / ШЕДЕВРЫ -->
       <section id="page-ideas" class="page">
         <div class="page-header">
-          <div class="page-title neon-title">
-            <svg class="icon" width="22" height="22"><use href="#icon-masterpiece"></use></svg>
-            <span>Шедевры</span>
+          <div class="page-title">
+            <span class="spark"></span> Шедевры
           </div>
         </div>
 
@@ -113,7 +104,7 @@
       <!-- PAGE: LIKES -->
       <section id="page-likes" class="page">
         <div class="page-header">
-          <div class="page-title neon-title">
+          <div class="page-title">
             <span class="spark"></span> Лайки
           </div>
         </div>
@@ -127,65 +118,61 @@
       <!-- PAGE: PROFILE -->
       <section id="page-profile" class="page">
         <div class="page-header">
-          <div class="page-title neon-title">
+          <div class="page-title">
             <span class="spark"></span> Профиль
           </div>
         </div>
 
-        <!-- ПОДРАЗДЕЛ: ПАРТНЕРСКАЯ ПРОГРАММА -->
-        <div class="profile-block">
-          <div class="block-title">Партнёрская программа</div>
-          <div class="partnership-card">
-            <div class="partnership-title">Приглашай друзей — получай 15% от их платежей</div>
-            <div class="partnership-row">
-              <input type="text" id="refLink" readonly value="t.me/remixa_bot?start=ref_000" />
-              <button class="small-btn" onclick="copyRef()">Копировать</button>
+        <div class="profile-tabs">
+          <button class="profile-tab active" data-tab="generations" onclick="setProfileTab('generations')">Мои генерации</button>
+          <button class="profile-tab" data-tab="partnership" onclick="setProfileTab('partnership')">Партнёрская программа</button>
+          <button class="profile-tab" data-tab="referrals" onclick="setProfileTab('referrals')">Рефералы</button>
+          <button class="profile-tab" data-tab="balance" onclick="setProfileTab('balance')">Баланс</button>
+          <button class="profile-tab" data-tab="payments" onclick="setProfileTab('payments')">История платежей</button>
+        </div>
+
+        <div class="profile-content">
+          <div id="profile-generations" class="profile-block tab-content active">
+            <div id="profile-history" class="grid"></div>
+          </div>
+
+          <div id="profile-partnership" class="profile-block tab-content">
+            <div class="partnership-card">
+              <div class="partnership-title">Приглашай друзей — получай 15% от их платежей</div>
+              <div class="partnership-row">
+                <input type="text" id="refLink" readonly value="t.me/remixa_bot?start=ref_000" />
+                <button class="small-btn" onclick="copyRef()">Копировать</button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- ПОДРАЗДЕЛ: ДОХОД ОТ РЕФЕРАЛОВ -->
-        <div class="profile-block">
-          <div class="block-title">Доход от рефералов</div>
-          <div class="ref-val">
-            <span id="refIncome">0 💎</span>
-            <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
+          <div id="profile-referrals" class="profile-block tab-content">
+            <div class="ref-val">
+              <span id="refIncome">0 💎</span>
+              <span class="hint">15% от платежей друзей • вывод от 3500 💎</span>
+            </div>
+            <div id="refList"></div>
           </div>
-        </div>
 
-        <!-- ПОДРАЗДЕЛ: СПИСОК РЕФЕРАЛОВ -->
-        <div class="profile-block">
-          <div class="block-title">Рефералы</div>
-          <div class="grid" id="ref-list"></div>
-        </div>
-
-        <!-- ПОДРАЗДЕЛ: ГЕНЕРАЦИИ ПОЛЬЗОВАТЕЛЯ -->
-        <div class="profile-block">
-          <div class="block-title">Мои генерации</div>
-          <div id="profile-history" class="grid"></div>
-        </div>
-
-        <!-- ПОДРАЗДЕЛ: БАЛАНС / КОШЕЛЁК -->
-        <div class="profile-block">
-          <div class="block-title">Баланс</div>
-          <div class="bal-row">
-            <div class="bal-val" id="balanceTotal">14,125 💎</div>
-            <button class="small-btn" onclick="topUp()">Пополнить</button>
+          <div id="profile-balance" class="profile-block tab-content">
+            <div class="bal-row">
+              <div class="bal-val" id="balanceTotal">14,125 💎</div>
+              <button class="small-btn" onclick="topUp()">Пополнить</button>
+            </div>
+            <div class="top-up-options">
+              <button onclick="topUpFixed(100)">100 💎</button>
+              <button onclick="topUpFixed(300)">300 💎</button>
+              <button onclick="topUpFixed(500)">500 💎</button>
+              <button onclick="topUpFixed(1000)">1000 💎</button>
+              <button onclick="topUpFixed(3000)">3000 💎</button>
+              <button onclick="topUpFixed(5000)">5000 💎</button>
+            </div>
           </div>
-          <div class="balance-options">
-            <button onclick="topUpAmount(100)">100 💎</button>
-            <button onclick="topUpAmount(300)">300 💎</button>
-            <button onclick="topUpAmount(500)">500 💎</button>
-            <button onclick="topUpAmount(1000)">1000 💎</button>
-            <button onclick="topUpAmount(3000)">3000 💎</button>
-            <button onclick="topUpAmount(5000)">5000 💎</button>
-          </div>
-        </div>
 
-        <!-- ПОДРАЗДЕЛ: ИСТОРИЯ ПЛАТЕЖЕЙ -->
-        <div class="profile-block">
-          <div class="block-title">История платежей</div>
-          <div id="profile-payments" class="payments"></div>
+          <div id="profile-payments" class="profile-block tab-content">
+            <div class="payments"></div>
+          </div>
+
         </div>
       </section>
     </main>
@@ -262,6 +249,7 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
