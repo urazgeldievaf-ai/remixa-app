@@ -43,50 +43,44 @@
       </div>
 
       <div class="top-right">
-       <button class="diamond-btn" onclick="openWallet()">
-  <span id="balanceTop">14125</span>
-  <span class="diamond-emoji">💎</span>
-</button>
+        <button class="diamond-btn" onclick="openWallet()">
+          <svg class="diamond-icon" viewBox="0 0 24 24">
+            <use href="#icon-diamond"></use>
+          </svg>
+          <span id="balanceTop">14,125</span>
+        </button>
       </div>
     </header>
 
-    <!-- PAGE: MAIN -->
-<section id="page-main" class="page active">
+    <!-- MAIN PAGES -->
+    <main>
+      <!-- PAGE: MAIN -->
+      <section id="page-main" class="page active">
+        <div class="hero">
+          <div class="hero-text">
+            <h1>Создай потрясающее фото с Remixa!</h1>
+            <p>Быстро. Красиво. Вдохновляюще.</p>
+            <button class="hero-btn" onclick="openCreateModal('image')">
+              Создать
+            </button>
+          </div>
+          <div class="hero-img">
+            <img src="banner-img.jpg" alt="Remixa banner">
+          </div>
+        </div>
 
-  <!-- BANNERS -->
- <div class="banner-wrapper">
+        <div class="section-header">
+          <div class="section-title">Тренды</div>
+        </div>
 
-  <div class="banner-track">
-    <a href="https://example.com" target="_blank" class="banner-item">
-      <img src="banner.jpg" alt="banner 1">
-    </a>
-    <a href="https://t.me/WowPhotoPromt" target="_blank" class="banner-item">
-      <img src="banner2.jpg" alt="banner 2">
-    </a>
-  </div>
-
-  <!-- Кнопки навигации -->
-  <button class="banner-btn prev" onclick="prevBanner()">‹</button>
-  <button class="banner-btn next" onclick="nextBanner()">›</button>
-
-</div>
-
-  </div>
-
-  <!-- TRENDS -->
-  <div class="section-header">
-    <div class="section-title">Тренды</div>
-  </div>
-
-  <div class="grid" id="main-grid"></div>
-
-</section>
+        <div class="grid" id="main-grid"></div>
+      </section>
 
       <!-- PAGE: IDEAS -->
       <section id="page-ideas" class="page">
         <div class="page-header">
           <div class="page-title">
-            <span class="spark"></span> Шедевры
+            <span class="spark"></span> Идеи
           </div>
         </div>
 
@@ -103,10 +97,6 @@
           <button class="cat" data-cat="history" onclick="setCategory('history')">Исторический</button>
           <button class="cat" data-cat="fantasy" onclick="setCategory('fantasy')">Фэнтези</button>
           <button class="cat" data-cat="pair" onclick="setCategory('pair')">Пара</button>
-          <button class="cat" data-cat="birthday" onclick="setCategory('birthday')">ДР</button>
-<button class="cat" data-cat="auto" onclick="setCategory('auto')">Авто</button>
-<button class="cat" data-cat="interior" onclick="setCategory('interior')">Интерьер</button>
-
         </div>
 
         <div class="grid" id="ideas-grid"></div>
@@ -225,12 +215,6 @@
             <label>Промпт *</label>
             <textarea id="prompt" placeholder="Опиши, что хочешь увидеть..."></textarea>
           </div>
-          <div class="field">
-  <label>Референс </label>
-  <input type="file" accept="image/*">
-  <div class="hint">Добавить фото </div>
-</div>
-
 
           <button class="big-btn generate" onclick="generate()">
             <span id="genText">Создать</span>
@@ -245,6 +229,11 @@
   <script src="app.js"></script>
 </body>
 </html>
+
+
+
+
+
 
 
 
