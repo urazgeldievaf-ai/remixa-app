@@ -1,9 +1,9 @@
 // -------------------- DATA --------------------
 const models = {
   image: [
-    { id: "nano", name: "NanoBanana", price: 5, hint: "Быстрое и экономное создание картинок высокого качества" },
-    { id: "nano_pro", name: "Nanobanana Pro", price: 15, hint: "Профессиональная нейросеть для сложных идей" },
-    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "Продвинутая нейросеть для креативных текстов и изображений" }
+    { id: "nano", name: "NanoBanana", price: 5, hint: "Дешёвое" },
+    { id: "nano_pro", name: "Nanobanana Pro", price: 15, hint: "" },
+    { id: "gpt15", name: "GPT 1.5", price: 15, hint: "" }
   ],
   video: []
 };
@@ -11,7 +11,7 @@ const models = {
 let balance = 14125;
 let refIncome = 0;
 let likes = [];
-let history = [];яяфф
+let history = [];
 let published = [];
 let payments = [
   { id: 1, date: "20.01.2026", amount: 500, status: "Пополнение" },
@@ -19,8 +19,6 @@ let payments = [
 ];
 
 let currentCategory = "new";
-let currentProfileTab = "profile";
-let carouselIndex = 0;
 
 // -------------------- UI --------------------
 function switchPage(page) {
@@ -36,17 +34,17 @@ function openWallet() {
 }
 
 function updateTopBalance(){
-  document.getElementById("balanceTop").textContent = `${balance.toLocaleString()} 💎`;
+  document.getElementById("balanceTop").textContent = balance.toLocaleString();
   document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("refIncome").textContent = `${refIncome.toLocaleString()} 💎`;
 }
 
-function topUp(amount = 50){
-  balance += amount;
-  payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount, status: "Пополнение" });
+function topUp(){
+  balance += 50;
+  payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount: 50, status: "Пополнение" });
   updateTopBalance();
   renderPayments();
-  alert(`Баланс пополнен на ${amount}💎`);
+  alert("Баланс пополнен на 50💎");
 }
 
 function withdraw(){
@@ -78,7 +76,6 @@ function createCard(item){
   `;
 }
 
-// -------------------- RENDER --------------------
 function renderMain(){
   const grid = document.getElementById("main-grid");
   grid.innerHTML = "";
@@ -114,19 +111,10 @@ function renderLikes(){
   });
 }
 
-function renderProfile(){
-  document.querySelectorAll(".profile-subpage").forEach(p => p.classList.remove("active"));
-  document.getElementById(`profile-${currentProfileTab}`).classList.add("active");
-}
-
 function renderProfileHistory(){
-  const container = document.getElementById("profile-generations");
-  container.innerHTML = "";
-  if(history.length === 0){
-    container.innerHTML = `<div class="empty-text">Скоро здесь будут твои генерации и шедевры ✨</div>`;
-    return;
-  }
-  history.forEach(i => container.innerHTML += createCard(i));
+  const grid = document.getElementById("profile-history");
+  grid.innerHTML = "";
+  history.forEach(i => grid.innerHTML += createCard(i));
 }
 
 function renderPayments(){
@@ -148,14 +136,6 @@ function setCategory(cat){
   document.querySelectorAll(".cat").forEach(b => b.classList.remove("active"));
   document.querySelector(`.cat[data-cat="${cat}"]`)?.classList.add("active");
   renderIdeas();
-}
-
-// -------------------- PROFILE TABS --------------------
-function setProfileTab(tab){
-  currentProfileTab = tab;
-  document.querySelectorAll(".profile-tab").forEach(t => t.classList.remove("active"));
-  document.querySelector(`.profile-tab[data-tab="${tab}"]`)?.classList.add("active");
-  renderProfile();
 }
 
 // -------------------- CREATE MODAL --------------------
@@ -244,51 +224,6 @@ function generate(){
 
   history.unshift(newItem);
 
-  renderProfileHistory();
-  closeCreate();
-  alert("Генерация создана и добавлена в историю.");
-}
-
-// -------------------- CAROUSEL --------------------
-function initCarousel(){
-  const items = document.querySelectorAll(".carousel-item");
-  const indicators = document.createElement("div");
-  indicators.className = "carousel-indicators";
-  items.forEach((_, i) => {
-    const dot = document.createElement("div");
-    if(i === 0) dot.classList.add("active");
-    indicators.appendChild(dot);
-  });
-  document.querySelector(".carousel").appendChild(indicators);
-
-  function showSlide(index){
-    items.forEach((el, i) => el.classList.toggle("active", i === index));
-    indicators.querySelectorAll("div").forEach((d,i)=>d.classList.toggle("active", i===index));
-  }
-
-  function nextSlide(){
-    carouselIndex = (carouselIndex + 1) % items.length;
-    showSlide(carouselIndex);
-  }
-
-  setInterval(nextSlide, 3000);
-  showSlide(0);
-}
-
-// -------------------- INITIALIZE --------------------
-updateTopBalance();
-renderMain();
-renderIdeas();
-renderLikes();
-renderProfileHistory();
-renderPayments();
-populateModels("image");
-renderProfile();
-initCarousel();
-};
-
-  history.unshift(newItem);
-
   // сразу в историю (без модерации)
   renderProfileHistory();
 
@@ -304,15 +239,6 @@ renderLikes();
 renderProfileHistory();
 renderPayments();
 populateModels("image");
-
-
-
-
-
-
-
-
-
 
 
 
