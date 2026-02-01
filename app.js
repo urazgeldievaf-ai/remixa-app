@@ -14,6 +14,7 @@ const models = {
     { id: "kling_motion", name: "Клинг Моушн Контрол", price: 100, hint: "Повтори движение из видео, выбор версии", versionOptions: [{name: "Быстрая", price: 45}, {name: "Качественная", price: 65}], fields: ["photo", "motion_video", "aspect", "version"] }
   ]
 };
+
 let balance = 14125;
 let refIncome = 0;
 let likes = [];
@@ -38,6 +39,7 @@ function switchPage(page) {
   document.querySelectorAll(".bottom-nav .nav-btn").forEach(btn => btn.classList.remove("active"));
   document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add("active");
 }
+
 function setProfileSub(sub){
   currentProfileSub = sub;
   document.querySelectorAll(".profile-tabs .tab").forEach(t => t.classList.remove("active"));
@@ -45,14 +47,17 @@ function setProfileSub(sub){
   document.querySelectorAll(".profile-subpage").forEach(p => p.style.display = "none");
   document.getElementById(`profile-${sub}`).style.display = "block";
 }
+
 function openWallet() {
   alert("Кошелёк: пока заглушка (в будущем добавим оплату)");
 }
+
 function updateTopBalance(){
-  document.getElementById("balanceTop").textContent = balance.toLocaleString() + " 💎";
+  document.getElementById("balanceTop").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("balanceTotal").textContent = `${balance.toLocaleString()} 💎`;
   document.getElementById("refIncome").textContent = `${refIncome.toLocaleString()} 💎`;
 }
+
 function topUp(){
   balance += 50;
   payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount: 50, status: "Пополнение" });
@@ -60,6 +65,7 @@ function topUp(){
   renderPayments();
   alert("Баланс пополнен на 50💎");
 }
+
 function topUpAmount(amount){
   balance += amount;
   payments.unshift({ id: Date.now(), date: new Date().toLocaleDateString(), amount, status: "Пополнение" });
@@ -67,19 +73,22 @@ function topUpAmount(amount){
   renderPayments();
   alert(`Баланс пополнен на ${amount} 💎`);
 }
+
 function copyRef(id="refLink"){
   const input = document.getElementById(id);
   input.select();
   document.execCommand("copy");
   alert("Ссылка скопирована");
 }
-function createCard(item, showStatus = false){
+
+function createCard(item, showStatus = false){ // ДОБАВЛЕНО — параметр showStatus
   let statusIcon = '';
-  if (showStatus && item.status) {
+  if (showStatus && item.status) { // Статус только в профиле
     if (item.status === 'pending') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:yellow;color:black;padding:2px 6px;border-radius:4px;font-size:10px;">На модерации</span>';
     else if (item.status === 'approved') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:green;color:white;padding:2px 6px;border-radius:4px;font-size:10px;">Прошло</span>';
     else if (item.status === 'rejected') statusIcon = '<span style="position:absolute;left:8px;top:8px;background:red;color:white;padding:2px 6px;border-radius:4px;font-size:10px;">Не прошло</span>';
   }
+
   return `
     <div class="card" onclick="openCreateModal('${item.type}', '${item.id}')">
       <div style="position:relative;">
@@ -109,9 +118,10 @@ function renderMain(){
     grid.innerHTML = `<div class="empty-text">Пока нет трендов — создай первую генерацию!</div>`;
     return;
   }
-  items.forEach(i => grid.innerHTML += createCard(i, false));
+  items.forEach(i => grid.innerHTML += createCard(i, false)); // Статусы НЕ показываем
   startCarousel();
 }
+
 function renderIdeas(){
   const grid = document.getElementById("ideas-grid");
   grid.innerHTML = "";
@@ -120,8 +130,9 @@ function renderIdeas(){
     grid.innerHTML = `<div class="empty-text">Пока нет идей в этой категории!</div>`;
     return;
   }
-  items.forEach(i => grid.innerHTML += createCard(i, false));
+  items.forEach(i => grid.innerHTML += createCard(i, false)); // Статусы НЕ показываем
 }
+
 function renderLikes(){
   const grid = document.getElementById("likes-grid");
   const empty = document.getElementById("likes-empty");
@@ -133,9 +144,10 @@ function renderLikes(){
   empty.style.display = "none";
   likes.forEach(id => {
     const item = published.find(p => p.id === id);
-    if(item) grid.innerHTML += createCard(item, false);
+    if(item) grid.innerHTML += createCard(item, false); // Статусы НЕ показываем
   });
 }
+
 function renderProfileHistory(){
   const grid = document.getElementById("profile-history");
   grid.innerHTML = "";
@@ -143,8 +155,9 @@ function renderProfileHistory(){
     grid.innerHTML = `<div class="empty-text">Скоро здесь будут твои генерации ✨</div>`;
     return;
   }
-  history.forEach(i => grid.innerHTML += createCard(i, true));
+  history.forEach(i => grid.innerHTML += createCard(i, true)); // Статусы ТОЛЬКО здесь
 }
+
 function renderPayments(){
   const container = document.getElementById("profile-payments");
   container.innerHTML = "";
@@ -176,18 +189,23 @@ function openCreateModal(type="image", fromId=null){
       document.getElementById("prompt").value = item.prompt || item.title;
       document.getElementById("model").value = item.modelId;
       updateModelHint();
+      updateFormFields();
     }
   }
 }
+
 function closeCreate(){
   document.getElementById("create-modal").style.display = "none";
 }
+
 function setType(type){
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.querySelector(`.tab[data-type="${type}"]`)?.classList.add("active");
   populateModels(type);
   updateGenButton(type);
+  updateFormFields();
 }
+
 function populateModels(type){
   const select = document.getElementById("model");
   select.innerHTML = "";
@@ -195,13 +213,36 @@ function populateModels(type){
     select.innerHTML += `<option value="${m.id}">${m.name}</option>`;
   });
   updateModelHint();
+  updateFormFields();
 }
+
 function updateModelHint(){
   const type = document.querySelector(".tab.active").dataset.type;
   const modelId = document.getElementById("model").value;
   const model = models[type].find(m => m.id === modelId);
   document.getElementById("modelHint").textContent = model ? model.hint : "";
   updateGenButton(type);
+}
+
+function updateGenButton(type){
+  const modelId = document.getElementById("model").value;
+  const model = models[type].find(m => m.id === modelId);
+  if (!model) {
+    document.getElementById("genText").textContent = "Создать";
+    document.getElementById("genPrice").textContent = "";
+    return;
+  }
+
+  let priceText = `— ${model.price}💎`;
+  if (model.id === "kling_motion") {
+    const versionSelect = document.getElementById("version");
+    if (versionSelect) {
+      priceText = `— ${versionSelect.value}💎`;
+    }
+  }
+
+  document.getElementById("genText").textContent = type === "image" ? "Создать" : "Сгенерировать";
+  document.getElementById("genPrice").textContent = priceText;
 }
 
 // -------------------- FORM FIELDS DYNAMIC --------------------
@@ -211,12 +252,15 @@ function updateFormFields() {
   const model = models[type].find(m => m.id === modelId);
   if (!model) return;
 
+  // Удаляем старые дополнительные поля
   const extraFields = document.querySelectorAll('.extra-field');
   extraFields.forEach(f => f.remove());
 
+  // Добавляем нужные поля после "Промпт"
   const promptField = document.querySelector('#prompt').parentElement;
   const container = promptField.parentElement;
 
+  // Всегда добавляем пропорции
   const aspectDiv = document.createElement('div');
   aspectDiv.className = 'field extra-field';
   aspectDiv.innerHTML = `
@@ -231,17 +275,18 @@ function updateFormFields() {
   `;
   container.insertBefore(aspectDiv, promptField.nextSibling);
 
+  // Добавляем остальные поля по модели
   model.fields.forEach(field => {
     let labelText = '';
     let inputHtml = '';
 
     if (field === 'start_frame' || field === 'end_frame' || field === 'photo') {
-      labelText = field === 'start_frame' ? 'Начальный кадр (по желанию)' :
-                  field === 'end_frame' ? 'Конечный кадр (по желанию)' :
+      labelText = field === 'start_frame' ? 'Начальный кадр (по желанию)' : 
+                  field === 'end_frame' ? 'Конечный кадр (по желанию)' : 
                   'Фото/видео (по желанию)';
       inputHtml = `<input type="file" id="${field}-upload" accept="image/*,video/*">`;
     } else if (field === 'prompt') {
-      return;
+      return; // Промпт уже есть
     } else if (field === 'duration') {
       labelText = 'Длительность';
       inputHtml = `<select id="duration">${model.durationOptions.map(d => `<option value="${d}">${d} секунд</option>`).join('')}</select>`;
@@ -297,12 +342,13 @@ function generate(){
     category: currentCategory === "new" ? "trend" : currentCategory,
     likes: 0,
     img: `https://picsum.photos/400/300?random=${id}`,
-    status: "pending",
+    status: "pending", // на модерации
     hiddenPrompt: false
   };
   history.unshift(newItem);
   renderProfileHistory();
 
+  // Показываем кнопки после генерации (вместо alert)
   const afterGenerate = document.createElement('div');
   afterGenerate.style.marginTop = "16px";
   afterGenerate.innerHTML = `
@@ -313,6 +359,7 @@ function generate(){
     </label>
   `;
   document.querySelector('.modal-body').appendChild(afterGenerate);
+
   closeCreate();
 }
 
@@ -327,10 +374,11 @@ function publishToIdeas(id) {
   renderIdeas();
   alert("Работа отправлена на модерацию!");
 }
+
 function saveToProfile(id) {
   const item = history.find(i => i.id === id);
   if (!item) return;
-  item.status = "approved";
+  item.status = "approved"; // сразу одобрено в профиле
   renderProfileHistory();
   alert("Сохранено в профиль!");
 }
@@ -340,8 +388,10 @@ function startCarousel(){
   const slides = document.querySelectorAll(".carousel-item");
   const indicators = document.querySelectorAll(".carousel-indicators .indicator");
   if (slides.length === 0) return;
+
   carouselIndex = 0;
   showSlide(carouselIndex);
+
   const carousel = document.querySelector('.carousel');
   if (carousel) {
     carousel.addEventListener('scroll', () => {
@@ -353,13 +403,32 @@ function startCarousel(){
       });
     });
   }
+
+  // Авто-листание каждые 4 секунды
+  if(carouselInterval) clearInterval(carouselInterval);
+  carouselInterval = setInterval(() => {
+    nextSlide();
+  }, 4000);
 }
+
 function showSlide(index){
   const slides = document.querySelectorAll(".carousel-item");
   const indicators = document.querySelectorAll(".carousel-indicators .indicator");
-  slides.forEach((s, i) => s.classList.toggle('active', i === index));
-  indicators.forEach((ind, i) => ind.classList.toggle('active', i === index));
+  slides.forEach(s=>s.classList.remove("active"));
+  indicators.forEach(i=>i.classList.remove("active"));
+  if (slides[index]) slides[index].classList.add("active");
+  if (indicators[index]) indicators[index].classList.add("active");
+}
+
+function nextSlide(){
+  const slides = document.querySelectorAll(".carousel-item");
+  carouselIndex = (carouselIndex + 1) % slides.length;
+  showSlide(carouselIndex);
+}
+
+function goToSlide(index){
   carouselIndex = index;
+  showSlide(carouselIndex);
 }
 
 // -------------------- INIT --------------------
@@ -370,6 +439,11 @@ renderLikes();
 renderProfileHistory();
 renderPayments();
 populateModels("image");
+setProfileSub("user");
+
+
+
+
 
 
 
