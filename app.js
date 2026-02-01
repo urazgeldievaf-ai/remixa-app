@@ -393,35 +393,34 @@ function startCarousel(){
   showSlide(carouselIndex);
 
   const carousel = document.querySelector('.carousel');
+  
+  // При скролле синхронизируем индикаторы
   if (carousel) {
     carousel.addEventListener('scroll', () => {
       const scrollPosition = carousel.scrollLeft;
       const itemWidth = carousel.offsetWidth;
       const currentIndex = Math.round(scrollPosition / itemWidth);
-      indicators.forEach((ind, i) => {
-        ind.classList.toggle('active', i === currentIndex);
-      });
+      indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentIndex));
+      carouselIndex = currentIndex;
+      resetCarouselInterval();
     });
   }
-    let scrollTimeout;
-  carousel.addEventListener('scroll', () => {
-    clearTimeout(scrollTimeout);
-    if (carouselInterval) clearInterval(carouselInterval);
 
-    scrollTimeout = setTimeout(() => {
-      carouselInterval = setInterval(() => {
-        nextSlide();
-      }, 4000);
-    }, 2000);
-  });
-    indicators.forEach((indicator, i) => {
+  // Клик по индикаторам
+  indicators.forEach((indicator, i) => {
     indicator.onclick = () => {
       carouselIndex = i;
       showSlide(carouselIndex);
+      resetCarouselInterval();
     };
   });
 
-  // Авто-листание каждые 4 секунды
+  // Запуск автоперехода
+  resetCarouselInterval();
+}
+
+// Сброс и перезапуск таймера
+function resetCarouselInterval() {
   if(carouselInterval) clearInterval(carouselInterval);
   carouselInterval = setInterval(() => {
     nextSlide();
