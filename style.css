@@ -368,6 +368,18 @@ body{
   display:flex; justify-content:center; align-items:center; gap:12px;
   box-shadow:0 0 26px rgba(44,240,255,0.55);
 }
+.carousel {
+  overflow-x: auto;
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+  scroll-behavior: smooth; /* плавная прокрутка */
+  -webkit-overflow-scrolling: touch; /* плавная прокрутка на iOS */
+}
+
+.carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 
 
 
