@@ -403,6 +403,23 @@ function startCarousel(){
       });
     });
   }
+    let scrollTimeout;
+  carousel.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    if (carouselInterval) clearInterval(carouselInterval);
+
+    scrollTimeout = setTimeout(() => {
+      carouselInterval = setInterval(() => {
+        nextSlide();
+      }, 4000);
+    }, 2000);
+  });
+    indicators.forEach((indicator, i) => {
+    indicator.onclick = () => {
+      carouselIndex = i;
+      showSlide(carouselIndex);
+    };
+  });
 
   // Авто-листание каждые 4 секунды
   if(carouselInterval) clearInterval(carouselInterval);
@@ -418,6 +435,14 @@ function showSlide(index){
   indicators.forEach(i=>i.classList.remove("active"));
   if (slides[index]) slides[index].classList.add("active");
   if (indicators[index]) indicators[index].classList.add("active");
+    const carousel = document.querySelector('.carousel');
+  if (carousel) {
+    carousel.scrollTo({
+      left: carousel.offsetWidth * index,
+      behavior: 'smooth'
+    });
+  }
+
 }
 
 function nextSlide(){
